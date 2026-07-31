@@ -1,0 +1,18 @@
+/* Small final adjustments kept separate so they always win the cascade. */
+.work-carousel{--work-step:368px}
+.work-track article{width:350px;height:560px;flex-basis:350px;padding:22px}
+.work-art{height:235px;flex-basis:235px;margin:20px -3px 18px}
+.work-track h3{font-size:37px}
+
+@media(max-width:950px){
+  .work-carousel{--work-step:348px}
+  .work-track article{width:330px;flex-basis:330px}
+}
+
+@media(max-width:600px){
+  .work-carousel{--work-step:calc(76vw + 12px)}
+  .work-track article{width:76vw;flex-basis:76vw;height:520px;padding:18px}
+  .work-art{height:220px;flex-basis:220px}
+  .work-track h3{font-size:34px}
+  .work-detail{left:18px;right:18px;bottom:18px}
+}

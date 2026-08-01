@@ -10,17 +10,16 @@ function Shell({ children, home = false, currentPage = "" }: { children: React.R
     return <div className={home ? "site-shell home-shell" : "site-shell"}>
         <header className="topbar">
             <Link className="round-logo" href="/" aria-label="Home" style={{ marginTop: '-15px' }}>
-                <svg viewBox="0 0 100 100" width="76" height="76" style={{ position: 'absolute', top: 12, left: 12, animation: 'spin 12s linear infinite' }}>
-                    <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent" />
+                <svg viewBox="0 0 100 100" width="84" height="84" style={{ position: 'absolute', top: 8, left: 8, animation: 'spin 12s linear infinite' }}>
+                    <path id="circlePath" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" fill="transparent" />
                     <text fontSize="11" fontFamily="var(--mono)" letterSpacing="0.1em" fill="currentColor" fontWeight="500">
                         <textPath href="#circlePath" startOffset="0%">
-                            PORTFOLIO
+                            PORTFOLIO · PORTFOLIO ·
                         </textPath>
                     </text>
                 </svg>
                 <div style={{ width: '50px', height: '50px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-                    {/* You can replace the <b>L</b> below with an <img src="..." style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> later */}
-                    <b>L</b>
+                    <b>O</b>
                 </div>
             </Link>
             <nav>{nav.map(([n, h]) => <Link href={h} key={h} aria-label={n}><span className="nav-copy" aria-hidden="true"><span>{n}</span><span>{n}</span></span></Link>)}</nav><div className="utilities"><button className="saved-btn" onClick={() => setPanel("cart")}><span className="spin-smile">☻</span><i>Saved</i></button><button onClick={() => setPanel("login")}><span>☺</span><i>Hello</i></button><button className="menu-trigger" onClick={() => setMenu(true)}>Menu</button></div>
@@ -49,6 +48,13 @@ function CardDeck({ compact = false }: { compact?: boolean }) {
 function Home() {
     const stage = useRef<HTMLDivElement>(null), drag = useRef({ active: false, x: 0, left: 0 }), isDragging = useRef(false);
     const [selectedProject, setSelectedProject] = useState<readonly any[] | null>(null);
+    const [projectPair, setProjectPair] = useState(0);
+    useEffect(() => {
+        const timer = window.setInterval(() => setProjectPair(pair => pair === 0 ? 2 : 0), 4500);
+        return () => window.clearInterval(timer);
+    }, []);
+    const leftProject = aboutCards[projectPair];
+    const rightProject = aboutCards[projectPair + 1];
     const wheel = (e: React.WheelEvent<HTMLDivElement>) => { if (stage.current) stage.current.scrollLeft += Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX };
     const down = (e: React.PointerEvent<HTMLDivElement>) => { const el = stage.current; if (!el) return; drag.current = { active: true, x: e.clientX, left: el.scrollLeft }; isDragging.current = false; };
     const move = (e: React.PointerEvent<HTMLDivElement>) => {
@@ -65,10 +71,8 @@ function Home() {
             <section className="portfolio-canvas" aria-label="Portfolio overview">
                 <Link href="/about" className="portfolio-card p-intro"><span className="tag">PORTFOLIO</span><h1>[Worakan<br />Portfolio]</h1><p>Developer · Java · React · Nextjs · Click For More</p></Link>
                 <Link href="/about" className="portfolio-card p-about"><span className="tag">ABOUT</span><h2>Welcome to my website click here </h2><span className="card-arrow">↗</span></Link>
-                <a href="#" onClick={(e) => { e.preventDefault(); setSelectedProject(aboutCards[0]); }} className="portfolio-card p-project p-project-one" style={{ textDecoration: 'none' }}><div className="project-media media-one"><AutoImageSlider images={["/todo-1.png", "/todo-2.png", "/todo-3.png"]} alt="Todo List preview" onImageClick={() => setSelectedProject(aboutCards[0])} /></div><span className="tag">PROJECT 01</span><h2>Todo List</h2><p>Next.js & Prisma</p></a>
-                <a href="#" onClick={(e) => { e.preventDefault(); setSelectedProject(aboutCards[1]); }} className="portfolio-card p-project p-project-two" style={{ textDecoration: 'none' }}><div className="project-media media-two"><AutoImageSlider images={["/cafe-1.png", "/cafe-2.png", "/cafe-3.png", "/cafe-4.png", "/cafe-5.png"]} alt="Cafe Cat project preview" onImageClick={() => setSelectedProject(aboutCards[1])} /></div><span className="tag">PROJECT 02</span><h2>Cafe Cat</h2><p>Frontend · HTML & CSS</p><span className="card-arrow">↗</span></a>
-                <a href="#" onClick={(e) => { e.preventDefault(); setSelectedProject(aboutCards[2]); }} className="portfolio-card p-project p-project-one" style={{ textDecoration: 'none' }}><div className="project-media media-one"><AutoImageSlider images={["/gowithus-1.png", "/gowithus-2.png", "/gowithus-3.png", "/gowithus-4.png"]} alt="Go With Us project preview" onImageClick={() => setSelectedProject(aboutCards[2])} /></div><span className="tag">PROJECT 03</span><h2>Go With Us</h2><p>SwiftUI · Node.js</p></a>
-                <a href="#" onClick={(e) => { e.preventDefault(); setSelectedProject(aboutCards[3]); }} className="portfolio-card p-project p-project-two" style={{ textDecoration: 'none' }}><div className="project-media media-two"><AutoImageSlider images={["/portfolio-1.png"]} alt="Portfolio project preview" onImageClick={() => setSelectedProject(aboutCards[3])} /></div><span className="tag">PROJECT 04</span><h2>Portfolio</h2><p>Next.js · React 19</p><span className="card-arrow">↗</span></a>
+                <a key={leftProject[0]} href="#" onClick={(e) => { e.preventDefault(); setSelectedProject(leftProject); }} className="portfolio-card p-project p-project-one home-project-swap" style={{ textDecoration: 'none' }}><div className="project-media media-one"><AutoImageSlider images={leftProject[4]} alt={`${leftProject[1]} preview`} onImageClick={() => setSelectedProject(leftProject)} /></div><span className="tag">PROJECT {leftProject[0]}</span><h2>{leftProject[1]}</h2><p>{leftProject[2]}</p></a>
+                <a key={rightProject[0]} href="#" onClick={(e) => { e.preventDefault(); setSelectedProject(rightProject); }} className="portfolio-card p-project p-project-two home-project-swap" style={{ textDecoration: 'none' }}><div className="project-media media-two"><AutoImageSlider images={rightProject[4]} alt={`${rightProject[1]} preview`} onImageClick={() => setSelectedProject(rightProject)} /></div><span className="tag">PROJECT {rightProject[0]}</span><h2>{rightProject[1]}</h2><p>{rightProject[2]}</p><span className="card-arrow">↗</span></a>
                 <Link href="/stories" className="portfolio-card p-note"><span className="tag">PLAYGROUND / PROTOTYPES</span><h2>My journey, technical prototypes, and things I'm learning.</h2></Link>
                 <article className="portfolio-card p-contact"><span className="tag">CONTACT</span><h2>Let’s make something useful.</h2><a className="plain-action" href="mailto:omworakarn@gmail.com">EMAIL ME ↗</a><Link className="plain-action light" href="/work">VIEW WORK ↗</Link></article>
                 <div className="drag-hint" aria-hidden="true">SCROLL / DRAG <span>→</span></div>
@@ -214,7 +218,7 @@ const TECH_ICONS: Record<string, string> = {
 };
 
 const aboutCards = [
-    ["01", "TODO LIST", "[Next.js · React · TypeScript]", "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI.", ["/todo-1.png?v=1", "/todo-2.png?v=1", "/todo-3.png?v=1"], "https://github.com/omworakarn-maker", "This Todo List application was built to solve task management inefficiencies. It features a complete dashboard, secure authentication, and real-time state updates. Users can customize their profiles, view analytics of completed tasks, and easily manage their daily workflow using a modern responsive interface.", ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "Vercel"]],
+    ["01", "TODO LIST", "[Next.js · React · TypeScript]", "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI.", ["/todo-1.png?v=1", "/todo-2.png?v=1", "/todo-3.png?v=1"], "https://github.com/omworakarn-maker/todolist", "This Todo List application was built to solve task management inefficiencies. It features a complete dashboard, secure authentication, and real-time state updates. Users can customize their profiles, view analytics of completed tasks, and easily manage their daily workflow using a modern responsive interface.", ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "Vercel"]],
     ["02", "CAFE CAT", "[HTML5 · CSS3 · JavaScript]", "An interactive website for a cat cafe showcasing menus, cozy atmosphere, and responsive layout.", ["/cafe-1.png?v=1", "/cafe-2.png?v=1", "/cafe-3.png?v=1", "/cafe-4.png?v=1", "/cafe-5.png?v=1"], "#", "A fully responsive front-end website for a fictional cat cafe. Features include a dynamic menu, beautiful CSS animations, and a cozy aesthetic designed to attract customers.", ["HTML5", "CSS3", "JavaScript"]],
     ["03", "GO WITH US", "[SwiftUI · Node.js · PostgreSQL]", "A modern, AI-Powered travel matching iOS application built with SwiftUI and a Node.js backend.", ["/gowithus-1.png?v=1", "/gowithus-2.png?v=1", "/gowithus-3.png?v=1", "/gowithus-4.png?v=1"], "#", "An iOS mobile application that matches travelers based on their preferences. Built natively with SwiftUI for a smooth user experience, backed by a robust Node.js backend and PostgreSQL database.", ["SwiftUI", "Node.js", "PostgreSQL", "Render"]],
     ["04", "PORTFOLIO", "[Next.js 16 · React 19 · Vite]", "A modern interactive single-page portfolio with dynamic card deck, smooth animations, and clean styling.", ["/portfolio-1.png?v=1"], "#", "This portfolio itself! A highly interactive single-page application showcasing custom animations, interactive card decks, and advanced CSS techniques. Built with Next.js and React.", ["Next.js", "React", "TypeScript", "Vite"]]
@@ -243,6 +247,7 @@ function ProjectDetailsModal({ project, onClose }: { project: readonly any[], on
     const imageRaw = project[4];
     const images = Array.isArray(imageRaw) ? imageRaw : (imageRaw ? [imageRaw] : []);
     const link = project[5] || "#";
+    const hasProjectLink = link !== "#";
     const fullDesc = project[6] || shortDesc;
     const techStack = project[7] as string[] | undefined;
 
@@ -289,10 +294,10 @@ function ProjectDetailsModal({ project, onClose }: { project: readonly any[], on
 
                 {/* FOOTER ACTION */}
                 <div style={{ padding: '20px 30px', borderTop: '1px solid #ddd', display: 'flex', justifyContent: 'flex-end', background: 'var(--paper)' }}>
-                    <a href={link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '12px 24px', backgroundColor: '#111', color: '#fff', textDecoration: 'none', borderRadius: '999px', fontFamily: 'var(--sans)', fontWeight: '700', fontSize: '12px', transition: 'transform 0.2s, background 0.2s' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.background = 'var(--red)'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.background = '#111'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
+                    <a href={hasProjectLink ? link : undefined} target={hasProjectLink ? "_blank" : undefined} rel={hasProjectLink ? "noopener noreferrer" : undefined} aria-disabled={!hasProjectLink} onClick={e => { if (!hasProjectLink) e.preventDefault(); }} style={{ display: 'inline-flex', alignItems: 'center', padding: '12px 24px', backgroundColor: '#111', color: '#fff', textDecoration: 'none', borderRadius: '999px', fontFamily: 'var(--sans)', fontWeight: '700', fontSize: '12px', opacity: hasProjectLink ? 1 : .5, cursor: hasProjectLink ? 'pointer' : 'not-allowed', transition: 'transform 0.2s, background 0.2s' }} onMouseEnter={e => { if (!hasProjectLink) return; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.background = 'var(--red)'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.background = '#111'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
                         <div style={{ position: 'relative', height: '17px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-                            <span className="roll-first" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
-                            <span className="roll-second" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
+                            <span className="roll-first" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>{hasProjectLink ? "VIEW PROJECT ↗" : "(NOT YET)"}</span>
+                            <span className="roll-second" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>{hasProjectLink ? "VIEW PROJECT ↗" : "(NOT YET)"}</span>
                         </div>
                     </a>
                 </div>
@@ -364,21 +369,17 @@ function SelectedWorkShowcase() {
         <section className="work-showcase">
             <div className="work-stack-container">
                 {aboutCards.map((card, i) => (
-                    <article key={card[0]} className="work-stack-card">
-                        <div className="work-stack-header">
-                            <div className="work-stack-title">
-                                <span>Project {card[0]}</span>
-                                <h2>{card[1]}</h2>
+                    <article key={card[0]} className={`work-stack-card ${i % 2 ? "is-reversed" : ""}`}>
+                        <div className="work-stack-copy">
+                            <span className="work-stack-index">PROJECT {card[0]} / 04</span>
+                            <h2>{card[1]}</h2>
+                            <p className="work-stack-summary">{card[3]}</p>
+                            <div className="work-stack-tags">
+                                {(card[7] as readonly string[] | undefined)?.map(tag => <span key={tag}>{tag}</span>)}
                             </div>
-                            <div className="work-stack-meta">
-                                <div className="work-stack-tags">
-                                    {(card[7] as readonly string[] | undefined)?.map(tag => <span key={tag}>{tag}</span>)}
-                                </div>
-                                <p>{card[6] || card[3]}</p>
-                                {card[5] && card[5] !== "#" && (
-                                    <a href={card[5]} target="_blank" rel="noopener noreferrer" className="work-stack-action">View Project ↗</a>
-                                )}
-                            </div>
+                            <a href={card[5] === "#" ? undefined : card[5]} target={card[5] === "#" ? undefined : "_blank"} rel={card[5] === "#" ? undefined : "noopener noreferrer"} aria-disabled={card[5] === "#"} className={`work-stack-action${card[5] === "#" ? " is-disabled" : ""}`} onClick={e => { if (card[5] === "#") e.preventDefault(); }}>
+                                <span className="work-action-roll"><i>{card[5] === "#" ? "(NOT YET)" : "VIEW PROJECT ↗"}</i><i>{card[5] === "#" ? "(NOT YET)" : "VIEW PROJECT ↗"}</i></span>
+                            </a>
                         </div>
                         <div className="work-stack-media">
                             {card[4] && card[4].length > 0 ? (
@@ -641,7 +642,7 @@ function AboutPage() {
         <section className="end-card about-end about-contact-cta" style={{ margin: '4vw', padding: '100px 6vw', background: 'var(--yellow)', borderRadius: '20px' }}>
             <span className="micro">GET IN TOUCH</span>
             <RevealWords>Let's build something great together.</RevealWords>
-            <a className="capsule" href="mailto:omworakarn@gmail.com" style={{ marginTop: '40px' }}>START A CONVERSATION ↗</a>
+            <Link className="capsule" href="/support#contact-form" style={{ marginTop: '40px' }}>START A CONVERSATION ↗</Link>
             <div className="contact-smile" aria-hidden="true"><span>LET'S · MAKE · IT · REAL · </span><div className="contact-smile-face"><i /><i /><b /></div></div>
         </section>
     </>
@@ -688,7 +689,7 @@ function ContactForm() {
 
     if (status === "success") {
         return (
-            <section className="contact-form-section" style={{ textAlign: "center", padding: "180px 10vw" }}>
+            <section id="contact-form" className="contact-form-section" style={{ textAlign: "center", padding: "180px 10vw" }}>
                 <h2 style={{ fontSize: "40px", marginBottom: "20px" }}>Message Sent!</h2>
                 <p style={{ fontSize: "18px", color: "#666", marginBottom: "40px" }}>Thank you for reaching out. I'll get back to you as soon as possible.</p>
                 <button onClick={() => setStatus("idle")} className="capsule" style={{ background: "var(--ink)", color: "var(--paper)" }}>Send Another Message</button>
@@ -697,7 +698,7 @@ function ContactForm() {
     }
 
     return (
-        <section className="contact-form-section">
+        <section id="contact-form" className="contact-form-section">
             <div className="contact-form-header">
                 <span className="micro">PROJECT ENQUIRY / SAY HELLO</span>
                 <h2>What would you like to make together?</h2>
@@ -741,14 +742,63 @@ function ContactForm() {
     );
 }
 
+function PlaygroundLab() {
+    const palettes = [
+        { name: "SIGNAL RED", color: "var(--red)", ink: "#fff" },
+        { name: "SOFT PINK", color: "var(--pink)", ink: "#111" },
+        { name: "ELECTRIC BLUE", color: "var(--blue)", ink: "#111" },
+        { name: "ACID YELLOW", color: "var(--yellow)", ink: "#111" },
+    ];
+    const words = ["MOVE", "NOTICE", "MAKE", "REPEAT"];
+    const [palette, setPalette] = useState(0);
+    const [word, setWord] = useState(0);
+    const [playing, setPlaying] = useState(false);
+    const current = palettes[palette];
+
+    return <main className="playground-lab">
+        <section className="lab-hero" style={{ "--lab-color": current.color, "--lab-ink": current.ink } as React.CSSProperties}>
+            <div className="lab-hero-copy"><span className="micro">03 / PLAYGROUND</span><p>Sketches, interfaces, little systems and strange ideas—made while learning in public.</p></div>
+            <h1>PLAY<br /><em>WITH</em><br />THE WEB.</h1>
+            <button className="lab-orbit" onClick={() => setPlaying(!playing)} aria-pressed={playing} aria-label="Toggle motion study"><span className={playing ? "is-playing" : ""}>PLAY · PAUSE · PLAY · PAUSE · </span><b>✳</b></button>
+            <div className="lab-hero-footer"><span>SCROLL TO EXPLORE</span><span>2026 / EXPERIMENT LOG</span></div>
+        </section>
+
+        <section className="lab-intro"><span className="micro">A SMALL DIGITAL SKETCHBOOK</span><h2>Ideas don’t need to be finished to be worth exploring.</h2><p>Use this page for prototypes, motion tests, interface details and new things you are learning. Every tile below is an editable placeholder for your own experiments.</p></section>
+
+        <section className="lab-grid" aria-label="Interactive experiments">
+            <article className="lab-card lab-card-type">
+                <span className="lab-number">01 / TYPE STUDY</span><div className="type-window"><span>CLICK THE WORD</span><button onClick={() => setWord((word + 1) % words.length)}><i>{words[word]}</i><i>{words[(word + 1) % words.length]}</i></button><small>Variable scale / rolling text</small></div>
+            </article>
+            <article className="lab-card lab-card-palette" style={{ "--swatch": current.color, "--swatch-ink": current.ink } as React.CSSProperties}>
+                <span className="lab-number">02 / COLOUR SYSTEM</span><div className="palette-swatch"><b>{current.name}</b><i>●</i></div><div className="palette-controls">{palettes.map((item, index) => <button key={item.name} onClick={() => setPalette(index)} className={palette === index ? "active" : ""} style={{ background: item.color }} aria-label={`Use ${item.name}`} />)}</div>
+            </article>
+            <article className={`lab-card lab-card-motion ${playing ? "is-playing" : ""}`}>
+                <span className="lab-number">03 / MOTION LOOP</span><button className="motion-disc" onClick={() => setPlaying(!playing)}><span>HOVER · CLICK · PLAY · </span><b>☺</b></button><p>A tiny interaction study. Press to start or pause the loop.</p>
+            </article>
+            <article className="lab-card lab-card-notes"><span className="lab-number">04 / NOW LEARNING</span><ul><li><b>01</b> Motion timing that feels physical</li><li><b>02</b> Better component systems</li><li><b>03</b> Turning code into play</li></ul><span className="lab-stamp">OPEN<br />TO<br />IDEAS</span></article>
+        </section>
+
+        <section className="lab-manifesto"><span className="micro">THE RULE</span><h2>Make it clear.<br />Then make it <em>fun.</em></h2><a className="capsule" href="mailto:omworakarn@gmail.com">START A PROJECT ↗</a></section>
+    </main>
+}
+
+function HeroTitle({ children }: { children: string }) {
+    const lines: Record<string, string[]> = {
+        "A selection of projects, problems, and outcomes.": ["A selection of", "projects, problems,", "and outcomes."],
+        "How an idea moves from question to working experience.": ["How an idea moves", "from question to", "working experience."],
+        "Have an idea? Let's make something useful together.": ["Have an idea?", "Let's make something", "useful together."],
+    };
+    const titleLines = lines[children] ?? [children];
+    return <>{titleLines.map((line, index) => <span className="hero-title-rise" key={line} style={{ "--hero-line": index } as React.CSSProperties}>{line}</span>)}</>;
+}
+
 function Interior({ page }: { page: Exclude<PageKey, "home"> }) {
-    const p = pages[page]; const [slide, setSlide] = useState(0), [answer, setAnswer] = useState(""); return <>
-        <section className={`page-hero ${p.color}`}><span className="tag">{p.kicker} / {p.index}</span><h1>{p.title}</h1><p>{p.intro}</p><div className="hero-orbit">✳</div></section>
+    const p = pages[page]; const [slide, setSlide] = useState(0), [answer, setAnswer] = useState(""); if (page === "stories") return <><PlaygroundLab /><Ticker dark text="KEEP THE CONVERSATION MOVING" /><section className="end-card"><span className="micro">NEXT</span><h2>One bright thing can lead to another.</h2><Link className="capsule" href="/">Back to the beginning ↗</Link></section></>; return <>
+        <section className={`page-hero ${p.color}${page === "work" ? " work-hero" : ""}`}><span className="tag">{p.kicker} / {p.index}</span><h1><HeroTitle>{p.title}</HeroTitle></h1><p>{p.intro}</p><div className="hero-orbit">✳</div></section>
         {page === "about" && <><section className="editorial"><span className="micro">OUR POINT OF VIEW</span><h2>Attention is a form of care. Good work begins by noticing what everyone else walked past.</h2><p>We choose conversation over performance, curiosity over certainty, and systems that feel human in the hand.</p></section><Ticker text="NOTICE MORE" /><section className="stats"><article><b>12</b><span>open questions at any given time</span></article><article><b>01</b><span>shared table, always ready</span></article><article><b>∞</b><span>ways to begin</span></article></section></>}
         {page === "work" && <SelectedWorkShowcase />}
-        {page === "playground" && <><CardDeck compact /><section className="story-wall">{["From Science-Math to Code.", "My First Full-Stack App.", "Diving into Mobile Development.", "Building this Portfolio."].map((x, i) => <article key={x}><div className={`avatar a${i}`} /><span>STORY 0{i + 1}</span><h2>{x}</h2><button>READ STORY ↗</button></article>)}</section></>}
-        {page === "contact" && <ContactForm />}
-        <Ticker dark text="KEEP THE CONVERSATION MOVING" /><section className="end-card"><span className="micro">NEXT</span><h2>One bright thing can lead to another.</h2><Link className="capsule" href="/">Back to the beginning ↗</Link></section>
+        {page === "support" && <ContactForm />}
+        <Ticker dark text={page === "take-five" ? "COMING SOON" : "KEEP THE CONVERSATION MOVING"} /><section className="end-card"><span className="micro">NEXT</span><h2>One bright thing can lead to another.</h2><Link className="capsule" href="/">Back to the beginning ↗</Link></section>
     </>
 }
 export function SitePage({ page }: { page: PageKey }) { return <Shell home={page === "home"} currentPage={page}>{page === "home" ? <Home /> : page === "about" ? <AboutPage /> : <Interior page={page} />}</Shell> }

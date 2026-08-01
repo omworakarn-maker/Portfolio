@@ -165,12 +165,22 @@
   gap: 6px;
 }
 .cap-card-tags span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   font: 700 10px var(--mono);
   letter-spacing: .06em;
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: 8px;
   background: rgba(255,255,255,.18);
   border: 1px solid rgba(255,255,255,.22);
+  white-space: nowrap;
+}
+.cap-card-tags span img {
+  flex-shrink: 0;
+  width: 13px;
+  height: 13px;
+  object-fit: contain;
 }
 .cap-card--yellow .cap-card-tags span {
   background: rgba(0,0,0,.1);
@@ -222,8 +232,7 @@
   height: 32px;
   object-fit: contain;
   margin-bottom: 14px;
-  filter: brightness(0) invert(1);
-  opacity: .85;
+  opacity: 1;
   transition: opacity .25s, transform .3s cubic-bezier(.34,1.56,.64,1);
 }
 .skill-card:hover .skill-logo {
@@ -347,3 +356,21 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+
+/* Force all project images to show full — no zoom, no crop */
+.project-media img,
+.work-art img {
+  object-fit: contain !important;
+  width: auto !important;
+  height: auto !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  position: absolute !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%);
+  animation: none !important;
+}
+.project-media { background: #1a1a1a; }

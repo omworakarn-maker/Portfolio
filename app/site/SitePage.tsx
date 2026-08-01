@@ -1,68 +1,332 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { nav, pages, PageKey } from "./siteData";
 
-function Shell({ children, home = false }: { children: React.ReactNode, home?: boolean }) {
+function Shell({ children, home = false, currentPage = "" }: { children: React.ReactNode, home?: boolean, currentPage?: string }) {
     const [menu, setMenu] = useState(false), [panel, setPanel] = useState<"cart" | "login" | "mood" | null>(null), [loaded, setLoaded] = useState(false), [mood, setMood] = useState("");
     useEffect(() => { requestAnimationFrame(() => setLoaded(true)); const key = (e: KeyboardEvent) => { if (e.key === "Escape") { setMenu(false); setPanel(null) } }; window.addEventListener("keydown", key); return () => window.removeEventListener("keydown", key) }, []);
-    return <div className={home ? "site-shell home-shell" : "site-shell"}><div className={loaded ? "loader done" : "loader"}><b>L</b><span>LIGHT IN PROGRESS</span></div>
-        <header className="topbar"><Link className="round-logo" href="/"><span>Portfolio—</span><b>L</b></Link><nav>{nav.map(([n, h]) => <Link href={h} key={h} aria-label={n}><span className="nav-copy" aria-hidden="true"><span>{n}</span><span>{n}</span></span></Link>)}</nav><div className="utilities"><button onClick={() => setPanel("cart")}><span>0</span><i>Saved</i></button><button onClick={() => setPanel("login")}><span>☺</span><i>Hello</i></button><button className="menu-trigger" onClick={() => setMenu(true)}>Menu</button></div></header>
+    return <div className={home ? "site-shell home-shell" : "site-shell"}>
+        <header className="topbar">
+            <Link className="round-logo" href="/" aria-label="Home" style={{ marginTop: '-15px' }}>
+                <svg viewBox="0 0 100 100" width="76" height="76" style={{ position: 'absolute', top: 12, left: 12, animation: 'spin 12s linear infinite' }}>
+                    <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="transparent" />
+                    <text fontSize="11" fontFamily="var(--mono)" letterSpacing="0.1em" fill="currentColor" fontWeight="500">
+                        <textPath href="#circlePath" startOffset="0%">
+                            PORTFOLIO
+                        </textPath>
+                    </text>
+                </svg>
+                <div style={{ width: '50px', height: '50px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+                    {/* You can replace the <b>L</b> below with an <img src="..." style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> later */}
+                    <b>L</b>
+                </div>
+            </Link>
+            <nav>{nav.map(([n, h]) => <Link href={h} key={h} aria-label={n}><span className="nav-copy" aria-hidden="true"><span>{n}</span><span>{n}</span></span></Link>)}</nav><div className="utilities"><button className="saved-btn" onClick={() => setPanel("cart")}><span className="spin-smile">☻</span><i>Saved</i></button><button onClick={() => setPanel("login")}><span>☺</span><i>Hello</i></button><button className="menu-trigger" onClick={() => setMenu(true)}>Menu</button></div>
+        </header>
         {children}
         <div className={menu ? "mega-menu show" : "mega-menu"} aria-hidden={!menu}><button onClick={() => setMenu(false)}>CLOSE ×</button><nav>{nav.map(([n, h], i) => <Link href={h} key={h} onClick={() => setMenu(false)}><small>0{i + 1}</small>{n}</Link>)}</nav><p>Designer & Developer<br />Bangkok · Available worldwide</p></div>
         {panel && <div className="panel-wrap" onMouseDown={() => setPanel(null)}><aside onMouseDown={e => e.stopPropagation()}><button className="panel-close" onClick={() => setPanel(null)}>CLOSE ×</button>{panel === "cart" ? <><span className="micro">YOUR SAVED THINGS</span><h2>Nothing here—yet.</h2><p>Keep exploring. Save the things that make your brain light up.</p><Link className="capsule" href="/work">Go to work ↗</Link></> : panel === "mood" ? <><span className="micro">QUICK CHECK-IN</span><h2>What’s your creative energy?</h2><p>Just a playful local prototype. Pick one, then replace the labels with your own.</p><div className="mood-spin-scene" aria-hidden="true"><div className="mood-spinner"><span>PLAY · PAUSE · MAKE · NOTICE · </span><div className="spinner-face"><i /><i /><b /></div></div></div><div className="mood-options">{[["LOW", "—"], ["SLOW", "⌣"], ["OKAY", "•"], ["BRIGHT", "⌣"], ["BUZZING", "⌣"]].map(([label, face]) => <button key={label} className={mood === label ? "selected" : ""} onClick={() => setMood(label)}><span>{face}</span>{label}</button>)}</div>{mood && <p className="mood-response">Noted: {mood}. Keep making at your own pace.</p>}</> : <><span className="micro">WELCOME, CURIOUS ONE</span><h2>Come on in.</h2><label>Email<input type="email" placeholder="you@example.com" /></label><label>Password<input type="password" placeholder="••••••••" /></label><button className="capsule">Log in ↗</button></>}</aside></div>}
-        {!home && <footer><div><b>[NAME]</b><span>Designer & Developer.</span></div><nav><Link href="/about">About</Link><Link href="/work">Selected Work</Link><Link href="/support">Contact</Link><a href="mailto:hello@example.com">Email ↗</a></nav><small>© 2026 · PORTFOLIO</small></footer>}</div>
+        {!home && <footer><div><b>Worakan Pongseelawat</b><span>Developer.</span></div><nav style={{ alignItems: 'flex-start' }}><a href="https://github.com/omworakarn-maker" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', alignSelf: 'flex-start' }}>GitHub ↗</a><a href="mailto:omworakarn@gmail.com" style={{ display: 'inline-block', alignSelf: 'flex-start' }}>Email ↗</a></nav><small>© 2026 · PORTFOLIO</small></footer>}</div>
 }
 
 function Ticker({ dark = false, text = "STAY CURIOUS" }: { dark?: boolean, text?: string }) { return <div className={dark ? "ticker dark" : "ticker"}><div>{Array(12).fill(`✳ ${text} `).join("")}</div></div> }
 const cardItems = [
-    ["01", "MOTION", "[A small animation or transition study.]", "/stories", "card-red"],
-    ["02", "TYPE", "[An experiment with expressive typography.]", "/stories", "card-yellow"],
-    ["03", "HOVER", "[A playful interaction for mouse and keyboard.]", "/stories", "card-pink"],
-    ["04", "LAYOUT", "[A responsive composition or grid study.]", "/stories", "card-blue"],
-    ["05", "CURSOR", "[A pointer, drag, or movement experiment.]", "/stories", "card-green"],
+    ["01", "WEB UI", "[Experimenting with responsive design.]", "#", "card-red"],
+    ["02", "REACT STATE", "[Managing complex states in apps.]", "#", "card-yellow"],
+    ["03", "DATABASES", "[Modeling data with Prisma & SQL.]", "#", "card-pink"],
+    ["04", "BACKEND API", "[Building robust Node.js services.]", "#", "card-blue"],
+    ["05", "NATIVE iOS", "[Creating mobile apps with SwiftUI.]", "#", "card-green"],
 ] as const;
 function CardDeck({ compact = false }: { compact?: boolean }) {
     const [active, setActive] = useState(0); return <section className={compact ? "card-deck compact" : "card-deck"}>
-        <div className="deck-heading"><span className="micro">PLAYGROUND / EXPERIMENTS</span><h2>Small ideas.<br />Made interactive.</h2><p>Drag sideways, choose a card, and replace each placeholder with your own experiment.</p></div>
+        <div className="deck-heading"><span className="micro">PLAYGROUND / EXPERIMENTS</span><h2>Small ideas.<br />Made interactive.</h2><p>Drag sideways to explore the core areas of technology I'm actively exploring and experimenting with.</p></div>
         <div className="deck-stage" aria-label="Interactive prompt cards">{cardItems.map((c, i) => <Link href={c[3]} key={c[0]} onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)} className={`prompt-card ${c[4]} ${active === i ? "active" : ""}`} style={{ "--i": i } as React.CSSProperties}><span>{c[0]} / 05</span><b>{c[1]}</b><p>{c[2]}</p><i>↗</i></Link>)}</div>
         <div className="deck-controls"><button onClick={() => setActive((active + 4) % 5)} aria-label="Previous card">←</button><span>0{active + 1} / 05</span><button onClick={() => setActive((active + 1) % 5)} aria-label="Next card">→</button></div>
     </section>
 }
 function Home() {
-    const stage = useRef<HTMLDivElement>(null), drag = useRef({ active: false, x: 0, left: 0 });
+    const stage = useRef<HTMLDivElement>(null), drag = useRef({ active: false, x: 0, left: 0 }), isDragging = useRef(false);
+    const [selectedProject, setSelectedProject] = useState<readonly any[] | null>(null);
     const wheel = (e: React.WheelEvent<HTMLDivElement>) => { if (stage.current) stage.current.scrollLeft += Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX };
-    const down = (e: React.PointerEvent<HTMLDivElement>) => { const el = stage.current; if (!el) return; drag.current = { active: true, x: e.clientX, left: el.scrollLeft }; el.setPointerCapture(e.pointerId) };
-    const move = (e: React.PointerEvent<HTMLDivElement>) => { if (drag.current.active && stage.current) stage.current.scrollLeft = drag.current.left - (e.clientX - drag.current.x) };
-    const up = () => { drag.current.active = false };
-    return <main ref={stage} className="home-stage" onWheel={wheel} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up}>
-        <section className="portfolio-canvas" aria-label="Portfolio overview">
-            <article className="portfolio-card p-intro"><span className="tag">PORTFOLIO</span><h1>[Worakan<br />Portfolio]</h1><p>Developer · Java · React · Nextjs</p></article>
-            <Link href="/about" className="portfolio-card p-about"><span className="tag">ABOUT</span><h2>Welcome to my website click here </h2><span className="card-arrow">↗</span></Link>
-            <Link href="/work" className="portfolio-card p-project p-project-one"><div className="project-media media-one"><img src="/og.png" alt="Todo list project preview" /></div><span className="tag">PROJECT 01</span><h2>[Todo list]</h2><p>[Role · Create by Nextjs]</p></Link>
-            <Link href="/work" className="portfolio-card p-project p-project-two"><div className="project-media media-two"><img src="/og.png" alt="Cafe Cat project preview" /></div><span className="tag">PROJECT 02</span><h2>[Cafe Cat]</h2><p>[Role · Create by Html]</p><span className="card-arrow">↗</span></Link>
-            <Link href="/stories" className="portfolio-card p-note"><span className="tag">PLAYGROUND</span><h2>Motion, interface experiments, and things in progress.</h2></Link>
-            <article className="portfolio-card p-contact"><span className="tag">CONTACT</span><h2>Let’s make something useful.</h2><a className="plain-action" href="mailto:hello@example.com">EMAIL ME ↗</a><Link className="plain-action light" href="/work">VIEW WORK ↗</Link></article>
-            <div className="drag-hint" aria-hidden="true">SCROLL / DRAG <span>→</span></div>
-        </section>
-    </main>
+    const down = (e: React.PointerEvent<HTMLDivElement>) => { const el = stage.current; if (!el) return; drag.current = { active: true, x: e.clientX, left: el.scrollLeft }; isDragging.current = false; };
+    const move = (e: React.PointerEvent<HTMLDivElement>) => {
+        if (drag.current.active && stage.current) {
+            if (Math.abs(e.clientX - drag.current.x) > 5) isDragging.current = true;
+            stage.current.scrollLeft = drag.current.left - (e.clientX - drag.current.x);
+        }
+    };
+    const up = () => { drag.current.active = false; setTimeout(() => { isDragging.current = false; }, 50); };
+    const clickCapture = (e: React.MouseEvent) => { if (isDragging.current) { e.stopPropagation(); e.preventDefault(); } };
+
+    return (
+        <main ref={stage} className="home-stage" onWheel={wheel} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up} onClickCapture={clickCapture}>
+            <section className="portfolio-canvas" aria-label="Portfolio overview">
+                <Link href="/about" className="portfolio-card p-intro"><span className="tag">PORTFOLIO</span><h1>[Worakan<br />Portfolio]</h1><p>Developer · Java · React · Nextjs · Click For More</p></Link>
+                <Link href="/about" className="portfolio-card p-about"><span className="tag">ABOUT</span><h2>Welcome to my website click here </h2><span className="card-arrow">↗</span></Link>
+                <a href="#" onClick={(e) => { e.preventDefault(); setSelectedProject(aboutCards[0]); }} className="portfolio-card p-project p-project-one" style={{ textDecoration: 'none' }}><div className="project-media media-one"><AutoImageSlider images={["/todo-1.png", "/todo-2.png", "/todo-3.png"]} alt="Todo List preview" onImageClick={() => setSelectedProject(aboutCards[0])} /></div><span className="tag">PROJECT 01</span><h2>Todo List</h2><p>Next.js & Prisma</p></a>
+                <a href="#" onClick={(e) => { e.preventDefault(); setSelectedProject(aboutCards[1]); }} className="portfolio-card p-project p-project-two" style={{ textDecoration: 'none' }}><div className="project-media media-two"><AutoImageSlider images={["/cafe-1.png", "/cafe-2.png", "/cafe-3.png", "/cafe-4.png", "/cafe-5.png"]} alt="Cafe Cat project preview" onImageClick={() => setSelectedProject(aboutCards[1])} /></div><span className="tag">PROJECT 02</span><h2>Cafe Cat</h2><p>Frontend · HTML & CSS</p><span className="card-arrow">↗</span></a>
+                <a href="#" onClick={(e) => { e.preventDefault(); setSelectedProject(aboutCards[2]); }} className="portfolio-card p-project p-project-one" style={{ textDecoration: 'none' }}><div className="project-media media-one"><AutoImageSlider images={["/gowithus-1.png", "/gowithus-2.png", "/gowithus-3.png", "/gowithus-4.png"]} alt="Go With Us project preview" onImageClick={() => setSelectedProject(aboutCards[2])} /></div><span className="tag">PROJECT 03</span><h2>Go With Us</h2><p>SwiftUI · Node.js</p></a>
+                <a href="#" onClick={(e) => { e.preventDefault(); setSelectedProject(aboutCards[3]); }} className="portfolio-card p-project p-project-two" style={{ textDecoration: 'none' }}><div className="project-media media-two"><AutoImageSlider images={["/portfolio-1.png"]} alt="Portfolio project preview" onImageClick={() => setSelectedProject(aboutCards[3])} /></div><span className="tag">PROJECT 04</span><h2>Portfolio</h2><p>Next.js · React 19</p><span className="card-arrow">↗</span></a>
+                <Link href="/stories" className="portfolio-card p-note"><span className="tag">PLAYGROUND / PROTOTYPES</span><h2>My journey, technical prototypes, and things I'm learning.</h2></Link>
+                <article className="portfolio-card p-contact"><span className="tag">CONTACT</span><h2>Let’s make something useful.</h2><a className="plain-action" href="mailto:omworakarn@gmail.com">EMAIL ME ↗</a><Link className="plain-action light" href="/work">VIEW WORK ↗</Link></article>
+                <div className="drag-hint" aria-hidden="true">SCROLL / DRAG <span>→</span></div>
+            </section>
+            {selectedProject && <ProjectDetailsModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
+        </main>
+    );
 }
 function RevealWords({ children, className = "" }: { children: string, className?: string }) {
     const ref = useRef<HTMLHeadingElement>(null);
     useEffect(() => { const el = ref.current; if (!el) return; const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { el.classList.add("is-visible"); observer.disconnect() } }, { threshold: .22 }); observer.observe(el); return () => observer.disconnect() }, []);
     return <h2 ref={ref} className={`reveal-words ${className}`}>{children.split(" ").map((word, i) => <span className="reveal-word" style={{ "--word": i } as React.CSSProperties} key={`${word}-${i}`}><i>{word}</i>&nbsp;</span>)}</h2>
 }
+
+function Lightbox({ images, initialIdx, onClose }: { images: string[], initialIdx: number, onClose: () => void }) {
+    const [idx, setIdx] = useState(initialIdx);
+    const [mounted, setMounted] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
+
+    const handleClose = useCallback(() => {
+        setIsClosing(true);
+        setTimeout(() => onClose(), 250);
+    }, [onClose]);
+
+    useEffect(() => {
+        setMounted(true);
+        const key = (e: KeyboardEvent) => {
+            if (e.key === "Escape") handleClose();
+            if (e.key === "ArrowRight") setIdx(i => (i + 1) % images.length);
+            if (e.key === "ArrowLeft") setIdx(i => (i - 1 + images.length) % images.length);
+        };
+        window.addEventListener("keydown", key);
+        document.body.style.overflow = "hidden";
+        return () => {
+            window.removeEventListener("keydown", key);
+            document.body.style.overflow = "";
+        };
+    }, [images.length, handleClose]);
+
+    if (!mounted) return null;
+
+    return createPortal(
+        <div key={isClosing ? 'closing' : 'open'} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: isClosing ? 'fadeOut 0.25s ease-out forwards' : 'fadeIn 0.2s ease-out forwards' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleClose(); }}>
+            <button style={{ position: 'absolute', top: 20, right: 20, background: 'none', border: 'none', color: 'white', fontSize: 32, cursor: 'pointer', zIndex: 10, transition: 'transform 0.2s' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleClose(); }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.2)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>×</button>
+            <div style={{ position: 'relative', width: '90vw', height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: isClosing ? 'scaleDown 0.25s ease-out forwards' : 'scaleUp 0.25s ease-out forwards' }} onClick={e => { e.preventDefault(); e.stopPropagation(); }}>
+                {images.length > 1 && <button style={{ position: 'absolute', left: 0, background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', fontSize: 32, padding: '10px 20px', cursor: 'pointer', borderRadius: '50%', zIndex: 10, transition: 'background 0.2s' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIdx(i => (i - 1 + images.length) % images.length) }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.4)'} onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}>‹</button>}
+                <img src={images[idx]} alt="Enlarged view" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', clipPath: images[idx].includes('gowithus') ? 'inset(5.5% 0 0 0)' : 'none', transform: images[idx].includes('gowithus') ? 'translateY(-2.75%)' : 'none' }} />
+                {images.length > 1 && <button style={{ position: 'absolute', right: 0, background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', fontSize: 32, padding: '10px 20px', cursor: 'pointer', borderRadius: '50%', zIndex: 10, transition: 'background 0.2s' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIdx(i => (i + 1) % images.length) }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.4)'} onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}>›</button>}
+            </div>
+            {images.length > 1 && <div style={{ color: 'white', marginTop: 16, zIndex: 10, font: '12px var(--mono)', letterSpacing: '0.1em' }}>{idx + 1} / {images.length}</div>}
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                @keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+                @keyframes scaleDown { from { transform: scale(1); opacity: 1; } to { transform: scale(0.95); opacity: 0; } }
+                @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+            `}} />
+        </div>,
+        document.body
+    );
+}
+
+function AutoImageSlider({ images, alt, onImageClick, cover = false }: { images: readonly string[] | string[], alt: string, onImageClick?: () => void, cover?: boolean }) {
+    const [idx, setIdx] = useState(0);
+    const [hovered, setHovered] = useState(false);
+    const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [allLoaded, setAllLoaded] = useState(false);
+    const loadedCount = useRef(0);
+    const len = images ? images.length : 0;
+
+    useEffect(() => {
+        loadedCount.current = 0;
+        setAllLoaded(len <= 1);
+        if (len <= 1) return;
+        images.forEach(src => {
+            const img = new Image();
+            img.onload = img.onerror = () => {
+                loadedCount.current += 1;
+                if (loadedCount.current >= len) setAllLoaded(true);
+            };
+            img.src = src;
+        });
+    }, [images, len]);
+
+    useEffect(() => {
+        if (!allLoaded || len <= 1 || hovered) return;
+        const timer = setInterval(() => setIdx(i => (i + 1) % len), 3500);
+        return () => clearInterval(timer);
+    }, [allLoaded, len, hovered]);
+
+    if (len === 0) return <><i /><b /></>;
+
+    return (
+        <>
+            <div
+                style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', cursor: onImageClick ? 'pointer' : 'zoom-in' }}
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (onImageClick) { onImageClick(); } else { setLightboxOpen(true); } }}
+            >
+                {images.map((src, i) => (
+                    <img
+                        key={src}
+                        src={src}
+                        alt={`${alt} slide ${i + 1}`}
+                        loading="eager"
+                        style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: src.includes('gowithus') ? 'translate(-50%, -53%)' : 'translate(-50%, -50%)',
+                            width: cover ? '100%' : 'auto',
+                            height: cover ? '100%' : 'auto',
+                            maxWidth: '100%',
+                            maxHeight: '100%',
+                            objectFit: cover ? 'cover' : 'contain',
+                            opacity: i === idx ? 1 : 0,
+                            transition: 'opacity 0.5s ease-in-out',
+                            display: 'block',
+                            clipPath: src.includes('gowithus') ? 'inset(6% 0 0 0)' : 'none',
+                        }}
+                    />
+                ))}
+            </div>
+            {lightboxOpen && <Lightbox images={images as string[]} initialIdx={idx} onClose={() => setLightboxOpen(false)} />}
+        </>
+    );
+}
+const TECH_ICONS: Record<string, string> = {
+    "Next.js": "https://skillicons.dev/icons?i=nextjs",
+    "React": "https://skillicons.dev/icons?i=react",
+    "TypeScript": "https://skillicons.dev/icons?i=ts",
+    "Tailwind CSS": "https://skillicons.dev/icons?i=tailwind",
+    "Prisma": "https://skillicons.dev/icons?i=prisma",
+    "Vercel": "https://skillicons.dev/icons?i=vercel",
+    "HTML5": "https://skillicons.dev/icons?i=html",
+    "CSS3": "https://skillicons.dev/icons?i=css",
+    "JavaScript": "https://skillicons.dev/icons?i=js",
+    "SwiftUI": "https://skillicons.dev/icons?i=swift",
+    "Node.js": "https://skillicons.dev/icons?i=nodejs",
+    "PostgreSQL": "https://skillicons.dev/icons?i=postgres",
+    "Render": "https://skillicons.dev/icons?i=git",
+    "Vite": "https://skillicons.dev/icons?i=vite"
+};
+
 const aboutCards = [
-    ["01", "TODO LIST", "[Next.js · React · TypeScript]", "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI."],
-    ["02", "CAFE CAT", "[HTML5 · CSS3 · JavaScript]", "An interactive website for a cat cafe showcasing menus, cozy atmosphere, and responsive layout."],
-    ["03", "JAVA APP", "[Java · OOP · Data Structures]", "Backend software systems and data management programs built with Java using Object-Oriented Programming."],
-    ["04", "PORTFOLIO", "[Next.js 16 · React 19 · Vite]", "A modern interactive single-page portfolio with dynamic card deck, smooth animations, and clean styling."]
+    ["01", "TODO LIST", "[Next.js · React · TypeScript]", "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI.", ["/todo-1.png?v=1", "/todo-2.png?v=1", "/todo-3.png?v=1"], "https://github.com/omworakarn-maker", "This Todo List application was built to solve task management inefficiencies. It features a complete dashboard, secure authentication, and real-time state updates. Users can customize their profiles, view analytics of completed tasks, and easily manage their daily workflow using a modern responsive interface.", ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "Vercel"]],
+    ["02", "CAFE CAT", "[HTML5 · CSS3 · JavaScript]", "An interactive website for a cat cafe showcasing menus, cozy atmosphere, and responsive layout.", ["/cafe-1.png?v=1", "/cafe-2.png?v=1", "/cafe-3.png?v=1", "/cafe-4.png?v=1", "/cafe-5.png?v=1"], "#", "A fully responsive front-end website for a fictional cat cafe. Features include a dynamic menu, beautiful CSS animations, and a cozy aesthetic designed to attract customers.", ["HTML5", "CSS3", "JavaScript"]],
+    ["03", "GO WITH US", "[SwiftUI · Node.js · PostgreSQL]", "A modern, AI-Powered travel matching iOS application built with SwiftUI and a Node.js backend.", ["/gowithus-1.png?v=1", "/gowithus-2.png?v=1", "/gowithus-3.png?v=1", "/gowithus-4.png?v=1"], "#", "An iOS mobile application that matches travelers based on their preferences. Built natively with SwiftUI for a smooth user experience, backed by a robust Node.js backend and PostgreSQL database.", ["SwiftUI", "Node.js", "PostgreSQL", "Render"]],
+    ["04", "PORTFOLIO", "[Next.js 16 · React 19 · Vite]", "A modern interactive single-page portfolio with dynamic card deck, smooth animations, and clean styling.", ["/portfolio-1.png?v=1"], "#", "This portfolio itself! A highly interactive single-page application showcasing custom animations, interactive card decks, and advanced CSS techniques. Built with Next.js and React.", ["Next.js", "React", "TypeScript", "Vite"]]
 ] as const;
+
+function ProjectDetailsModal({ project, onClose }: { project: readonly any[], onClose: () => void }) {
+    const [mounted, setMounted] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        document.body.style.overflow = "hidden";
+        return () => { document.body.style.overflow = ""; };
+    }, []);
+
+    if (!mounted) return null;
+
+    const handleClose = () => {
+        setIsClosing(true);
+        setTimeout(() => onClose(), 500);
+    };
+
+    const title = project[1];
+    const category = project[2];
+    const shortDesc = project[3];
+    const imageRaw = project[4];
+    const images = Array.isArray(imageRaw) ? imageRaw : (imageRaw ? [imageRaw] : []);
+    const link = project[5] || "#";
+    const fullDesc = project[6] || shortDesc;
+    const techStack = project[7] as string[] | undefined;
+
+    return createPortal(
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 9998, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', perspective: '1000px', animation: isClosing ? 'modalFadeOut 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards' : 'modalFadeIn 0.5s ease-out forwards' }} onClick={handleClose}>
+            <div style={{ width: '100%', maxWidth: '600px', maxHeight: '85vh', backgroundColor: '#fff', borderRadius: '24px', overflow: 'hidden', display: 'flex', flexDirection: 'column', border: '1px solid #ddd', boxShadow: '-12px 15px 35px rgba(0,0,0,0.1)', transformOrigin: 'center center', animation: isClosing ? 'modalSlideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards' : 'modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards' }} onClick={e => e.stopPropagation()}>
+
+                {/* HEADER */}
+                <div style={{ padding: '30px 30px 20px', position: 'relative' }}>
+                    <button style={{ position: 'absolute', top: 20, right: 20, background: 'transparent', border: '1px solid #111', color: '#111', fontSize: '20px', cursor: 'pointer', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }} onClick={handleClose} onMouseEnter={e => { e.currentTarget.style.background = '#111'; e.currentTarget.style.color = '#fff'; }} onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#111'; }}>✕</button>
+
+                    <h2 style={{ margin: 0, fontSize: 'clamp(40px, 6vw, 54px)', color: '#111', fontFamily: 'var(--sans)', fontWeight: '700', letterSpacing: '-0.04em', lineHeight: '1' }}>{title}</h2>
+                </div>
+
+                {/* CONTENT BODY */}
+                <div style={{ padding: '0 30px 30px', overflowY: 'auto', flex: 1, color: '#111' }}>
+                    <p style={{ lineHeight: '1.6', fontSize: '14px', fontFamily: 'var(--mono)', margin: '0 0 30px 0' }}>{fullDesc}</p>
+
+                    {techStack && techStack.length > 0 && (
+                        <div style={{ marginBottom: '30px' }}>
+                            <div style={{ fontSize: '11px', fontWeight: '700', fontFamily: 'var(--sans)', letterSpacing: '0.05em', color: '#666', textTransform: 'uppercase', marginBottom: '12px' }}>Technologies Used</div>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                {techStack.map((tech: string) => (
+                                    <div key={tech} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#f9f9f9', border: '1px solid #eaeaea', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontFamily: 'var(--mono)', color: '#111' }}>
+                                        {TECH_ICONS[tech] && <img src={TECH_ICONS[tech]} alt={tech} width={14} height={14} style={{ objectFit: 'contain' }} />}
+                                        {tech}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {images.length > 0 && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <div style={{ height: '280px', borderRadius: '16px', overflow: 'hidden', border: '1px solid #ddd', position: 'relative', backgroundColor: 'var(--paper)' }}>
+                                <AutoImageSlider images={images} alt={title} />
+                            </div>
+                            <div style={{ textAlign: 'center', fontSize: '11px', color: '#666', fontFamily: 'var(--mono)', letterSpacing: '0.05em' }}>
+                                {images.length} {images.length > 1 ? 'IMAGES' : 'IMAGE'} — CLICK TO EXPAND
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                {/* FOOTER ACTION */}
+                <div style={{ padding: '20px 30px', borderTop: '1px solid #ddd', display: 'flex', justifyContent: 'flex-end', background: 'var(--paper)' }}>
+                    <a href={link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '12px 24px', backgroundColor: '#111', color: '#fff', textDecoration: 'none', borderRadius: '999px', fontFamily: 'var(--sans)', fontWeight: '700', fontSize: '12px', transition: 'transform 0.2s, background 0.2s' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.background = 'var(--red)'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.background = '#111'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
+                        <div style={{ position: 'relative', height: '17px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                            <span className="roll-first" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
+                            <span className="roll-second" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                @keyframes modalFadeIn { 
+                    from { opacity: 0; backdrop-filter: blur(0px); } 
+                    to { opacity: 1; backdrop-filter: blur(4px); } 
+                }
+                @keyframes modalSlideUp { 
+                    from { opacity: 0; transform: translateY(60px) scale(0.9) rotateX(-5deg); } 
+                    to { opacity: 1; transform: translateY(0) scale(1) rotateX(0); } 
+                }
+                @keyframes modalFadeOut { 
+                    0% { opacity: 1; backdrop-filter: blur(4px); } 
+                    100% { opacity: 0; backdrop-filter: blur(0px); } 
+                }
+                @keyframes modalSlideDown { 
+                    0% { opacity: 1; transform: translateY(0) scale(1) rotateX(0); } 
+                    30% { opacity: 1; transform: translateY(-10px) scale(1.02) rotateX(2deg); }
+                    100% { opacity: 0; transform: translateY(60px) scale(0.9) rotateX(-5deg); } 
+                }
+            `}} />
+        </div>,
+        document.body
+    );
+}
 
 function PileCards() {
     const [index, setIndex] = useState(4), [moving, setMoving] = useState(true), [paused, setPaused] = useState(false), timer = useRef<number | undefined>(undefined);
+    const [selectedProject, setSelectedProject] = useState<readonly any[] | null>(null);
     useEffect(() => { const vis = () => setPaused(document.hidden); document.addEventListener("visibilitychange", vis); return () => document.removeEventListener("visibilitychange", vis) }, []);
-    useEffect(() => { if (paused) return; timer.current = window.setInterval(() => setIndex(x => x + 1), 3000); return () => window.clearInterval(timer.current) }, [paused]);
+    useEffect(() => { if (paused || selectedProject) return; timer.current = window.setInterval(() => setIndex(x => x + 1), 3000); return () => window.clearInterval(timer.current) }, [paused, selectedProject]);
     const settle = (e: React.TransitionEvent<HTMLDivElement>) => { if (e.target !== e.currentTarget) return; if (index >= 8 || index <= 0) { setMoving(false); setIndex(4); requestAnimationFrame(() => requestAnimationFrame(() => setMoving(true))) } };
     const step = (direction: number) => { setPaused(true); setIndex(x => x + direction); window.clearTimeout(timer.current); timer.current = window.setTimeout(() => setPaused(false), 1500) };
     return <section className="about-pile about-work-cards">
@@ -73,14 +337,16 @@ function PileCards() {
         </div>
         <div className="about-work-viewport" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
             <div className={moving ? "work-track" : "work-track no-motion"} style={{ "--index": index } as React.CSSProperties} onTransitionEnd={settle}>
-                {[...aboutCards, ...aboutCards, ...aboutCards].map((v, i) => <article key={`${v[0]}-${i}`} tabIndex={0} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}>
+                {[...aboutCards, ...aboutCards, ...aboutCards].map((v, i) => <article key={`${v[0]}-${i}`} tabIndex={0} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} onClick={() => setSelectedProject(v)} style={{ cursor: 'pointer' }}>
                     <span className="tag">PROJECT {v[0]}</span>
-                    <div className={`work-art work-art-${i % 4}`}><i /><b /></div>
+                    <div className={`work-art work-art-${i % 4}`}>
+                        {v[4] && v[4].length > 0 ? <AutoImageSlider images={v[4]} alt={v[1]} onImageClick={() => setSelectedProject(v)} cover /> : <><i /><b /></>}
+                    </div>
                     <h3 className="card-title-roll"><span>{v[1]}</span><span aria-hidden="true">{v[1]}</span></h3>
                     <div className="work-detail">
                         <small>{v[2]}</small>
                         <p>{v[3]}</p>
-                        <em>VIEW PROJECT ↗</em>
+                        <em>VIEW DETAILS ↗</em>
                     </div>
                 </article>)}
             </div>
@@ -89,21 +355,60 @@ function PileCards() {
             <button onClick={() => step(-1)} aria-label="Previous card"><span className="button-roll"><i>←</i><i>←</i></span></button>
             <button onClick={() => step(1)} aria-label="Next card"><span className="button-roll"><i>→</i><i>→</i></span></button>
         </div>
+        {selectedProject && <ProjectDetailsModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
     </section>
 }
 
-const workCards = [["01", "[PROJECT ONE]", "UI/UX · DEVELOPMENT", "A short overview of the problem, your role, and the outcome."], ["02", "[PROJECT TWO]", "BRANDING · MOTION", "Add the key idea and what made this project worth showing."], ["03", "[PROJECT THREE]", "PRODUCT · RESEARCH", "Explain the challenge, approach, and one measurable result."], ["04", "[PROJECT FOUR]", "EXPERIMENT · CREATIVE CODE", "Use this card for a personal project or playful exploration."]] as const;
-function WorkCarousel() { const total = workCards.length, [index, setIndex] = useState(total), [moving, setMoving] = useState(true), [paused, setPaused] = useState(false), timer = useRef<number | undefined>(undefined); useEffect(() => { const vis = () => setPaused(document.hidden); document.addEventListener("visibilitychange", vis); return () => document.removeEventListener("visibilitychange", vis) }, []); useEffect(() => { if (paused) return; timer.current = window.setInterval(() => setIndex(x => x + 1), 3000); return () => window.clearInterval(timer.current) }, [paused]); const settle = (e: React.TransitionEvent<HTMLDivElement>) => { if (e.target !== e.currentTarget) return; if (index >= total * 2 || index <= 0) { setMoving(false); setIndex(total); requestAnimationFrame(() => requestAnimationFrame(() => setMoving(true))) } }; const step = (n: number) => { setPaused(true); setIndex(x => x + n); window.clearTimeout(timer.current); timer.current = window.setTimeout(() => setPaused(false), 1500) }; return <section className="work-carousel"><header><span className="micro">SELECTED WORK / 01—04</span><h2>Projects, problems,<br />and outcomes.</h2><p>[Replace these cards with your strongest work. Keep each summary short and specific.]</p></header><div className="work-viewport" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}><div className={moving ? "work-track" : "work-track no-motion"} style={{ "--index": index } as React.CSSProperties} onTransitionEnd={settle}>{[...workCards, ...workCards, ...workCards].map((card, i) => <article key={`${card[0]}-${i}`} tabIndex={0} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}><span className="tag">PROJECT {card[0]}</span><div className={`work-art work-art-${i % 4}`}><i /><b /></div><h3>{card[1]}</h3><div className="work-detail"><small>{card[2]}</small><p>{card[3]}</p><em>VIEW CASE STUDY ↗</em></div></article>)}</div></div><div className="pile-arrows"><button onClick={() => step(-1)} aria-label="Previous project"><span className="button-roll"><i>←</i><i>←</i></span></button><button onClick={() => step(1)} aria-label="Next project"><span className="button-roll"><i>→</i><i>→</i></span></button></div></section> }
+function SelectedWorkShowcase() {
+    return (
+        <section className="work-showcase">
+            <div className="work-stack-container">
+                {aboutCards.map((card, i) => (
+                    <article key={card[0]} className="work-stack-card">
+                        <div className="work-stack-header">
+                            <div className="work-stack-title">
+                                <span>Project {card[0]}</span>
+                                <h2>{card[1]}</h2>
+                            </div>
+                            <div className="work-stack-meta">
+                                <div className="work-stack-tags">
+                                    {(card[7] as readonly string[] | undefined)?.map(tag => <span key={tag}>{tag}</span>)}
+                                </div>
+                                <p>{card[6] || card[3]}</p>
+                                {card[5] && card[5] !== "#" && (
+                                    <a href={card[5]} target="_blank" rel="noopener noreferrer" className="work-stack-action">View Project ↗</a>
+                                )}
+                            </div>
+                        </div>
+                        <div className="work-stack-media">
+                            {card[4] && card[4].length > 0 ? (
+                                <AutoImageSlider images={card[4]} alt={card[1]} cover={false} />
+                            ) : (
+                                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.05)', font: '14px var(--mono)' }}>Media not available</div>
+                            )}
+                        </div>
+                    </article>
+                ))}
+            </div>
+        </section>
+    );
+}
 
 const skillsList = [
-    { name: "Java",               category: "Core & Backend",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
-    { name: "React",              category: "Frontend Framework",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
-    { name: "Next.js",            category: "Fullstack / SSR",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
-    { name: "TypeScript",         category: "Type Safe Code",        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
-    { name: "HTML5 & CSS3",       category: "Web Standards & UI",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" },
-    { name: "JavaScript (ES6+)",  category: "Dynamic Logic",         icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
-    { name: "Git & GitHub",       category: "Version Control",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" },
-    { name: "Vite",               category: "Build Tools",           icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vitejs/vitejs-original.svg" },
+    { name: "Swift", category: "iOS Development", icon: "https://skillicons.dev/icons?i=swift" },
+    { name: "Java", category: "Core & Backend", icon: "https://skillicons.dev/icons?i=java" },
+    { name: "React", category: "Frontend Framework", icon: "https://skillicons.dev/icons?i=react" },
+    { name: "Next.js", category: "Fullstack / SSR", icon: "https://skillicons.dev/icons?i=nextjs" },
+    { name: "TypeScript", category: "Type Safe Code", icon: "https://skillicons.dev/icons?i=ts" },
+    { name: "HTML5 & CSS3", category: "Web Standards & UI", icon: "https://skillicons.dev/icons?i=html" },
+    { name: "JavaScript (ES6+)", category: "Dynamic Logic", icon: "https://skillicons.dev/icons?i=js" },
+    { name: "Git", category: "Version Control", icon: "https://skillicons.dev/icons?i=git" },
+    { name: "GitHub", category: "Version Control", icon: "https://skillicons.dev/icons?i=github" },
+    { name: "Vite", category: "Build Tools", icon: "https://skillicons.dev/icons?i=vite" },
+    { name: "Tailwind CSS", category: "Styling", icon: "https://skillicons.dev/icons?i=tailwind" },
+    { name: "Prisma", category: "ORM", icon: "https://skillicons.dev/icons?i=prisma" },
+    { name: "Vercel", category: "Deployment", icon: "https://skillicons.dev/icons?i=vercel" },
+    { name: "Render", category: "Deployment", icon: "https://www.google.com/s2/favicons?domain=render.com&sz=128" },
 ];
 
 
@@ -116,22 +421,26 @@ function AboutPage() {
             <h1><span>WELCOME TO</span><span>MY </span><span>PORTFOLIO</span><span></span></h1>
             <p>Software &amp; Web Developer crafting clean backend logic and intuitive frontend web applications.</p>
             <div className="hero-badge-container">
-        <span className="hero-badge-pill">Available for Work</span>
-        {[
-          { name: "Java",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
-          { name: "React",      icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
-          { name: "Next.js",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" },
-          { name: "HTML",       icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" },
-          { name: "CSS",        icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" },
-          { name: "Node.js",    icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
-          { name: "TypeScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" },
-        ].map(t => (
-          <span key={t.name} className="hero-badge-pill">
-            <img src={t.icon} alt={t.name} width={14} height={14} />
-            {t.name}
-          </span>
-        ))}
-      </div>
+                {[
+                    { name: "Swift", icon: "https://skillicons.dev/icons?i=swift" },
+                    { name: "Java", icon: "https://skillicons.dev/icons?i=java" },
+                    { name: "Next.js", icon: "https://skillicons.dev/icons?i=nextjs" },
+                    { name: "React", icon: "https://skillicons.dev/icons?i=react" },
+                    { name: "TypeScript", icon: "https://skillicons.dev/icons?i=ts" },
+                    { name: "Node.js", icon: "https://skillicons.dev/icons?i=nodejs" },
+                ].map(t => (
+                    <span key={t.name} className="hero-badge-pill">
+                        <img src={t.icon} alt={t.name} width={14} height={14} />
+                        {t.name}
+                    </span>
+                ))}
+                <a href="#tech-stack" className="hero-badge-pill" style={{ textDecoration: "none", opacity: 0.8, backgroundColor: "rgba(255, 255, 255, 0.05)", transition: "background 0.2s" }} onClick={(e) => { e.preventDefault(); document.getElementById('tech-stack')?.scrollIntoView({ behavior: 'smooth' }); }} onMouseEnter={e => { e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)"; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.05)"; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
+                    <div style={{ position: 'relative', height: '16px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                        <span className="roll-first" style={{ display: 'block', height: '20px', lineHeight: '16px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>+ View All Skills ↓</span>
+                        <span className="roll-second" style={{ display: 'block', height: '20px', lineHeight: '16px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>+ View All Skills ↓</span>
+                    </div>
+                </a>
+            </div>
             <div className="about-spark" aria-hidden="true">✳</div>
         </section>
 
@@ -139,7 +448,7 @@ function AboutPage() {
         <section className="about-statement">
             <div className="about-statement-left">
                 <span className="micro">INTRODUCTION</span>
-                <p>Hello, my name is Worakan Pongseelawat. I am a Computer Science student seeking a software engineering internship. I have a strong interest in backend development with Java and building web applications using React and Next.js. I am dedicated to learning how to write clean code, understand robust architecture, and I'm eager to grow within a professional team.</p>
+                <p>Hello, my name is Worakan Pongseelawat. I'm a Computer Science student looking for a software engineering internship to gain real-world experience. I enjoy building web applications using React and Next.js, and I'm currently learning the basics of backend development with Java. I'm eager to join a professional team where I can learn, improve my coding skills, and grow as a developer.</p>
             </div>
             <div className="about-statement-right">
                 <RevealWords>Driven by curiosity to build software that solves real problems.</RevealWords>
@@ -173,7 +482,12 @@ function AboutPage() {
                         <h3>Backend Architecture</h3>
                         <p>Learning to build well-structured backend logic, applying OOP principles, and creating REST APIs with Java.</p>
                         <div className="cap-card-tags">
-                            {["Java", "OOP", "Data Structures", "REST APIs"].map(t => <span key={t}>{t}</span>)}
+                            {[
+                                { name: "Java", icon: "https://skillicons.dev/icons?i=java" },
+                                { name: "Node.js", icon: "https://skillicons.dev/icons?i=nodejs" },
+                                { name: "PostgreSQL", icon: "https://skillicons.dev/icons?i=postgres" },
+                                { name: "REST APIs" }
+                            ].map(t => <span key={t.name}>{t.icon && <img src={t.icon} alt={t.name} width={14} height={14} />} {t.name}</span>)}
                         </div>
                     </div>
                 </div>
@@ -193,12 +507,41 @@ function AboutPage() {
                         <h3>Frontend Engineering</h3>
                         <p>Practicing modern web development with React and Next.js, focusing on component-based UI and type safety.</p>
                         <div className="cap-card-tags">
-                            {["Next.js", "React", "TypeScript", "Vite"].map(t => <span key={t}>{t}</span>)}
+                            {[
+                                { name: "Next.js", icon: "https://skillicons.dev/icons?i=nextjs" },
+                                { name: "React", icon: "https://skillicons.dev/icons?i=react" },
+                                { name: "TypeScript", icon: "https://skillicons.dev/icons?i=ts" },
+                                { name: "Vite", icon: "https://skillicons.dev/icons?i=vite" }
+                            ].map(t => <span key={t.name}>{t.icon && <img src={t.icon} alt={t.name} width={14} height={14} />} {t.name}</span>)}
                         </div>
                     </div>
                 </div>
 
-                {/* Card 03 — UI & Design */}
+                {/* Card 03 — Mobile / iOS */}
+                <div className="cap-card cap-card--blue" style={{ background: "#007AFF" }}>
+                    <div className="cap-card-inner">
+                        <div className="cap-card-icon" aria-hidden="true">
+                            {/* Mobile icon */}
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="12" y="4" width="24" height="40" rx="4" stroke="currentColor" strokeWidth="2.5" fill="none" />
+                                <line x1="20" y1="8" x2="28" y2="8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+                                <circle cx="24" cy="38" r="2.5" fill="currentColor" />
+                            </svg>
+                        </div>
+                        <span className="cap-card-num">03</span>
+                        <h3>Mobile Engineering</h3>
+                        <p>Building native iOS applications with smooth user experiences, animations, and modern architecture.</p>
+                        <div className="cap-card-tags">
+                            {[
+                                { name: "Swift", icon: "https://skillicons.dev/icons?i=swift" },
+                                { name: "iOS 17" },
+                                { name: "SwiftUI" }
+                            ].map(t => <span key={t.name}>{t.icon && <img src={t.icon} alt={t.name} width={14} height={14} />} {t.name}</span>)}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Card 04 — UI & Design */}
                 <div className="cap-card cap-card--yellow">
                     <div className="cap-card-inner">
                         <div className="cap-card-icon" aria-hidden="true">
@@ -211,11 +554,15 @@ function AboutPage() {
                                 <line x1="4" y1="40" x2="44" y2="40" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.4" />
                             </svg>
                         </div>
-                        <span className="cap-card-num">03</span>
+                        <span className="cap-card-num">04</span>
                         <h3>Interactive UI &amp; Design</h3>
-                        <p>Exploring web design principles to create clean, responsive interfaces with HTML, CSS, and basic animations.</p>
+                        <p>Exploring web design principles to create clean, responsive interfaces with HTML, CSS, and animations.</p>
                         <div className="cap-card-tags">
-                            {["HTML5 / CSS3", "Animation", "Responsive"].map(t => <span key={t}>{t}</span>)}
+                            {[
+                                { name: "HTML5", icon: "https://skillicons.dev/icons?i=html" },
+                                { name: "CSS3", icon: "https://skillicons.dev/icons?i=css" },
+                                { name: "Responsive" }
+                            ].map(t => <span key={t.name}>{t.icon && <img src={t.icon} alt={t.name} width={14} height={14} />} {t.name}</span>)}
                         </div>
                     </div>
                 </div>
@@ -228,11 +575,27 @@ function AboutPage() {
         <PileCards />
 
         {/* ── Tech Stack ── */}
-        <section className="skills-section">
+        <section id="tech-stack" className="skills-section" style={{ scrollMarginTop: '130px' }}>
             <span className="micro">TECH STACK &amp; SKILLS</span>
             <h2>Technical Arsenal</h2>
             <div className="skills-grid">
-                {skillsList.map(s => (
+                {[
+                    { name: "Swift", category: "iOS Development", icon: "https://skillicons.dev/icons?i=swift" },
+                    { name: "Java", category: "Core & Backend", icon: "https://skillicons.dev/icons?i=java" },
+                    { name: "React", category: "Frontend Framework", icon: "https://skillicons.dev/icons?i=react" },
+                    { name: "Next.js", category: "Fullstack / SSR", icon: "https://skillicons.dev/icons?i=nextjs" },
+                    { name: "TypeScript", category: "Type Safe Code", icon: "https://skillicons.dev/icons?i=ts" },
+                    { name: "HTML5", category: "Web Standards", icon: "https://skillicons.dev/icons?i=html" },
+                    { name: "CSS3", category: "Styling", icon: "https://skillicons.dev/icons?i=css" },
+                    { name: "JavaScript", category: "Dynamic Logic", icon: "https://skillicons.dev/icons?i=js" },
+                    { name: "Git", category: "Version Control", icon: "https://skillicons.dev/icons?i=git" },
+                    { name: "GitHub", category: "Version Control", icon: "https://skillicons.dev/icons?i=github" },
+                    { name: "Vite", category: "Build Tools", icon: "https://skillicons.dev/icons?i=vite" },
+                    { name: "Tailwind CSS", category: "Styling", icon: "https://skillicons.dev/icons?i=tailwind" },
+                    { name: "Prisma", category: "ORM", icon: "https://skillicons.dev/icons?i=prisma" },
+                    { name: "Vercel", category: "Deployment", icon: "https://skillicons.dev/icons?i=vercel" },
+                    { name: "PostgreSQL", category: "Database", icon: "https://skillicons.dev/icons?i=postgres" },
+                ].map(s => (
                     <div key={s.name} className="skill-card">
                         <img src={s.icon} alt={s.name} className="skill-logo" width={32} height={32} />
                         <b>{s.name}</b>
@@ -245,53 +608,147 @@ function AboutPage() {
         {/* ── What I'm Building Now ── */}
         <section className="now-building">
             <div className="now-header">
-                <span className="micro">CURRENTLY BUILDING</span>
-                <h2>What I'm working on<span className="now-blink">_</span></h2>
+                <span className="micro">EDUCATION</span>
+                <h2>Academic Background<span className="now-blink">_</span></h2>
             </div>
             <div className="now-grid">
                 <article className="now-card now-card--main">
                     <div className="now-card-top">
-                        <span className="now-status">🟢 Active</span>
-                        <span className="now-tag">PERSONAL PROJECT</span>
+                        <span className="now-status">🟢 Present</span>
+                        <span className="now-tag">BACHELOR'S DEGREE</span>
                     </div>
-                    <h3>[Project Name]</h3>
-                    <p>Describe what you're building right now — the problem it solves, what stack you're using, and what you're learning from it.</p>
+                    <h3>Rajamangala University (Huntra)</h3>
+                    <p>Currently studying Computer Science. Focusing on software engineering, data structures, and web technologies. Passionate about applying theoretical knowledge to real-world applications.</p>
                     <div className="now-stack">
-                        {["Next.js","TypeScript","Java"].map(t => <span key={t}>{t}</span>)}
+                        {["Computer Science", "Software Engineering"].map(t => <span key={t}>{t}</span>)}
                     </div>
                 </article>
                 <article className="now-card now-card--side">
                     <div className="now-card-top">
-                        <span className="now-status">🟡 Exploring</span>
-                        <span className="now-tag">LEARNING</span>
+                        <span className="now-status">📚 Past</span>
+                        <span className="now-tag">PREVIOUS EDUCATION</span>
                     </div>
-                    <h3>Spring Boot</h3>
-                    <p>Deepening backend skills with Spring Boot — building REST APIs and learning service architecture.</p>
+                    <h3>Bang Sai College</h3>
+                    <p>Science-Math Program. Built a strong foundation in mathematics and analytical thinking.</p>
                     <div className="now-stack">
-                        {["Java","Spring Boot","REST API"].map(t => <span key={t}>{t}</span>)}
+                        {["Science-Math", "Analytical Thinking"].map(t => <span key={t}>{t}</span>)}
                     </div>
                 </article>
             </div>
         </section>
 
         {/* ── Contact CTA ── */}
-        <section className="end-card about-end">
+        <section className="end-card about-end about-contact-cta" style={{ margin: '4vw', padding: '100px 6vw', background: 'var(--yellow)', borderRadius: '20px' }}>
             <span className="micro">GET IN TOUCH</span>
             <RevealWords>Let's build something great together.</RevealWords>
-            <a className="capsule" href="mailto:hello@example.com">START A CONVERSATION ↗</a>
+            <a className="capsule" href="mailto:omworakarn@gmail.com" style={{ marginTop: '40px' }}>START A CONVERSATION ↗</a>
+            <div className="contact-smile" aria-hidden="true"><span>LET'S · MAKE · IT · REAL · </span><div className="contact-smile-face"><i /><i /><b /></div></div>
         </section>
     </>
 }
+function ContactForm() {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [topic, setTopic] = useState("A website");
+    const [message, setMessage] = useState("");
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setStatus("loading");
+
+        try {
+            const response = await fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body: JSON.stringify({
+                    access_key: "94ab03a2-66d1-475a-ba56-4d7a27273858",
+                    name: name,
+                    email: email,
+                    subject: `New Project Enquiry: ${topic}`,
+                    message: message,
+                }),
+            });
+            const result = await response.json();
+            if (result.success) {
+                setStatus("success");
+                setName("");
+                setEmail("");
+                setMessage("");
+            } else {
+                setStatus("error");
+            }
+        } catch (error) {
+            setStatus("error");
+        }
+    };
+
+    if (status === "success") {
+        return (
+            <section className="contact-form-section" style={{ textAlign: "center", padding: "180px 10vw" }}>
+                <h2 style={{ fontSize: "40px", marginBottom: "20px" }}>Message Sent!</h2>
+                <p style={{ fontSize: "18px", color: "#666", marginBottom: "40px" }}>Thank you for reaching out. I'll get back to you as soon as possible.</p>
+                <button onClick={() => setStatus("idle")} className="capsule" style={{ background: "var(--ink)", color: "var(--paper)" }}>Send Another Message</button>
+            </section>
+        );
+    }
+
+    return (
+        <section className="contact-form-section">
+            <div className="contact-form-header">
+                <span className="micro">PROJECT ENQUIRY / SAY HELLO</span>
+                <h2>What would you like to make together?</h2>
+            </div>
+
+            <form onSubmit={handleSubmit} className="contact-form">
+                <div className="form-row">
+                    <div className="form-group">
+                        <label htmlFor="name">Your Name</label>
+                        <input id="name" type="text" placeholder="John Doe" value={name} onChange={e => setName(e.target.value)} required />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="email">Email Address</label>
+                        <input id="email" type="email" placeholder="john@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
+                    </div>
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="topic">I'm interested in...</label>
+                    <div className="topic-selector">
+                        {["A website", "A digital product", "An interactive experiment", "Something else"].map(x => (
+                            <button type="button" className={topic === x ? "selected" : ""} onClick={() => setTopic(x)} key={x}>
+                                {x}<span>○</span>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="form-group">
+                    <label htmlFor="message">Message Details</label>
+                    <textarea id="message" rows={5} placeholder="Tell me about your project, timeline, and goals..." value={message} onChange={e => setMessage(e.target.value)} required></textarea>
+                </div>
+
+                {status === "error" && <p style={{ color: "red", fontSize: "14px" }}>Something went wrong. Please try again.</p>}
+
+                <button type="submit" className="capsule form-submit-btn" disabled={status === "loading"}>
+                    {status === "loading" ? "SENDING..." : "SEND MESSAGE ↗"}
+                </button>
+            </form>
+        </section>
+    );
+}
+
 function Interior({ page }: { page: Exclude<PageKey, "home"> }) {
     const p = pages[page]; const [slide, setSlide] = useState(0), [answer, setAnswer] = useState(""); return <>
         <section className={`page-hero ${p.color}`}><span className="tag">{p.kicker} / {p.index}</span><h1>{p.title}</h1><p>{p.intro}</p><div className="hero-orbit">✳</div></section>
         {page === "about" && <><section className="editorial"><span className="micro">OUR POINT OF VIEW</span><h2>Attention is a form of care. Good work begins by noticing what everyone else walked past.</h2><p>We choose conversation over performance, curiosity over certainty, and systems that feel human in the hand.</p></section><Ticker text="NOTICE MORE" /><section className="stats"><article><b>12</b><span>open questions at any given time</span></article><article><b>01</b><span>shared table, always ready</span></article><article><b>∞</b><span>ways to begin</span></article></section></>}
-        {page === "work" && <WorkCarousel />}
-        {page === "take-five" && <section className="five"><div className="five-card"><span>0{slide + 1} / 05</span><h2>{["Understand the problem.", "Find the useful question.", "Explore more than one direction.", "Build and test the idea.", "Refine what matters."][slide]}</h2><div><button onClick={() => setSlide((slide + 4) % 5)}>←</button><button onClick={() => setSlide((slide + 1) % 5)}>→</button></div></div><aside><b>My process.</b><p>[Replace these steps with your real workflow, tools, collaborators, and decision-making process.]</p></aside></section>}
-        {page === "stories" && <><CardDeck compact /><section className="story-wall">{["I stopped waiting for perfect.", "We made a table long enough for everyone.", "Saying it out loud made it smaller.", "A wrong turn became the whole idea."].map((x, i) => <article key={x}><div className={`avatar a${i}`} /><span>STORY 0{i + 1}</span><h2>{x}</h2><button>READ STORY ↗</button></article>)}</section></>}
-        {page === "partners" && <section className="partner"><div className="partner-art"><i /><b /></div><article><span className="micro">SOUL PARTNER 01</span><h2>Common Ground Workshop</h2><p>A small fabrication studio that shares our obsession with honest materials, weird prototypes, and generous collaboration.</p><a className="capsule" href="#">Meet the workshop ↗</a></article></section>}
-        {page === "support" && <section className="checkin"><span className="micro">PROJECT ENQUIRY / SAY HELLO</span><h2>What would you like to make together?</h2><div>{["A website", "A digital product", "An interactive experiment", "Something else"].map(x => <button className={answer === x ? "selected" : ""} onClick={() => setAnswer(x)} key={x}>{x}<span>○</span></button>)}</div>{answer && <p className="response">Great — “{answer}”. Replace this prototype response with your email or contact form later.</p>}<a className="capsule" href="mailto:hello@example.com">EMAIL ME ↗</a></section>}
+        {page === "work" && <SelectedWorkShowcase />}
+        {page === "playground" && <><CardDeck compact /><section className="story-wall">{["From Science-Math to Code.", "My First Full-Stack App.", "Diving into Mobile Development.", "Building this Portfolio."].map((x, i) => <article key={x}><div className={`avatar a${i}`} /><span>STORY 0{i + 1}</span><h2>{x}</h2><button>READ STORY ↗</button></article>)}</section></>}
+        {page === "contact" && <ContactForm />}
         <Ticker dark text="KEEP THE CONVERSATION MOVING" /><section className="end-card"><span className="micro">NEXT</span><h2>One bright thing can lead to another.</h2><Link className="capsule" href="/">Back to the beginning ↗</Link></section>
     </>
 }
-export function SitePage({ page }: { page: PageKey }) { return <Shell home={page === "home"}>{page === "home" ? <Home /> : page === "about" ? <AboutPage /> : <Interior page={page} />}</Shell> }
+export function SitePage({ page }: { page: PageKey }) { return <Shell home={page === "home"} currentPage={page}>{page === "home" ? <Home /> : page === "about" ? <AboutPage /> : <Interior page={page} />}</Shell> }

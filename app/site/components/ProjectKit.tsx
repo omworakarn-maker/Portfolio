@@ -145,15 +145,23 @@ export function ProjectDetailsModal({ project, onClose }: { project: readonly an
 
     useEffect(() => {
         setMounted(true);
+        const previousOverflow = document.body.style.overflow;
+        const previousPaddingRight = document.body.style.paddingRight;
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
         document.body.style.overflow = "hidden";
-        return () => { document.body.style.overflow = ""; };
+        return () => {
+            document.body.style.overflow = previousOverflow;
+            document.body.style.paddingRight = previousPaddingRight;
+        };
     }, []);
 
     if (!mounted) return null;
 
     const handleClose = () => {
+        if (isClosing) return;
         setIsClosing(true);
-        setTimeout(() => onClose(), 500);
+        setTimeout(() => onClose(), 320);
     };
 
     const title = project[1];
@@ -165,8 +173,8 @@ export function ProjectDetailsModal({ project, onClose }: { project: readonly an
     const techStack = project[7] as string[] | undefined;
 
     return createPortal(
-        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 9998, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', perspective: '1000px', animation: isClosing ? 'modalFadeOut 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards' : 'modalFadeIn 0.5s ease-out forwards' }} onClick={handleClose}>
-            <div style={{ width: '100%', maxWidth: '600px', maxHeight: '85vh', backgroundColor: '#fff', borderRadius: '24px', overflow: 'hidden', display: 'flex', flexDirection: 'column', border: '1px solid #ddd', boxShadow: '-12px 15px 35px rgba(0,0,0,0.1)', transformOrigin: 'center center', animation: isClosing ? 'modalSlideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards' : 'modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards' }} onClick={e => e.stopPropagation()}>
+        <div className={`project-modal-backdrop${isClosing ? " is-closing" : ""}`} onClick={e => { e.stopPropagation(); handleClose(); }} onWheel={e => e.stopPropagation()} onPointerDown={e => e.stopPropagation()} onPointerMove={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
+            <div className="project-modal-card" onClick={e => e.stopPropagation()}>
 
                 {/* HEADER */}
                 <div style={{ padding: '30px 30px 20px', position: 'relative' }}>
@@ -215,26 +223,6 @@ export function ProjectDetailsModal({ project, onClose }: { project: readonly an
                     </a> : <span className="capsule" aria-disabled="true">VIEW PROJECT (NOT YET)</span>}
                 </div>
             </div>
-            <style dangerouslySetInnerHTML={{
-                __html: `
-                @keyframes modalFadeIn { 
-                    from { opacity: 0; backdrop-filter: blur(0px); } 
-                    to { opacity: 1; backdrop-filter: blur(4px); } 
-                }
-                @keyframes modalSlideUp { 
-                    from { opacity: 0; transform: translateY(60px) scale(0.9) rotateX(-5deg); } 
-                    to { opacity: 1; transform: translateY(0) scale(1) rotateX(0); } 
-                }
-                @keyframes modalFadeOut { 
-                    0% { opacity: 1; backdrop-filter: blur(4px); } 
-                    100% { opacity: 0; backdrop-filter: blur(0px); } 
-                }
-                @keyframes modalSlideDown { 
-                    0% { opacity: 1; transform: translateY(0) scale(1) rotateX(0); } 
-                    30% { opacity: 1; transform: translateY(-10px) scale(1.02) rotateX(2deg); }
-                    100% { opacity: 0; transform: translateY(60px) scale(0.9) rotateX(-5deg); } 
-                }
-            `}} />
         </div>,
         document.body
     );

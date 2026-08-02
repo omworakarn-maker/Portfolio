@@ -11,9 +11,15 @@ export function PlaygroundLab() {
         { name: "ACID YELLOW", color: "var(--yellow)", ink: "#111" },
     ];
     const words = ["MOVE", "NOTICE", "MAKE", "REPEAT"];
+    const learningItems = [
+        { title: "Motion timing that feels physical", detail: "Studying easing, rhythm, and transitions that respond like real objects.", color: "var(--blue)" },
+        { title: "Better component systems", detail: "Building reusable UI pieces that stay clear, flexible, and easy to maintain.", color: "var(--pink)" },
+        { title: "Turning code into play", detail: "Exploring interactions that invite people to click, discover, and enjoy the interface.", color: "var(--yellow)" },
+    ];
     const [palette, setPalette] = useState(0);
     const [word, setWord] = useState(0);
     const [playing, setPlaying] = useState(false);
+    const [learning, setLearning] = useState(0);
     const current = palettes[palette];
 
     return <main className="playground-lab">
@@ -36,7 +42,12 @@ export function PlaygroundLab() {
             <article className={`lab-card lab-card-motion ${playing ? "is-playing" : ""}`}>
                 <span className="lab-number">03 / MOTION LOOP</span><button className="motion-disc" onClick={() => setPlaying(!playing)}><span>HOVER · CLICK · PLAY · </span><b>☺</b></button><p>A tiny interaction study. Press to start or pause the loop.</p>
             </article>
-            <article className="lab-card lab-card-notes"><span className="lab-number">04 / NOW LEARNING</span><ul><li><b>01</b> Motion timing that feels physical</li><li><b>02</b> Better component systems</li><li><b>03</b> Turning code into play</li></ul><span className="lab-stamp">OPEN<br />TO<br />IDEAS</span></article>
+            <article className="lab-card lab-card-notes" style={{ "--notes-color": learningItems[learning].color } as React.CSSProperties}>
+                <span className="lab-number">04 / NOW LEARNING</span>
+                <ul>{learningItems.map((item, index) => <li key={item.title} className={learning === index ? "active" : ""}><button type="button" onClick={() => setLearning(index)} aria-pressed={learning === index}><b>0{index + 1}</b><span>{item.title}</span><i aria-hidden="true">↗</i></button></li>)}</ul>
+                <p className="lab-learning-detail" key={learning}>{learningItems[learning].detail}</p>
+                <span className="lab-stamp" style={{ transform: `rotate(${12 + learning * 120}deg)` }}>OPEN<br />TO<br />IDEAS</span>
+            </article>
         </section>
 
         <section className="lab-manifesto"><span className="micro">THE RULE</span><h2>Make it clear.<br />Then make it <em>fun.</em></h2><Link className="capsule" href="/contact#contact-form">START A PROJECT ↗</Link></section>
@@ -47,4 +58,3 @@ export function PlaygroundLab() {
 export function PlaygroundPage() {
     return <><PlaygroundLab /><PageEnd /></>;
 }
-

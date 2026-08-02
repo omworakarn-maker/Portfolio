@@ -1,17 +1,24 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PageEnd, PageHero } from "../components/PageFrame";
 
 export function ContactForm() {
+    const sectionRef = useRef<HTMLElement>(null);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [topic, setTopic] = useState("A website");
     const [message, setMessage] = useState("");
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
 
+    useEffect(() => {
+        if (status !== "success") return;
+        requestAnimationFrame(() => sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" }));
+    }, [status]);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus("loading");
+        const animationStarted = Date.now();
 
         try {
             const response = await fetch("https://api.web3forms.com/submit", {
@@ -29,6 +36,8 @@ export function ContactForm() {
                 }),
             });
             const result = await response.json();
+            const remainingAnimation = Math.max(0, 900 - (Date.now() - animationStarted));
+            await new Promise(resolve => window.setTimeout(resolve, remainingAnimation));
             if (result.success) {
                 setStatus("success");
                 setName("");
@@ -44,16 +53,18 @@ export function ContactForm() {
 
     if (status === "success") {
         return (
-            <section className="contact-form-section" style={{ textAlign: "center", padding: "180px 10vw" }}>
-                <h2 style={{ fontSize: "40px", marginBottom: "20px" }}>Message Sent!</h2>
-                <p style={{ fontSize: "18px", color: "#666", marginBottom: "40px" }}>Thank you for reaching out. I'll get back to you as soon as possible.</p>
-                <button onClick={() => setStatus("idle")} className="capsule" style={{ background: "var(--ink)", color: "var(--paper)" }}>Send Another Message</button>
+            <section ref={sectionRef} id="contact-form" className="contact-form-section contact-success">
+                <div className="contact-success-mark" aria-hidden="true"><span>✓</span></div>
+                <span className="micro">MESSAGE DELIVERED</span>
+                <h2>Message Sent!</h2>
+                <p>Thank you for reaching out. I'll get back to you as soon as possible.</p>
+                <button onClick={() => setStatus("idle")} className="capsule">SEND ANOTHER MESSAGE</button>
             </section>
         );
     }
 
     return (
-        <section id="contact-form" className="contact-form-section">
+        <section ref={sectionRef} id="contact-form" className={`contact-form-section${status === "loading" ? " is-sending" : ""}`}>
             <div className="contact-form-header">
                 <span className="micro">PROJECT ENQUIRY / SAY HELLO</span>
                 <h2>What would you like to make together?</h2>
@@ -76,7 +87,7 @@ export function ContactForm() {
                     <div className="topic-selector">
                         {["A website", "A digital product", "An interactive experiment", "Something else"].map(x => (
                             <button type="button" className={topic === x ? "selected" : ""} onClick={() => setTopic(x)} key={x}>
-                                {x}<span>○</span>
+                                {x}<span aria-hidden="true">{topic === x ? "●" : "○"}</span>
                             </button>
                         ))}
                     </div>
@@ -92,6 +103,7 @@ export function ContactForm() {
                 <button type="submit" className="capsule form-submit-btn" disabled={status === "loading"}>
                     {status === "loading" ? "SENDING..." : "SEND MESSAGE ↗"}
                 </button>
+                {status === "loading" && <div className="contact-flight" aria-hidden="true"><div><span>MESSAGE</span><b>↗</b></div><i /><i /><i /></div>}
             </form>
         </section>
     );

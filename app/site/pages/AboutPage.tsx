@@ -202,7 +202,9 @@ export function AboutPage() {
             </div>
         </section>
 
-        {/* ── What I'm Building Now ── */}
+        <Ticker text="EDUCATION · LEARNING JOURNEY" />
+
+        {/* ── Academic Background ── */}
         <section className="now-building">
             <div className="now-header">
                 <span className="micro">EDUCATION</span>
@@ -211,9 +213,10 @@ export function AboutPage() {
             <div className="now-grid">
                 <article className="now-card now-card--main">
                     <div className="now-card-top">
-                        <span className="now-status">🟢 Present</span>
+                        <span className="now-status"><i aria-hidden="true" />2023 — PRESENT</span>
                         <span className="now-tag">BACHELOR'S DEGREE</span>
                     </div>
+                    <div className="education-mark" aria-hidden="true"><span>01</span><i /></div>
                     <h3>Rajamangala University (Huntra)</h3>
                     <p>Currently studying Computer Science. Focusing on software engineering, data structures, and web technologies. Passionate about applying theoretical knowledge to real-world applications.</p>
                     <div className="now-stack">
@@ -222,13 +225,14 @@ export function AboutPage() {
                 </article>
                 <article className="now-card now-card--side">
                     <div className="now-card-top">
-                        <span className="now-status">📚 Past</span>
-                        <span className="now-tag">PREVIOUS EDUCATION</span>
+                        <span className="now-status"><i aria-hidden="true" />2020 — 2023</span>
+                        <span className="now-tag">BUSINESS COMPUTER</span>
                     </div>
+                    <div className="education-mark" aria-hidden="true"><span>02</span><i /></div>
                     <h3>Bang Sai College</h3>
-                    <p>Science-Math Program. Built a strong foundation in mathematics and analytical thinking.</p>
+                    <p>Studied Business Computer, building a foundation in computer applications, digital tools, business systems, and practical technology skills.</p>
                     <div className="now-stack">
-                        {["Science-Math", "Analytical Thinking"].map(t => <span key={t}>{t}</span>)}
+                        {["Business Computer", "Digital Tools"].map(t => <span key={t}>{t}</span>)}
                     </div>
                 </article>
             </div>

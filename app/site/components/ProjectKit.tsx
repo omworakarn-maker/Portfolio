@@ -261,9 +261,23 @@ export function PileCards() {
     const dragStart = useRef<number | null>(null);
     const didDrag = useRef(false);
     useEffect(() => { const vis = () => setPaused(document.hidden); document.addEventListener("visibilitychange", vis); return () => document.removeEventListener("visibilitychange", vis) }, []);
-    useEffect(() => { if (paused || selectedProject) return; timer.current = window.setInterval(() => setIndex(x => x + 1), 3000); return () => window.clearInterval(timer.current) }, [paused, selectedProject]);
+    useEffect(() => { if (paused || selectedProject) return; timer.current = window.setInterval(() => step(1), 3000); return () => window.clearInterval(timer.current) }, [paused, selectedProject, index]);
     const settle = (e: React.TransitionEvent<HTMLDivElement>) => { if (e.target !== e.currentTarget) return; if (index >= cardCount * 2 || index <= 0) { setMoving(false); setIndex(cardCount); requestAnimationFrame(() => requestAnimationFrame(() => setMoving(true))) } };
-    const step = (direction: number) => { setPaused(true); setIndex(x => x + direction); window.clearTimeout(timer.current); timer.current = window.setTimeout(() => setPaused(false), 1500) };
+    const step = (direction: number) => {
+        setPaused(true);
+        window.clearTimeout(timer.current);
+        const forwardEdge = direction > 0 && index >= cardCount * 2 - 1;
+        const backwardEdge = direction < 0 && index <= 1;
+        if (forwardEdge || backwardEdge) {
+            // Rebase to an identical clone before the movement starts, so the loop is invisible.
+            setMoving(false);
+            setIndex(forwardEdge ? cardCount - 1 : cardCount * 2 + 1);
+            requestAnimationFrame(() => requestAnimationFrame(() => { setMoving(true); setIndex(forwardEdge ? cardCount : cardCount * 2); }));
+        } else {
+            setIndex(x => x + direction);
+        }
+        timer.current = window.setTimeout(() => setPaused(false), 1500);
+    };
     const startDrag = (e: React.PointerEvent<HTMLDivElement>) => { dragStart.current = e.clientX; didDrag.current = false; setPaused(true); };
     const moveDrag = (e: React.PointerEvent<HTMLDivElement>) => {
         if (dragStart.current === null) return;

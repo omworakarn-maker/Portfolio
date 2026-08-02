@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { nav } from "../siteData";
 
 export function Shell({ children, home = false }: { children: React.ReactNode, home?: boolean }) {
-    const [menu, setMenu] = useState(false), [panel, setPanel] = useState<"cart" | "login" | null>(null);
+    const [menu, setMenu] = useState(false), [panel, setPanel] = useState<"resume" | "login" | null>(null);
     useEffect(() => { const key = (e: KeyboardEvent) => { if (e.key === "Escape") { setMenu(false); setPanel(null) } }; window.addEventListener("keydown", key); return () => window.removeEventListener("keydown", key) }, []);
     return <div className={home ? "site-shell home-shell" : "site-shell"}>
         <header className="topbar">
@@ -21,10 +21,10 @@ export function Shell({ children, home = false }: { children: React.ReactNode, h
                     <b>O</b>
                 </div>
             </Link>
-            <nav>{nav.map(([n, h]) => <Link href={h} key={h} aria-label={n}><span className="nav-copy" aria-hidden="true"><span>{n}</span><span>{n}</span></span></Link>)}</nav><div className="utilities"><button className="saved-btn" onClick={() => setPanel("cart")}><span className="spin-smile">☻</span><i>Saved</i></button><button onClick={() => setPanel("login")}><span>☺</span><i>Hello</i></button><button className="menu-trigger" onClick={() => setMenu(true)}>Menu</button></div>
+            <nav>{nav.map(([n, h]) => <Link href={h} key={h} aria-label={n}><span className="nav-copy" aria-hidden="true"><span>{n}</span><span>{n}</span></span></Link>)}</nav><div className="utilities"><button className="saved-btn" onClick={() => setPanel("resume")}><span className="spin-smile">☻</span><i>Resume</i></button><button onClick={() => setPanel("login")}><span>☺</span><i>Hello</i></button><button className="menu-trigger" onClick={() => setMenu(true)}>Menu</button></div>
         </header>
         {children}
         <div className={menu ? "mega-menu show" : "mega-menu"} aria-hidden={!menu}><button onClick={() => setMenu(false)}>CLOSE ×</button><nav>{nav.map(([n, h], i) => <Link href={h} key={h} onClick={() => setMenu(false)}><small>0{i + 1}</small>{n}</Link>)}</nav><p>Designer & Developer<br />Bangkok · Available worldwide</p></div>
-        {panel && <div className="panel-wrap" onMouseDown={() => setPanel(null)}><aside onMouseDown={e => e.stopPropagation()}><button className="panel-close" onClick={() => setPanel(null)}>CLOSE ×</button>{panel === "cart" ? <><span className="micro">YOUR SAVED THINGS</span><h2>Nothing here—yet.</h2><p>Keep exploring. Save the things that make your brain light up.</p><Link className="capsule" href="/work">Go to work ↗</Link></> : <><span className="micro">WELCOME, CURIOUS ONE</span><h2>Come on in.</h2><label>Email<input type="email" placeholder="you@example.com" /></label><label>Password<input type="password" placeholder="••••••••" /></label><button className="capsule">Log in ↗</button></>}</aside></div>}
+        {panel && <div className="panel-wrap" onMouseDown={() => setPanel(null)}><aside onMouseDown={e => e.stopPropagation()}><button className="panel-close" onClick={() => setPanel(null)}>CLOSE ×</button>{panel === "resume" ? <><span className="micro">RESUME / CV</span><h2>Want a closer look?</h2><p>My resume will be available to download here soon. I’m currently preparing the latest version with my experience, skills, and selected projects.</p><button className="capsule resume-download" type="button" disabled>DOWNLOAD RESUME (NOT YET)</button></> : <><span className="micro">WELCOME, CURIOUS ONE</span><h2>Come on in.</h2><label>Email<input type="email" placeholder="you@example.com" /></label><label>Password<input type="password" placeholder="••••••••" /></label><button className="capsule">Log in ↗</button></>}</aside></div>}
         {!home && <footer><div><b>Worakan Pongseelawat</b><span>Developer.</span></div><nav style={{ alignItems: 'flex-start' }}><a href="https://github.com/omworakarn-maker" target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', alignSelf: 'flex-start' }}>GitHub ↗</a><Link href="/contact#contact-form" style={{ display: 'inline-block', alignSelf: 'flex-start' }}>Contact ↗</Link></nav><small>© 2026 · PORTFOLIO</small></footer>}</div>
 }

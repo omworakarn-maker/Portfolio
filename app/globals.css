@@ -220,3 +220,7 @@ html.project-detail-open .site-shell,html.project-detail-open .site-shell *{anim
 
 /* CTA labels roll in place; their button containers never move. */
 .capsule,.capsule:hover,.capsule:focus-visible{translate:none!important;transform:none!important;scale:1!important}
+/* CSS-drawn smile stays identical on macOS, Windows, and mobile browsers. */
+.utilities .saved-btn .spin-smile{position:relative;width:38px;height:38px;border:0;border-radius:50%;background:#111;font-size:0!important;flex:none}
+.utilities .saved-btn .spin-smile::before{content:"";position:absolute;left:10px;top:11px;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:13px 0 #fff}
+.utilities .saved-btn .spin-smile::after{content:"";position:absolute;left:9px;right:9px;bottom:8px;height:9px;border-bottom:3px solid #fff;border-radius:0 0 999px 999px}

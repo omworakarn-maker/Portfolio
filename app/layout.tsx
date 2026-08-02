@@ -3,11 +3,11 @@ import "./globals.css";
 import "./overrides.css";
 
 export const metadata: Metadata = {
-  title: "Worakan — Ideas with more light",
-  description: "An interactive creative-studio showcase prototype.",
+  title: "Worakan - Creative Developer",
+  description: "This is my website",
   openGraph: {
-    title: "Worakan— Ideas with more light",
-    description: "An interactive creative-studio showcase prototype.",
+    title: "Worakan - Creative Developer",
+    description: "This is my website",
     images: [{ url: "/og.png", width: 1200, height: 630, alt: "Lumen Studio" }],
   },
   icons: {

@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;600;700&display=swap');
+@import "tailwindcss";
 .home-project-swap{animation:home-project-in .72s cubic-bezier(.83,0,.17,1) both}@keyframes home-project-in{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:none}}@media(prefers-reduced-motion:reduce){.home-project-swap{animation:none}}
 #contact-form{scroll-margin-top:110px}
 .work-stack-action.is-disabled{opacity:.5;cursor:not-allowed}.work-stack-action.is-disabled:hover,.work-stack-action.is-disabled:focus-visible{background:#111}.work-stack-action.is-disabled:hover .work-action-roll i:first-child,.work-stack-action.is-disabled:focus-visible .work-action-roll i:first-child{transform:none}.work-stack-action.is-disabled:hover .work-action-roll i+i,.work-stack-action.is-disabled:focus-visible .work-action-roll i+i{transform:translateY(110%)}

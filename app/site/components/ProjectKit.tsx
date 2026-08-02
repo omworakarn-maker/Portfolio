@@ -237,7 +237,7 @@ export function ProjectDetailsModal({ project, onClose }: { project: readonly an
 
 export function PileCards() {
     const cardCount = aboutCards.length;
-    const [index, setIndex] = useState(cardCount), [moving, setMoving] = useState(true), [paused, setPaused] = useState(false), timer = useRef<number | undefined>(undefined);
+    const [index, setIndex] = useState<number>(cardCount), [moving, setMoving] = useState(true), [paused, setPaused] = useState(false), timer = useRef<number | undefined>(undefined);
     const [selectedProject, setSelectedProject] = useState<readonly any[] | null>(null);
     const dragStart = useRef<number | null>(null);
     const didDrag = useRef(false);

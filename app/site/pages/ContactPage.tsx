@@ -74,11 +74,11 @@ export function ContactForm() {
                 <div className="form-row">
                     <div className="form-group">
                         <label htmlFor="name">Your Name</label>
-                        <input id="name" type="text" placeholder="John Doe" value={name} onChange={e => setName(e.target.value)} required />
+                        <input id="name" type="text" placeholder="Your full name" value={name} onChange={e => setName(e.target.value)} required />
                     </div>
                     <div className="form-group">
                         <label htmlFor="email">Email Address</label>
-                        <input id="email" type="email" placeholder="john@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
+                        <input id="email" type="email" placeholder="Your-email@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
                     </div>
                 </div>
 

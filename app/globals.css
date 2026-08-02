@@ -200,3 +200,20 @@ footer nav a{color:transparent;text-shadow:0 0 #fff,0 42px #fff}footer nav a:hov
 .about-work-cards .about-work-viewport{cursor:grab;touch-action:pan-y}.about-work-cards .about-work-viewport:active{cursor:grabbing}
 /* Meaningful marks complete the project tags when a tool has no brand logo. */
 .work-stack-tags span i{font:700 15px/1 var(--sans);font-style:normal}
+/* Unavailable projects still use the same rolling-label interaction. */
+.work-stack-action.is-disabled:hover .work-action-roll i:first-child,.work-stack-action.is-disabled:focus-visible .work-action-roll i:first-child{transform:translateY(-110%)}
+.work-stack-action.is-disabled:hover .work-action-roll i+i,.work-stack-action.is-disabled:focus-visible .work-action-roll i+i{transform:translateY(0)}
+/* Project-image carousel navigation. */
+.media-slider-nav{position:absolute;z-index:3;top:50%;width:42px;height:42px;padding:0;border:1px solid #fff;border-radius:50%;background:#111c;color:#fff;display:grid;place-items:center;font:22px/1 var(--mono);translate:0 -50%;cursor:pointer;opacity:0;transition:opacity .22s,background .22s,transform .3s var(--smooth)}
+.media-slider-nav--prev{left:14px}.media-slider-nav--next{right:14px}.work-stack-media:hover .media-slider-nav,.project-modal-card div:hover>.media-slider-nav,.media-slider-nav:focus-visible{opacity:1}.media-slider-nav:hover{background:var(--red);transform:scale(1.08)}
+@media(max-width:700px){.media-slider-nav{width:38px;height:38px;opacity:1}.media-slider-nav--prev{left:10px}.media-slider-nav--next{right:10px}}
+/* Match image navigation to the Project Carousel arrows on About. */
+.media-slider-nav{width:58px;height:48px;border:1px solid #000;border-radius:18px;background:#fff;color:#111;box-shadow:0 5px 0 #000;font:22px/1 var(--mono);transition:opacity .22s,background .2s,transform .2s!important}
+.media-slider-nav:hover{background:var(--pink);transform:none}.media-slider-nav:hover .button-roll i:first-child,.media-slider-nav:focus-visible .button-roll i:first-child{transform:translateY(-100%)}.media-slider-nav:hover .button-roll i+i,.media-slider-nav:focus-visible .button-roll i+i{transform:translateY(0)}
+@media(max-width:700px){.media-slider-nav{width:54px;height:46px}}
+/* Freeze every decorative motion on the page behind an open project detail. */
+html.project-detail-open .site-shell,html.project-detail-open .site-shell *{animation-play-state:paused!important}
+/* Center the active card in the draggable Project Carousel. */
+.about-work-cards{--work-card-half:150px;--work-track-pad:18px}
+.about-work-cards .work-track{transform:translate3d(calc(50vw - var(--work-card-half) - var(--work-track-pad) - (var(--index) * var(--work-step))),0,0)}
+@media(max-width:600px){.about-work-cards{--work-card-half:36vw;--work-track-pad:12px}}

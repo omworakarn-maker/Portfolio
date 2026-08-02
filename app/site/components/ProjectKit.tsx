@@ -49,33 +49,42 @@ export function Lightbox({ images, initialIdx, onClose }: { images: string[], in
     );
 }
 
-export function AutoImageSlider({ images, alt, onImageClick, cover = false }: { images: readonly string[] | string[], alt: string, onImageClick?: () => void, cover?: boolean }) {
+export function AutoImageSlider({ images, alt, onImageClick, cover = false, showControls = false, pauseWhenDetailOpen = true }: { images: readonly string[] | string[], alt: string, onImageClick?: () => void, cover?: boolean, showControls?: boolean, pauseWhenDetailOpen?: boolean }) {
     const [idx, setIdx] = useState(0);
     const [hovered, setHovered] = useState(false);
     const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [detailOpen, setDetailOpen] = useState(false);
     const [allLoaded, setAllLoaded] = useState(false);
     const loadedCount = useRef(0);
     const len = images ? images.length : 0;
+    const moveImage = (direction: number) => setIdx(current => (current + direction + len) % len);
 
     useEffect(() => {
         loadedCount.current = 0;
         setAllLoaded(len <= 1);
         if (len <= 1) return;
         images.forEach(src => {
-            const img = new Image();
-            img.onload = img.onerror = () => {
+            const image = new Image();
+            image.onload = image.onerror = () => {
                 loadedCount.current += 1;
                 if (loadedCount.current >= len) setAllLoaded(true);
             };
-            img.src = src;
+            image.src = src;
         });
     }, [images, len]);
 
     useEffect(() => {
-        if (!allLoaded || len <= 1 || hovered) return;
-        const timer = setInterval(() => setIdx(i => (i + 1) % len), 3500);
+        const sync = () => setDetailOpen(document.documentElement.classList.contains("project-detail-open"));
+        sync();
+        window.addEventListener("project-detail-visibility", sync);
+        return () => window.removeEventListener("project-detail-visibility", sync);
+    }, []);
+
+    useEffect(() => {
+        if (!allLoaded || len <= 1 || hovered || (pauseWhenDetailOpen && detailOpen)) return;
+        const timer = setInterval(() => moveImage(1), 3500);
         return () => clearInterval(timer);
-    }, [allLoaded, len, hovered]);
+    }, [allLoaded, len, hovered, detailOpen, pauseWhenDetailOpen]);
 
     if (len === 0) return <><i /><b /></>;
 
@@ -87,7 +96,8 @@ export function AutoImageSlider({ images, alt, onImageClick, cover = false }: { 
                 onMouseLeave={() => setHovered(false)}
                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (onImageClick) { onImageClick(); } else { setLightboxOpen(true); } }}
             >
-                {images.map((src, i) => (
+                {images.map((src, i) => {
+                    return (
                     <img
                         key={src}
                         src={src}
@@ -109,7 +119,12 @@ export function AutoImageSlider({ images, alt, onImageClick, cover = false }: { 
                             clipPath: src.includes('gowithus') ? 'inset(6% 0 0 0)' : 'none',
                         }}
                     />
-                ))}
+                    );
+                })}
+                {showControls && len > 1 && <>
+                    <button type="button" className="media-slider-nav media-slider-nav--prev" aria-label="Previous image" onClick={e => { e.preventDefault(); e.stopPropagation(); moveImage(-1); }}><span className="button-roll"><i>←</i><i>←</i></span></button>
+                    <button type="button" className="media-slider-nav media-slider-nav--next" aria-label="Next image" onClick={e => { e.preventDefault(); e.stopPropagation(); moveImage(1); }}><span className="button-roll"><i>→</i><i>→</i></span></button>
+                </>}
             </div>
             {lightboxOpen && <Lightbox images={images as string[]} initialIdx={idx} onClose={() => setLightboxOpen(false)} />}
         </>
@@ -157,9 +172,13 @@ export function ProjectDetailsModal({ project, onClose }: { project: readonly an
         const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
         if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
         document.body.style.overflow = "hidden";
+        document.documentElement.classList.add("project-detail-open");
+        window.dispatchEvent(new Event("project-detail-visibility"));
         return () => {
             document.body.style.overflow = previousOverflow;
             document.body.style.paddingRight = previousPaddingRight;
+            document.documentElement.classList.remove("project-detail-open");
+            window.dispatchEvent(new Event("project-detail-visibility"));
         };
     }, []);
 
@@ -211,7 +230,7 @@ export function ProjectDetailsModal({ project, onClose }: { project: readonly an
                     {images.length > 0 && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             <div style={{ height: '280px', borderRadius: '16px', overflow: 'hidden', border: '1px solid #ddd', position: 'relative', backgroundColor: 'var(--paper)' }}>
-                                <AutoImageSlider images={images} alt={title} />
+                                <AutoImageSlider images={images} alt={title} showControls pauseWhenDetailOpen={false} />
                             </div>
                             <div style={{ textAlign: 'center', fontSize: '11px', color: '#666', fontFamily: 'var(--mono)', letterSpacing: '0.05em' }}>
                                 {images.length} {images.length > 1 ? 'IMAGES' : 'IMAGE'} — CLICK TO EXPAND
@@ -305,7 +324,7 @@ export function SelectedWorkShowcase() {
                         </div>
                         <div className="work-stack-media">
                             {card[4] && card[4].length > 0 ? (
-                                <AutoImageSlider images={card[4]} alt={card[1]} cover={false} />
+                                <AutoImageSlider images={card[4]} alt={card[1]} cover={false} showControls />
                             ) : (
                                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.05)', font: '14px var(--mono)' }}>Media not available</div>
                             )}

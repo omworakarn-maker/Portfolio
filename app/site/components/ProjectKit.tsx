@@ -1,0 +1,309 @@
+"use client";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+
+export function Lightbox({ images, initialIdx, onClose }: { images: string[], initialIdx: number, onClose: () => void }) {
+    const [idx, setIdx] = useState(initialIdx);
+    const [mounted, setMounted] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
+
+    const handleClose = useCallback(() => {
+        setIsClosing(true);
+        setTimeout(() => onClose(), 250);
+    }, [onClose]);
+
+    useEffect(() => {
+        setMounted(true);
+        const key = (e: KeyboardEvent) => {
+            if (e.key === "Escape") handleClose();
+            if (e.key === "ArrowRight") setIdx(i => (i + 1) % images.length);
+            if (e.key === "ArrowLeft") setIdx(i => (i - 1 + images.length) % images.length);
+        };
+        window.addEventListener("keydown", key);
+        document.body.style.overflow = "hidden";
+        return () => {
+            window.removeEventListener("keydown", key);
+            document.body.style.overflow = "";
+        };
+    }, [images.length, handleClose]);
+
+    if (!mounted) return null;
+
+    return createPortal(
+        <div key={isClosing ? 'closing' : 'open'} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: isClosing ? 'fadeOut 0.25s ease-out forwards' : 'fadeIn 0.2s ease-out forwards' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleClose(); }}>
+            <button style={{ position: 'absolute', top: 20, right: 20, background: 'none', border: 'none', color: 'white', fontSize: 32, cursor: 'pointer', zIndex: 10, transition: 'transform 0.2s' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleClose(); }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.2)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>×</button>
+            <div style={{ position: 'relative', width: '90vw', height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: isClosing ? 'scaleDown 0.25s ease-out forwards' : 'scaleUp 0.25s ease-out forwards' }} onClick={e => { e.preventDefault(); e.stopPropagation(); }}>
+                {images.length > 1 && <button style={{ position: 'absolute', left: 0, background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', fontSize: 32, padding: '10px 20px', cursor: 'pointer', borderRadius: '50%', zIndex: 10, transition: 'background 0.2s' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIdx(i => (i - 1 + images.length) % images.length) }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.4)'} onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}>‹</button>}
+                <img src={images[idx]} alt="Enlarged view" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', clipPath: images[idx].includes('gowithus') ? 'inset(5.5% 0 0 0)' : 'none', transform: images[idx].includes('gowithus') ? 'translateY(-2.75%)' : 'none' }} />
+                {images.length > 1 && <button style={{ position: 'absolute', right: 0, background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', fontSize: 32, padding: '10px 20px', cursor: 'pointer', borderRadius: '50%', zIndex: 10, transition: 'background 0.2s' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIdx(i => (i + 1) % images.length) }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.4)'} onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}>›</button>}
+            </div>
+            {images.length > 1 && <div style={{ color: 'white', marginTop: 16, zIndex: 10, font: '12px var(--mono)', letterSpacing: '0.1em' }}>{idx + 1} / {images.length}</div>}
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                @keyframes scaleUp { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+                @keyframes scaleDown { from { transform: scale(1); opacity: 1; } to { transform: scale(0.95); opacity: 0; } }
+                @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+            `}} />
+        </div>,
+        document.body
+    );
+}
+
+export function AutoImageSlider({ images, alt, onImageClick, cover = false }: { images: readonly string[] | string[], alt: string, onImageClick?: () => void, cover?: boolean }) {
+    const [idx, setIdx] = useState(0);
+    const [hovered, setHovered] = useState(false);
+    const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [allLoaded, setAllLoaded] = useState(false);
+    const loadedCount = useRef(0);
+    const len = images ? images.length : 0;
+
+    useEffect(() => {
+        loadedCount.current = 0;
+        setAllLoaded(len <= 1);
+        if (len <= 1) return;
+        images.forEach(src => {
+            const img = new Image();
+            img.onload = img.onerror = () => {
+                loadedCount.current += 1;
+                if (loadedCount.current >= len) setAllLoaded(true);
+            };
+            img.src = src;
+        });
+    }, [images, len]);
+
+    useEffect(() => {
+        if (!allLoaded || len <= 1 || hovered) return;
+        const timer = setInterval(() => setIdx(i => (i + 1) % len), 3500);
+        return () => clearInterval(timer);
+    }, [allLoaded, len, hovered]);
+
+    if (len === 0) return <><i /><b /></>;
+
+    return (
+        <>
+            <div
+                style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden', cursor: onImageClick ? 'pointer' : 'zoom-in' }}
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
+                onClick={(e) => { e.preventDefault(); e.stopPropagation(); if (onImageClick) { onImageClick(); } else { setLightboxOpen(true); } }}
+            >
+                {images.map((src, i) => (
+                    <img
+                        key={src}
+                        src={src}
+                        alt={`${alt} slide ${i + 1}`}
+                        loading="eager"
+                        style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: src.includes('gowithus') ? 'translate(-50%, -53%)' : 'translate(-50%, -50%)',
+                            width: cover ? '100%' : 'auto',
+                            height: cover ? '100%' : 'auto',
+                            maxWidth: '100%',
+                            maxHeight: '100%',
+                            objectFit: cover ? 'cover' : 'contain',
+                            opacity: i === idx ? 1 : 0,
+                            transition: 'opacity 0.5s ease-in-out',
+                            display: 'block',
+                            clipPath: src.includes('gowithus') ? 'inset(6% 0 0 0)' : 'none',
+                        }}
+                    />
+                ))}
+            </div>
+            {lightboxOpen && <Lightbox images={images as string[]} initialIdx={idx} onClose={() => setLightboxOpen(false)} />}
+        </>
+    );
+}
+const TECH_ICONS: Record<string, string> = {
+    "Next.js": "https://skillicons.dev/icons?i=nextjs",
+    "React": "https://skillicons.dev/icons?i=react",
+    "TypeScript": "https://skillicons.dev/icons?i=ts",
+    "Tailwind CSS": "https://skillicons.dev/icons?i=tailwind",
+    "Prisma": "https://skillicons.dev/icons?i=prisma",
+    "Vercel": "https://skillicons.dev/icons?i=vercel",
+    "HTML5": "https://skillicons.dev/icons?i=html",
+    "CSS3": "https://skillicons.dev/icons?i=css",
+    "JavaScript": "https://skillicons.dev/icons?i=js",
+    "SwiftUI": "https://skillicons.dev/icons?i=swift",
+    "Node.js": "https://skillicons.dev/icons?i=nodejs",
+    "PostgreSQL": "https://skillicons.dev/icons?i=postgres",
+    "Render": "https://skillicons.dev/icons?i=git",
+    "Vite": "https://skillicons.dev/icons?i=vite"
+};
+
+export const aboutCards = [
+    ["01", "TODO LIST", "[Next.js · React · TypeScript]", "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI.", ["/todo-1.png?v=1", "/todo-2.png?v=1", "/todo-3.png?v=1"], "https://github.com/omworakarn-maker/todolist", "This Todo List application was built to solve task management inefficiencies. It features a complete dashboard, secure authentication, and real-time state updates. Users can customize their profiles, view analytics of completed tasks, and easily manage their daily workflow using a modern responsive interface.", ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "Vercel"]],
+    ["02", "CAFE CAT", "[HTML5 · CSS3 · JavaScript]", "An interactive website for a cat cafe showcasing menus, cozy atmosphere, and responsive layout.", ["/cafe-1.png?v=1", "/cafe-2.png?v=1", "/cafe-3.png?v=1", "/cafe-4.png?v=1", "/cafe-5.png?v=1"], "#", "A fully responsive front-end website for a fictional cat cafe. Features include a dynamic menu, beautiful CSS animations, and a cozy aesthetic designed to attract customers.", ["HTML5", "CSS3", "JavaScript"]],
+    ["03", "GO WITH US", "[SwiftUI · Node.js · PostgreSQL]", "A modern, AI-Powered travel matching iOS application built with SwiftUI and a Node.js backend.", ["/gowithus-1.png?v=1", "/gowithus-2.png?v=1", "/gowithus-3.png?v=1", "/gowithus-4.png?v=1"], "#", "An iOS mobile application that matches travelers based on their preferences. Built natively with SwiftUI for a smooth user experience, backed by a robust Node.js backend and PostgreSQL database.", ["SwiftUI", "Node.js", "PostgreSQL", "Render"]],
+    ["04", "PORTFOLIO", "[Next.js 16 · React 19 · Vite]", "A modern interactive single-page portfolio with dynamic card deck, smooth animations, and clean styling.", ["/portfolio-1.png?v=1"], "#", "This portfolio itself! A highly interactive single-page application showcasing custom animations, interactive card decks, and advanced CSS techniques. Built with Next.js and React.", ["Next.js", "React", "TypeScript", "Vite"]]
+] as const;
+
+export function ProjectDetailsModal({ project, onClose }: { project: readonly any[], onClose: () => void }) {
+    const [mounted, setMounted] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        document.body.style.overflow = "hidden";
+        return () => { document.body.style.overflow = ""; };
+    }, []);
+
+    if (!mounted) return null;
+
+    const handleClose = () => {
+        setIsClosing(true);
+        setTimeout(() => onClose(), 500);
+    };
+
+    const title = project[1];
+    const shortDesc = project[3];
+    const imageRaw = project[4];
+    const images = Array.isArray(imageRaw) ? imageRaw : (imageRaw ? [imageRaw] : []);
+    const link = project[5] || "#";
+    const fullDesc = project[6] || shortDesc;
+    const techStack = project[7] as string[] | undefined;
+
+    return createPortal(
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.4)', zIndex: 9998, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', perspective: '1000px', animation: isClosing ? 'modalFadeOut 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards' : 'modalFadeIn 0.5s ease-out forwards' }} onClick={handleClose}>
+            <div style={{ width: '100%', maxWidth: '600px', maxHeight: '85vh', backgroundColor: '#fff', borderRadius: '24px', overflow: 'hidden', display: 'flex', flexDirection: 'column', border: '1px solid #ddd', boxShadow: '-12px 15px 35px rgba(0,0,0,0.1)', transformOrigin: 'center center', animation: isClosing ? 'modalSlideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards' : 'modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards' }} onClick={e => e.stopPropagation()}>
+
+                {/* HEADER */}
+                <div style={{ padding: '30px 30px 20px', position: 'relative' }}>
+                    <button style={{ position: 'absolute', top: 20, right: 20, background: 'transparent', border: '1px solid #111', color: '#111', fontSize: '20px', cursor: 'pointer', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }} onClick={handleClose} onMouseEnter={e => { e.currentTarget.style.background = '#111'; e.currentTarget.style.color = '#fff'; }} onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#111'; }}>✕</button>
+
+                    <h2 style={{ margin: 0, fontSize: 'clamp(40px, 6vw, 54px)', color: '#111', fontFamily: 'var(--sans)', fontWeight: '700', letterSpacing: '-0.04em', lineHeight: '1' }}>{title}</h2>
+                </div>
+
+                {/* CONTENT BODY */}
+                <div style={{ padding: '0 30px 30px', overflowY: 'auto', flex: 1, color: '#111' }}>
+                    <p style={{ lineHeight: '1.6', fontSize: '14px', fontFamily: 'var(--mono)', margin: '0 0 30px 0' }}>{fullDesc}</p>
+
+                    {techStack && techStack.length > 0 && (
+                        <div style={{ marginBottom: '30px' }}>
+                            <div style={{ fontSize: '11px', fontWeight: '700', fontFamily: 'var(--sans)', letterSpacing: '0.05em', color: '#666', textTransform: 'uppercase', marginBottom: '12px' }}>Technologies Used</div>
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                {techStack.map((tech: string) => (
+                                    <div key={tech} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#f9f9f9', border: '1px solid #eaeaea', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontFamily: 'var(--mono)', color: '#111' }}>
+                                        {TECH_ICONS[tech] && <img src={TECH_ICONS[tech]} alt={tech} width={14} height={14} style={{ objectFit: 'contain' }} />}
+                                        {tech}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {images.length > 0 && (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                            <div style={{ height: '280px', borderRadius: '16px', overflow: 'hidden', border: '1px solid #ddd', position: 'relative', backgroundColor: 'var(--paper)' }}>
+                                <AutoImageSlider images={images} alt={title} />
+                            </div>
+                            <div style={{ textAlign: 'center', fontSize: '11px', color: '#666', fontFamily: 'var(--mono)', letterSpacing: '0.05em' }}>
+                                {images.length} {images.length > 1 ? 'IMAGES' : 'IMAGE'} — CLICK TO EXPAND
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                {/* FOOTER ACTION */}
+                <div style={{ padding: '20px 30px', borderTop: '1px solid #ddd', display: 'flex', justifyContent: 'flex-end', background: 'var(--paper)' }}>
+                    {link !== "#" ? <a href={link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '12px 24px', backgroundColor: '#111', color: '#fff', textDecoration: 'none', borderRadius: '999px', fontFamily: 'var(--sans)', fontWeight: '700', fontSize: '12px', transition: 'transform 0.2s, background 0.2s' }} onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.background = 'var(--red)'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.background = '#111'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
+                        <div style={{ position: 'relative', height: '17px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                            <span className="roll-first" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
+                            <span className="roll-second" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
+                        </div>
+                    </a> : <span className="capsule" aria-disabled="true">VIEW PROJECT (NOT YET)</span>}
+                </div>
+            </div>
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                @keyframes modalFadeIn { 
+                    from { opacity: 0; backdrop-filter: blur(0px); } 
+                    to { opacity: 1; backdrop-filter: blur(4px); } 
+                }
+                @keyframes modalSlideUp { 
+                    from { opacity: 0; transform: translateY(60px) scale(0.9) rotateX(-5deg); } 
+                    to { opacity: 1; transform: translateY(0) scale(1) rotateX(0); } 
+                }
+                @keyframes modalFadeOut { 
+                    0% { opacity: 1; backdrop-filter: blur(4px); } 
+                    100% { opacity: 0; backdrop-filter: blur(0px); } 
+                }
+                @keyframes modalSlideDown { 
+                    0% { opacity: 1; transform: translateY(0) scale(1) rotateX(0); } 
+                    30% { opacity: 1; transform: translateY(-10px) scale(1.02) rotateX(2deg); }
+                    100% { opacity: 0; transform: translateY(60px) scale(0.9) rotateX(-5deg); } 
+                }
+            `}} />
+        </div>,
+        document.body
+    );
+}
+
+export function PileCards() {
+    const [index, setIndex] = useState(4), [moving, setMoving] = useState(true), [paused, setPaused] = useState(false), timer = useRef<number | undefined>(undefined);
+    const [selectedProject, setSelectedProject] = useState<readonly any[] | null>(null);
+    useEffect(() => { const vis = () => setPaused(document.hidden); document.addEventListener("visibilitychange", vis); return () => document.removeEventListener("visibilitychange", vis) }, []);
+    useEffect(() => { if (paused || selectedProject) return; timer.current = window.setInterval(() => setIndex(x => x + 1), 3000); return () => window.clearInterval(timer.current) }, [paused, selectedProject]);
+    const settle = (e: React.TransitionEvent<HTMLDivElement>) => { if (e.target !== e.currentTarget) return; if (index >= 8 || index <= 0) { setMoving(false); setIndex(4); requestAnimationFrame(() => requestAnimationFrame(() => setMoving(true))) } };
+    const step = (direction: number) => { setPaused(true); setIndex(x => x + direction); window.clearTimeout(timer.current); timer.current = window.setTimeout(() => setPaused(false), 1500) };
+    return <section className="about-pile about-work-cards">
+        <div className="pile-copy">
+            <span className="micro">MY PROJECTS</span>
+            <h2>Featured Work.</h2>
+            <p>Interactive card deck showcasing selected projects. Hover or tap a card to explore details.</p>
+        </div>
+        <div className="about-work-viewport" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+            <div className={moving ? "work-track" : "work-track no-motion"} style={{ "--index": index } as React.CSSProperties} onTransitionEnd={settle}>
+                {[...aboutCards, ...aboutCards, ...aboutCards].map((v, i) => <article key={`${v[0]}-${i}`} tabIndex={0} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} onClick={() => setSelectedProject(v)} style={{ cursor: 'pointer' }}>
+                    <span className="tag">PROJECT {v[0]}</span>
+                    <div className={`work-art work-art-${i % 4}`}>
+                        {v[4] && v[4].length > 0 ? <AutoImageSlider images={v[4]} alt={v[1]} onImageClick={() => setSelectedProject(v)} cover /> : <><i /><b /></>}
+                    </div>
+                    <h3 className="card-title-roll"><span>{v[1]}</span><span aria-hidden="true">{v[1]}</span></h3>
+                    <div className="work-detail">
+                        <small>{v[2]}</small>
+                        <p>{v[3]}</p>
+                        <em>VIEW DETAILS ↗</em>
+                    </div>
+                </article>)}
+            </div>
+        </div>
+        <div className="pile-arrows">
+            <button onClick={() => step(-1)} aria-label="Previous card"><span className="button-roll"><i>←</i><i>←</i></span></button>
+            <button onClick={() => step(1)} aria-label="Next card"><span className="button-roll"><i>→</i><i>→</i></span></button>
+        </div>
+        {selectedProject && <ProjectDetailsModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
+    </section>
+}
+
+export function SelectedWorkShowcase() {
+    return (
+        <section className="work-showcase">
+            <div className="work-stack-container">
+                {aboutCards.map((card, i) => (
+                    <article key={card[0]} className={`work-stack-card ${i % 2 ? "is-reversed" : ""}`}>
+                        <div className="work-stack-copy">
+                            <span className="work-stack-index">PROJECT {card[0]} / 04</span>
+                            <h2>{card[1]}</h2>
+                            <p className="work-stack-summary">{card[3]}</p>
+                            <div className="work-stack-tags">
+                                {(card[7] as readonly string[] | undefined)?.map(tag => <span key={tag}>{TECH_ICONS[tag] && <img src={TECH_ICONS[tag]} alt="" aria-hidden="true" width={15} height={15} />}{tag}</span>)}
+                            </div>
+                            <a href={card[5] === "#" ? undefined : card[5]} target={card[5] === "#" ? undefined : "_blank"} rel={card[5] === "#" ? undefined : "noopener noreferrer"} aria-disabled={card[5] === "#"} className={`work-stack-action${card[5] === "#" ? " is-disabled" : ""}`} onClick={e => { if (card[5] === "#") e.preventDefault(); }}>
+                                <span className="work-action-roll"><i>{card[5] === "#" ? "(NOT YET)" : "VIEW PROJECT ↗"}</i><i>{card[5] === "#" ? "(NOT YET)" : "VIEW PROJECT ↗"}</i></span>
+                            </a>
+                        </div>
+                        <div className="work-stack-media">
+                            {card[4] && card[4].length > 0 ? (
+                                <AutoImageSlider images={card[4]} alt={card[1]} cover={false} />
+                            ) : (
+                                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.05)', font: '14px var(--mono)' }}>Media not available</div>
+                            )}
+                        </div>
+                    </article>
+                ))}
+            </div>
+        </section>
+    );
+}

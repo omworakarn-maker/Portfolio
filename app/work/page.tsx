@@ -1,2 +1,6 @@
-import { SitePage } from "../site/SitePage";
-export default function Work(){ return <SitePage page="work"/> }
+import { Shell } from "../site/components/SiteShell";
+import { WorkPage } from "../site/pages/WorkPage";
+
+export default function Work() {
+  return <Shell><WorkPage /></Shell>;
+}

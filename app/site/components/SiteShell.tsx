@@ -17,8 +17,8 @@ export function Shell({ children, home = false }: { children: React.ReactNode, h
                         </textPath>
                     </text>
                 </svg>
-                <div style={{ width: '50px', height: '50px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', transform: 'translateY(8px)' }}>
-                    <b>O</b>
+                <div style={{ width: '50px', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden', transform: 'translateY(8px)' }}>
+                    <img src="/IMG_1816-removebg-preview-3.png" alt="" width={46} height={46} style={{ objectFit: 'contain' }} />
                 </div>
             </Link>
             <nav>{nav.map(([n, h]) => <Link href={h} key={h} aria-label={n}><span className="nav-copy" aria-hidden="true"><span>{n}</span><span>{n}</span></span></Link>)}</nav><div className="utilities"><button className="saved-btn" onClick={() => setPanel("resume")}><span className="spin-smile" aria-hidden="true" /><i>Resume</i></button><button onClick={() => setPanel("login")}><span>☺</span><i>Hello</i></button><button className="menu-trigger" onClick={() => setMenu(true)}>Menu</button></div>

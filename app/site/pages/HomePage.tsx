@@ -9,7 +9,6 @@ export function Home() {
     const [selectedProject, setSelectedProject] = useState<readonly any[] | null>(null);
     const [projectSet, setProjectSet] = useState(0);
     const [projectPaused, setProjectPaused] = useState(false);
-    const [scrollProgress, setScrollProgress] = useState(0);
     useEffect(() => {
         if (projectPaused || selectedProject) return;
         const timer = window.setInterval(() => setProjectSet(current => (current + 1) % homeProjectSets.length), 5200);
@@ -25,11 +24,6 @@ export function Home() {
     };
     const up = () => { drag.current.active = false; setTimeout(() => { isDragging.current = false; }, 50); };
     const clickCapture = (e: React.MouseEvent) => { if (isDragging.current) { e.stopPropagation(); e.preventDefault(); } };
-    const updateScrollProgress = () => {
-        const el = stage.current;
-        if (!el) return;
-        setScrollProgress(el.scrollWidth <= el.clientWidth ? 0 : el.scrollLeft / (el.scrollWidth - el.clientWidth));
-    };
     const moveCardEffect = (e: React.PointerEvent<HTMLElement>) => {
         const rect = e.currentTarget.getBoundingClientRect();
         e.currentTarget.style.setProperty("--pointer-x", `${e.clientX - rect.left}px`);
@@ -43,10 +37,10 @@ export function Home() {
     };
 
     return (
-        <main ref={stage} className={`home-stage${selectedProject ? " has-project-modal" : ""}`} onWheel={wheel} onScroll={updateScrollProgress} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up} onClickCapture={clickCapture}>
+        <main ref={stage} className={`home-stage${selectedProject ? " has-project-modal" : ""}`} onWheel={wheel} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up} onClickCapture={clickCapture}>
             <section className="portfolio-canvas" aria-label="Portfolio overview">
-                <Link href="/about" className="portfolio-card p-intro" onPointerMove={moveCardEffect} onPointerLeave={resetCardEffect}><span className="tag">PORTFOLIO</span><h1>[Worakan<br />Portfolio]</h1><p>Developer · Java · React · Nextjs · Click For More</p></Link>
-                <Link href="/about" className="portfolio-card p-about"><span className="tag">ABOUT</span><h2>Welcome to my website click here </h2><span className="card-arrow">↗</span></Link>
+                <Link href="/about" className="portfolio-card p-intro" onPointerMove={moveCardEffect} onPointerLeave={resetCardEffect}><span className="tag">PORTFOLIO</span><span className="home-card-code">01 / 05</span><h1>[Worakan<br />Portfolio]</h1><p>Developer · Java · React · Nextjs · Click For More</p><span className="intro-orbit" aria-hidden="true">✳</span></Link>
+                <Link href="/about" className="portfolio-card p-about"><span className="tag">ABOUT</span><h2>Welcome to my website click here </h2><span className="about-status"><i /> AVAILABLE FOR INTERNSHIP</span><span className="card-arrow">↗</span></Link>
                 {homeProjectSets.flatMap((projects, set) => projects.map((project, slot) => {
                     return <button
                         type="button"
@@ -69,9 +63,8 @@ export function Home() {
                         {slot === 1 && <span className="card-arrow">↗</span>}
                     </button>;
                 }))}
-                <Link href="/playground" className="portfolio-card p-note" onPointerMove={moveCardEffect} onPointerLeave={resetCardEffect}><span className="tag">PLAYGROUND / PROTOTYPES</span><h2>My journey, technical prototypes, and things I'm learning.</h2><i className="playground-follower" aria-hidden="true">✳</i></Link>
-                <article className="portfolio-card p-contact"><span className="tag">CONTACT</span><h2>Let’s make something useful.</h2><Link className="plain-action" href="/contact#contact-form">CONTACT ME ↗</Link><Link className="plain-action light" href="/work">VIEW WORK ↗</Link></article>
-                <div className="drag-hint" aria-hidden="true"><b>SCROLL / DRAG</b><div className="drag-progress"><i style={{ transform: `scaleX(${Math.max(.04, scrollProgress)})` }} /></div><span>→</span><small>{Math.round(scrollProgress * 100).toString().padStart(2, "0")}%</small></div>
+                <Link href="/playground" className="portfolio-card p-note" onPointerMove={moveCardEffect} onPointerLeave={resetCardEffect}><span className="tag">PLAYGROUND / PROTOTYPES</span><span className="note-index">03 / EXPERIMENTS</span><h2>My journey, technical prototypes, and things I'm learning.</h2><i className="playground-follower" aria-hidden="true">✳</i></Link>
+                <article className="portfolio-card p-contact"><span className="tag">CONTACT</span><span className="contact-availability"><i /> OPEN TO LEARN &amp; COLLABORATE</span><h2>Let’s make something useful.</h2><Link className="plain-action" href="/contact#contact-form">CONTACT ME ↗</Link><Link className="plain-action light" href="/work">VIEW WORK ↗</Link></article>
             </section>
             {selectedProject && <ProjectDetailsModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
         </main>

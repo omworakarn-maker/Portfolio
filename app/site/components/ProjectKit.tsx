@@ -30,7 +30,7 @@ export function Lightbox({ images, initialIdx, onClose }: { images: string[], in
     if (!mounted) return null;
 
     return createPortal(
-        <div key={isClosing ? 'closing' : 'open'} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 9999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: isClosing ? 'fadeOut 0.25s ease-out forwards' : 'fadeIn 0.2s ease-out forwards' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleClose(); }}>
+        <div key={isClosing ? 'closing' : 'open'} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 2147483600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: isClosing ? 'fadeOut 0.25s ease-out forwards' : 'fadeIn 0.2s ease-out forwards' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleClose(); }}>
             <button style={{ position: 'absolute', top: 20, right: 20, background: 'none', border: 'none', color: 'white', fontSize: 32, cursor: 'pointer', zIndex: 10, transition: 'transform 0.2s' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleClose(); }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.2)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>×</button>
             <div style={{ position: 'relative', width: '90vw', height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: isClosing ? 'scaleDown 0.25s ease-out forwards' : 'scaleUp 0.25s ease-out forwards' }} onClick={e => { e.preventDefault(); e.stopPropagation(); }}>
                 {images.length > 1 && <button style={{ position: 'absolute', left: 0, background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', fontSize: 32, padding: '10px 20px', cursor: 'pointer', borderRadius: '50%', zIndex: 10, transition: 'background 0.2s' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIdx(i => (i - 1 + images.length) % images.length) }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.4)'} onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}>‹</button>}
@@ -121,6 +121,7 @@ const TECH_ICONS: Record<string, string> = {
     "TypeScript": "https://skillicons.dev/icons?i=ts",
     "Tailwind CSS": "https://skillicons.dev/icons?i=tailwind",
     "Prisma": "https://skillicons.dev/icons?i=prisma",
+    "Figma": "https://skillicons.dev/icons?i=figma",
     "Vercel": "https://skillicons.dev/icons?i=vercel",
     "HTML5": "https://skillicons.dev/icons?i=html",
     "CSS3": "https://skillicons.dev/icons?i=css",
@@ -131,12 +132,18 @@ const TECH_ICONS: Record<string, string> = {
     "Render": "https://skillicons.dev/icons?i=git",
     "Vite": "https://skillicons.dev/icons?i=vite"
 };
+const TECH_MARKS: Record<string, string> = {
+    "UI Design": "✦",
+    "Prototype": "◌",
+    "Responsive UI": "↔"
+};
 
 export const aboutCards = [
     ["01", "TODO LIST", "[Next.js · React · TypeScript]", "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI.", ["/todo-1.png?v=1", "/todo-2.png?v=1", "/todo-3.png?v=1"], "https://github.com/omworakarn-maker/todolist", "This Todo List application was built to solve task management inefficiencies. It features a complete dashboard, secure authentication, and real-time state updates. Users can customize their profiles, view analytics of completed tasks, and easily manage their daily workflow using a modern responsive interface.", ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "Vercel"]],
     ["02", "CAFE CAT", "[HTML5 · CSS3 · JavaScript]", "An interactive website for a cat cafe showcasing menus, cozy atmosphere, and responsive layout.", ["/cafe-1.png?v=1", "/cafe-2.png?v=1", "/cafe-3.png?v=1", "/cafe-4.png?v=1", "/cafe-5.png?v=1"], "#", "A fully responsive front-end website for a fictional cat cafe. Features include a dynamic menu, beautiful CSS animations, and a cozy aesthetic designed to attract customers.", ["HTML5", "CSS3", "JavaScript"]],
     ["03", "GO WITH US", "[SwiftUI · Node.js · PostgreSQL]", "A modern, AI-Powered travel matching iOS application built with SwiftUI and a Node.js backend.", ["/gowithus-1.png?v=1", "/gowithus-2.png?v=1", "/gowithus-3.png?v=1", "/gowithus-4.png?v=1"], "#", "An iOS mobile application that matches travelers based on their preferences. Built natively with SwiftUI for a smooth user experience, backed by a robust Node.js backend and PostgreSQL database.", ["SwiftUI", "Node.js", "PostgreSQL", "Render"]],
     ["04", "PORTFOLIO", "[Next.js 16 · React 19 · Vite]", "A modern interactive single-page portfolio with dynamic card deck, smooth animations, and clean styling.", ["/portfolio-1.png?v=1"], "#", "This portfolio itself! A highly interactive single-page application showcasing custom animations, interactive card decks, and advanced CSS techniques. Built with Next.js and React.", ["Next.js", "React", "TypeScript", "Vite"]]
+    ,["05", "FIGMA PROTOTYPE", "[Figma · UI Design · Prototype]", "A collection of interface explorations, flows, and clickable prototypes focused on clear, thoughtful user experiences.", ["/figma-cat-01-welcome.png", "/figma-cat-02-onboarding.png", "/figma-cat-03-home.png", "/figma-cat-04-menu.png", "/figma-cat-05-search.png", "/figma-cat-06-cat-detail.png", "/figma-cat-07-order.png", "/figma-cat-08-login.png", "/figma-cat-09-sign-up.png", "/figma-cat-10-reset-password.png", "/figma-cat-11-about-us.png"], "https://www.figma.com/proto/kpiZifTnW2jPAZ7XSQjUKD/M-cat-031?node-id=2-4&p=f&t=rsnWPM2MoV8mV0UG-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A4", "A work-in-progress collection of Figma explorations—from early wireframes to interactive prototypes. The case study and live Figma link will be added soon.", ["Figma", "UI Design", "Prototype", "Responsive UI"]]
 ] as const;
 
 export function ProjectDetailsModal({ project, onClose }: { project: readonly any[], onClose: () => void }) {
@@ -193,7 +200,7 @@ export function ProjectDetailsModal({ project, onClose }: { project: readonly an
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                                 {techStack.map((tech: string) => (
                                     <div key={tech} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: '#f9f9f9', border: '1px solid #eaeaea', padding: '6px 12px', borderRadius: '8px', fontSize: '12px', fontFamily: 'var(--mono)', color: '#111' }}>
-                                        {TECH_ICONS[tech] && <img src={TECH_ICONS[tech]} alt={tech} width={14} height={14} style={{ objectFit: 'contain' }} />}
+                                        {TECH_ICONS[tech] ? <img src={TECH_ICONS[tech]} alt={tech} width={14} height={14} style={{ objectFit: 'contain' }} /> : TECH_MARKS[tech] && <span aria-hidden="true" style={{ font: '700 15px/1 var(--sans)' }}>{TECH_MARKS[tech]}</span>}
                                         {tech}
                                     </div>
                                 ))}
@@ -229,21 +236,35 @@ export function ProjectDetailsModal({ project, onClose }: { project: readonly an
 }
 
 export function PileCards() {
-    const [index, setIndex] = useState(4), [moving, setMoving] = useState(true), [paused, setPaused] = useState(false), timer = useRef<number | undefined>(undefined);
+    const cardCount = aboutCards.length;
+    const [index, setIndex] = useState(cardCount), [moving, setMoving] = useState(true), [paused, setPaused] = useState(false), timer = useRef<number | undefined>(undefined);
     const [selectedProject, setSelectedProject] = useState<readonly any[] | null>(null);
+    const dragStart = useRef<number | null>(null);
+    const didDrag = useRef(false);
     useEffect(() => { const vis = () => setPaused(document.hidden); document.addEventListener("visibilitychange", vis); return () => document.removeEventListener("visibilitychange", vis) }, []);
     useEffect(() => { if (paused || selectedProject) return; timer.current = window.setInterval(() => setIndex(x => x + 1), 3000); return () => window.clearInterval(timer.current) }, [paused, selectedProject]);
-    const settle = (e: React.TransitionEvent<HTMLDivElement>) => { if (e.target !== e.currentTarget) return; if (index >= 8 || index <= 0) { setMoving(false); setIndex(4); requestAnimationFrame(() => requestAnimationFrame(() => setMoving(true))) } };
+    const settle = (e: React.TransitionEvent<HTMLDivElement>) => { if (e.target !== e.currentTarget) return; if (index >= cardCount * 2 || index <= 0) { setMoving(false); setIndex(cardCount); requestAnimationFrame(() => requestAnimationFrame(() => setMoving(true))) } };
     const step = (direction: number) => { setPaused(true); setIndex(x => x + direction); window.clearTimeout(timer.current); timer.current = window.setTimeout(() => setPaused(false), 1500) };
+    const startDrag = (e: React.PointerEvent<HTMLDivElement>) => { dragStart.current = e.clientX; didDrag.current = false; setPaused(true); };
+    const moveDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+        if (dragStart.current === null) return;
+        const distance = e.clientX - dragStart.current;
+        if (Math.abs(distance) > 8) didDrag.current = true;
+        if (Math.abs(distance) >= 80) {
+            step(distance < 0 ? 1 : -1);
+            dragStart.current = e.clientX;
+        }
+    };
+    const endDrag = (e: React.PointerEvent<HTMLDivElement>) => { if (dragStart.current === null) return; const distance = e.clientX - dragStart.current; dragStart.current = null; if (Math.abs(distance) > 42) step(distance < 0 ? 1 : -1); else setPaused(false); window.setTimeout(() => { didDrag.current = false; }, 0); };
     return <section className="about-pile about-work-cards">
         <div className="pile-copy">
             <span className="micro">MY PROJECTS</span>
             <h2>Featured Work.</h2>
             <p>Interactive card deck showcasing selected projects. Hover or tap a card to explore details.</p>
         </div>
-        <div className="about-work-viewport" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+        <div className="about-work-viewport" onMouseEnter={() => setPaused(true)} onMouseLeave={() => { if (dragStart.current === null) setPaused(false); }} onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={endDrag} onPointerCancel={endDrag} onWheel={e => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); step(e.deltaX > 0 ? 1 : -1); } }}>
             <div className={moving ? "work-track" : "work-track no-motion"} style={{ "--index": index } as React.CSSProperties} onTransitionEnd={settle}>
-                {[...aboutCards, ...aboutCards, ...aboutCards].map((v, i) => <article key={`${v[0]}-${i}`} tabIndex={0} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} onClick={() => setSelectedProject(v)} style={{ cursor: 'pointer' }}>
+                {[...aboutCards, ...aboutCards, ...aboutCards].map((v, i) => <article key={`${v[0]}-${i}`} tabIndex={0} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} onClick={e => { if (didDrag.current) { e.preventDefault(); e.stopPropagation(); return; } setSelectedProject(v); }} style={{ cursor: 'pointer' }}>
                     <span className="tag">PROJECT {v[0]}</span>
                     <div className={`work-art work-art-${i % 4}`}>
                         {v[4] && v[4].length > 0 ? <AutoImageSlider images={v[4]} alt={v[1]} onImageClick={() => setSelectedProject(v)} cover /> : <><i /><b /></>}
@@ -272,11 +293,11 @@ export function SelectedWorkShowcase() {
                 {aboutCards.map((card, i) => (
                     <article key={card[0]} className={`work-stack-card ${i % 2 ? "is-reversed" : ""}`}>
                         <div className="work-stack-copy">
-                            <span className="work-stack-index">PROJECT {card[0]} / 04</span>
+                            <span className="work-stack-index">PROJECT {card[0]} / 05</span>
                             <h2>{card[1]}</h2>
                             <p className="work-stack-summary">{card[3]}</p>
                             <div className="work-stack-tags">
-                                {(card[7] as readonly string[] | undefined)?.map(tag => <span key={tag}>{TECH_ICONS[tag] && <img src={TECH_ICONS[tag]} alt="" aria-hidden="true" width={15} height={15} />}{tag}</span>)}
+                                {(card[7] as readonly string[] | undefined)?.map(tag => <span key={tag}>{TECH_ICONS[tag] ? <img src={TECH_ICONS[tag]} alt="" aria-hidden="true" width={15} height={15} /> : TECH_MARKS[tag] && <i aria-hidden="true">{TECH_MARKS[tag]}</i>}{tag}</span>)}
                             </div>
                             <a href={card[5] === "#" ? undefined : card[5]} target={card[5] === "#" ? undefined : "_blank"} rel={card[5] === "#" ? undefined : "noopener noreferrer"} aria-disabled={card[5] === "#"} className={`work-stack-action${card[5] === "#" ? " is-disabled" : ""}`} onClick={e => { if (card[5] === "#") e.preventDefault(); }}>
                                 <span className="work-action-roll"><i>{card[5] === "#" ? "(NOT YET)" : "VIEW PROJECT ↗"}</i><i>{card[5] === "#" ? "(NOT YET)" : "VIEW PROJECT ↗"}</i></span>

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { aboutCards, AutoImageSlider, ProjectDetailsModal } from "../components/ProjectKit";
 
 export function Home() {
+    const homeProjectSets = [[aboutCards[0], aboutCards[1]], [aboutCards[2], aboutCards[3]], [aboutCards[4], aboutCards[1]]] as const;
     const stage = useRef<HTMLDivElement>(null), drag = useRef({ active: false, x: 0, left: 0 }), isDragging = useRef(false);
     const [selectedProject, setSelectedProject] = useState<readonly any[] | null>(null);
     const [projectSet, setProjectSet] = useState(0);
@@ -11,7 +12,7 @@ export function Home() {
     const [scrollProgress, setScrollProgress] = useState(0);
     useEffect(() => {
         if (projectPaused || selectedProject) return;
-        const timer = window.setInterval(() => setProjectSet(current => (current + 1) % 2), 5200);
+        const timer = window.setInterval(() => setProjectSet(current => (current + 1) % homeProjectSets.length), 5200);
         return () => window.clearInterval(timer);
     }, [projectPaused, selectedProject]);
     const wheel = (e: React.WheelEvent<HTMLDivElement>) => { if (selectedProject) return; if (stage.current) stage.current.scrollLeft += Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX };
@@ -46,12 +47,10 @@ export function Home() {
             <section className="portfolio-canvas" aria-label="Portfolio overview">
                 <Link href="/about" className="portfolio-card p-intro" onPointerMove={moveCardEffect} onPointerLeave={resetCardEffect}><span className="tag">PORTFOLIO</span><h1>[Worakan<br />Portfolio]</h1><p>Developer · Java · React · Nextjs · Click For More</p></Link>
                 <Link href="/about" className="portfolio-card p-about"><span className="tag">ABOUT</span><h2>Welcome to my website click here </h2><span className="card-arrow">↗</span></Link>
-                {aboutCards.map((project, index) => {
-                    const set = index < 2 ? 0 : 1;
-                    const slot = index % 2;
+                {homeProjectSets.flatMap((projects, set) => projects.map((project, slot) => {
                     return <button
                         type="button"
-                        key={project[0]}
+                        key={`${set}-${project[0]}`}
                         onClick={() => setSelectedProject(project)}
                         onMouseEnter={() => setProjectPaused(true)}
                         onMouseLeave={() => setProjectPaused(false)}
@@ -63,13 +62,13 @@ export function Home() {
                     >
                         <div className={`project-media ${slot === 0 ? "media-one" : "media-two"}`}><AutoImageSlider images={project[4]} alt={`${project[1]} preview`} onImageClick={() => setSelectedProject(project)} /></div>
                         <span className="tag">PROJECT {project[0]}</span>
-                        <span className="project-swap-indicator" aria-hidden="true"><small>{projectSet === 0 ? "01—02" : "03—04"}</small><b /></span>
+                        <span className="project-swap-indicator" aria-hidden="true"><small>{projects[0][0]}—{projects[1][0]}</small><b /></span>
                         <h2>{project[1]}</h2>
                         <p>{project[2].replace(/[\[\]]/g, "")}</p>
                         <span className="project-view-reveal">VIEW DETAILS ↗</span>
                         {slot === 1 && <span className="card-arrow">↗</span>}
                     </button>;
-                })}
+                }))}
                 <Link href="/playground" className="portfolio-card p-note" onPointerMove={moveCardEffect} onPointerLeave={resetCardEffect}><span className="tag">PLAYGROUND / PROTOTYPES</span><h2>My journey, technical prototypes, and things I'm learning.</h2><i className="playground-follower" aria-hidden="true">✳</i></Link>
                 <article className="portfolio-card p-contact"><span className="tag">CONTACT</span><h2>Let’s make something useful.</h2><Link className="plain-action" href="/contact#contact-form">CONTACT ME ↗</Link><Link className="plain-action light" href="/work">VIEW WORK ↗</Link></article>
                 <div className="drag-hint" aria-hidden="true"><b>SCROLL / DRAG</b><div className="drag-progress"><i style={{ transform: `scaleX(${Math.max(.04, scrollProgress)})` }} /></div><span>→</span><small>{Math.round(scrollProgress * 100).toString().padStart(2, "0")}%</small></div>

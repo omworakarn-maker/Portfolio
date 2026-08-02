@@ -196,3 +196,7 @@ footer nav a{color:transparent;text-shadow:0 0 #fff,0 42px #fff}footer nav a:hov
 .portfolio-card:is(button){font:inherit;color:inherit;text-align:left;cursor:pointer}
 .panel-wrap .resume-download:disabled{opacity:.55;cursor:not-allowed;translate:none!important}
 .utilities .saved-btn .spin-smile{display:block;font-size:44px;line-height:1;transform:rotate(0deg);transform-origin:center;transition:transform .62s cubic-bezier(.2,.8,.2,1)}.utilities .saved-btn:hover .spin-smile,.utilities .saved-btn:focus-visible .spin-smile{transform:rotate(360deg)}
+/* The project deck can be dragged directly, while its arrow buttons remain available. */
+.about-work-cards .about-work-viewport{cursor:grab;touch-action:pan-y}.about-work-cards .about-work-viewport:active{cursor:grabbing}
+/* Meaningful marks complete the project tags when a tool has no brand logo. */
+.work-stack-tags span i{font:700 15px/1 var(--sans);font-style:normal}

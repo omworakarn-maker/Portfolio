@@ -3,6 +3,18 @@ import { useEffect, useRef } from "react";
 import { PileCards } from "../components/ProjectKit";
 import { Ticker } from "../components/Ticker";
 
+const CAPABILITY_MARKS: Record<string, string> = {
+    "REST APIs": "↗",
+    "iOS Development": "◫",
+    "Mobile UI": "◌",
+    "Responsive UI": "↔",
+    "CSS Animation": "✦"
+};
+
+function CapabilityTag({ tag }: { tag: { name: string, icon?: string } }) {
+    return <span>{tag.icon ? <img src={tag.icon} alt={tag.name} width={14} height={14} /> : CAPABILITY_MARKS[tag.name] && <i aria-hidden="true">{CAPABILITY_MARKS[tag.name]}</i>} {tag.name}</span>;
+}
+
 export function RevealWords({ children, className = "" }: { children: string, className?: string }) {
     const ref = useRef<HTMLHeadingElement>(null);
     useEffect(() => { const el = ref.current; if (!el) return; const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { el.classList.add("is-visible"); observer.disconnect() } }, { threshold: .22 }); observer.observe(el); return () => observer.disconnect() }, []);
@@ -83,8 +95,9 @@ export function AboutPage() {
                                 { name: "Java", icon: "https://skillicons.dev/icons?i=java" },
                                 { name: "Node.js", icon: "https://skillicons.dev/icons?i=nodejs" },
                                 { name: "PostgreSQL", icon: "https://skillicons.dev/icons?i=postgres" },
+                                { name: "Prisma", icon: "https://skillicons.dev/icons?i=prisma" },
                                 { name: "REST APIs" }
-                            ].map(t => <span key={t.name}>{t.icon && <img src={t.icon} alt={t.name} width={14} height={14} />} {t.name}</span>)}
+                            ].map(t => <CapabilityTag key={t.name} tag={t} />)}
                         </div>
                     </div>
                 </div>
@@ -108,8 +121,10 @@ export function AboutPage() {
                                 { name: "Next.js", icon: "https://skillicons.dev/icons?i=nextjs" },
                                 { name: "React", icon: "https://skillicons.dev/icons?i=react" },
                                 { name: "TypeScript", icon: "https://skillicons.dev/icons?i=ts" },
+                                { name: "JavaScript", icon: "https://skillicons.dev/icons?i=js" },
+                                { name: "Tailwind CSS", icon: "https://skillicons.dev/icons?i=tailwind" },
                                 { name: "Vite", icon: "https://skillicons.dev/icons?i=vite" }
-                            ].map(t => <span key={t.name}>{t.icon && <img src={t.icon} alt={t.name} width={14} height={14} />} {t.name}</span>)}
+                            ].map(t => <CapabilityTag key={t.name} tag={t} />)}
                         </div>
                     </div>
                 </div>
@@ -131,9 +146,10 @@ export function AboutPage() {
                         <div className="cap-card-tags">
                             {[
                                 { name: "Swift", icon: "https://skillicons.dev/icons?i=swift" },
-                                { name: "iOS 17" },
-                                { name: "SwiftUI" }
-                            ].map(t => <span key={t.name}>{t.icon && <img src={t.icon} alt={t.name} width={14} height={14} />} {t.name}</span>)}
+                                { name: "SwiftUI", icon: "https://skillicons.dev/icons?i=swift" },
+                                { name: "iOS Development" },
+                                { name: "Mobile UI" }
+                            ].map(t => <CapabilityTag key={t.name} tag={t} />)}
                         </div>
                     </div>
                 </div>
@@ -158,8 +174,12 @@ export function AboutPage() {
                             {[
                                 { name: "HTML5", icon: "https://skillicons.dev/icons?i=html" },
                                 { name: "CSS3", icon: "https://skillicons.dev/icons?i=css" },
-                                { name: "Responsive" }
-                            ].map(t => <span key={t.name}>{t.icon && <img src={t.icon} alt={t.name} width={14} height={14} />} {t.name}</span>)}
+                                { name: "Figma", icon: "https://skillicons.dev/icons?i=figma" },
+                                { name: "Responsive UI" },
+                                { name: "CSS Animation" },
+                                { name: "Git", icon: "https://skillicons.dev/icons?i=git" },
+                                { name: "GitHub", icon: "https://skillicons.dev/icons?i=github" }
+                            ].map(t => <CapabilityTag key={t.name} tag={t} />)}
                         </div>
                     </div>
                 </div>
@@ -189,6 +209,7 @@ export function AboutPage() {
                     { name: "GitHub", category: "Version Control", icon: "https://skillicons.dev/icons?i=github" },
                     { name: "Vite", category: "Build Tools", icon: "https://skillicons.dev/icons?i=vite" },
                     { name: "Tailwind CSS", category: "Styling", icon: "https://skillicons.dev/icons?i=tailwind" },
+                    { name: "Figma", category: "UI Design & Prototyping", icon: "https://skillicons.dev/icons?i=figma" },
                     { name: "Prisma", category: "ORM", icon: "https://skillicons.dev/icons?i=prisma" },
                     { name: "Vercel", category: "Deployment", icon: "https://skillicons.dev/icons?i=vercel" },
                     { name: "PostgreSQL", category: "Database", icon: "https://skillicons.dev/icons?i=postgres" },

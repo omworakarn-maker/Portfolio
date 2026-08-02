@@ -261,11 +261,13 @@ export function PileCards() {
     const dragStart = useRef<number | null>(null);
     const didDrag = useRef(false);
     useEffect(() => { const vis = () => setPaused(document.hidden); document.addEventListener("visibilitychange", vis); return () => document.removeEventListener("visibilitychange", vis) }, []);
-    useEffect(() => { if (paused || selectedProject) return; timer.current = window.setInterval(() => step(1), 3000); return () => window.clearInterval(timer.current) }, [paused, selectedProject, index]);
+    useEffect(() => { if (paused || selectedProject) return; timer.current = window.setInterval(() => step(1, false), 3000); return () => window.clearInterval(timer.current) }, [paused, selectedProject, index]);
     const settle = (e: React.TransitionEvent<HTMLDivElement>) => { if (e.target !== e.currentTarget) return; if (index >= cardCount * 2 || index <= 0) { setMoving(false); setIndex(cardCount); requestAnimationFrame(() => requestAnimationFrame(() => setMoving(true))) } };
-    const step = (direction: number) => {
-        setPaused(true);
-        window.clearTimeout(timer.current);
+    const step = (direction: number, pauseAfterMove = true) => {
+        if (pauseAfterMove) {
+            setPaused(true);
+            window.clearTimeout(timer.current);
+        }
         const forwardEdge = direction > 0 && index >= cardCount * 2 - 1;
         const backwardEdge = direction < 0 && index <= 1;
         if (forwardEdge || backwardEdge) {
@@ -276,7 +278,7 @@ export function PileCards() {
         } else {
             setIndex(x => x + direction);
         }
-        timer.current = window.setTimeout(() => setPaused(false), 1500);
+        if (pauseAfterMove) timer.current = window.setTimeout(() => setPaused(false), 1500);
     };
     const startDrag = (e: React.PointerEvent<HTMLDivElement>) => { dragStart.current = e.clientX; didDrag.current = false; setPaused(true); };
     const moveDrag = (e: React.PointerEvent<HTMLDivElement>) => {

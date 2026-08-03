@@ -21,5 +21,5 @@ export function PageHero({ page }: { page: InteriorPageKey }) {
 }
 
 export function PageEnd({ tickerText = "KEEP THE CONVERSATION MOVING" }: { tickerText?: string }) {
-    return <><Ticker dark text={tickerText} /><section className="end-card"><span className="micro">NEXT</span><h2>One bright thing can lead to another.</h2><Link className="capsule" href="/">Back to the beginning ↗</Link></section></>;
+    return null;
 }

@@ -1,6 +1,7 @@
 "use client";
-import { PageEnd, PageHero } from "../components/PageFrame";
+import { PageHero } from "../components/PageFrame";
+import { Ticker } from "../components/Ticker";
 
 export function ProcessPage() {
-    return <><PageHero page="process" /><PageEnd tickerText="COMING SOON" /></>;
+    return <><PageHero page="process" /><Ticker dark text="COMING SOON" /></>;
 }

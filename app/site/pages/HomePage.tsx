@@ -1,12 +1,12 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { aboutCards, AutoImageSlider, ProjectDetailsModal } from "../components/ProjectKit";
+import { aboutCards, AutoImageSlider, ProjectDetailsModal, type ProjectCard } from "../components/ProjectKit";
 
 export function Home() {
     const homeProjectSets = [[aboutCards[0], aboutCards[1]], [aboutCards[2], aboutCards[3]], [aboutCards[4], aboutCards[1]]] as const;
     const stage = useRef<HTMLDivElement>(null), drag = useRef({ active: false, x: 0, left: 0 }), isDragging = useRef(false);
-    const [selectedProject, setSelectedProject] = useState<readonly any[] | null>(null);
+    const [selectedProject, setSelectedProject] = useState<ProjectCard | null>(null);
     const [projectSet, setProjectSet] = useState(0);
     const [projectPaused, setProjectPaused] = useState(false);
     useEffect(() => {
@@ -44,7 +44,7 @@ export function Home() {
                 {homeProjectSets.flatMap((projects, set) => projects.map((project, slot) => {
                     return <button
                         type="button"
-                        key={`${set}-${project[0]}`}
+                        key={`${set}-${project.id}`}
                         onClick={() => setSelectedProject(project)}
                         onMouseEnter={() => setProjectPaused(true)}
                         onMouseLeave={() => setProjectPaused(false)}
@@ -54,11 +54,11 @@ export function Home() {
                         aria-hidden={projectSet !== set}
                         tabIndex={projectSet === set ? 0 : -1}
                     >
-                        <div className={`project-media ${slot === 0 ? "media-one" : "media-two"}`}><AutoImageSlider images={project[4]} alt={`${project[1]} preview`} onImageClick={() => setSelectedProject(project)} /></div>
-                        <span className="tag">PROJECT {project[0]}</span>
-                        <span className="project-swap-indicator" aria-hidden="true"><small>{projects[0][0]}—{projects[1][0]}</small><b /></span>
-                        <h2>{project[1]}</h2>
-                        <p>{project[2].replace(/[\[\]]/g, "")}</p>
+                        <div className={`project-media ${slot === 0 ? "media-one" : "media-two"}`}><AutoImageSlider images={project.images} alt={`${project.title} preview`} onImageClick={() => setSelectedProject(project)} /></div>
+                        <span className="tag">PROJECT {project.id}</span>
+                        <span className="project-swap-indicator" aria-hidden="true"><small>{projects[0].id}—{projects[1].id}</small><b /></span>
+                        <h2>{project.title}</h2>
+                        <p>{project.stack.replace(/[\[\]]/g, "")}</p>
                         <span className="project-view-reveal">VIEW DETAILS ↗</span>
                         {slot === 1 && <span className="card-arrow">↗</span>}
                     </button>;

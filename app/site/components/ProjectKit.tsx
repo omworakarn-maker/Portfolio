@@ -153,15 +153,22 @@ const TECH_MARKS: Record<string, string> = {
     "Responsive UI": "↔"
 };
 
-export const aboutCards = [
-    ["01", "TODO LIST", "[Next.js · React · TypeScript]", "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI.", ["/todo-pro-01-dashboard.png", "/todo-pro-02.png", "/todo-pro-03.png"], "https://todolist-green-tau.vercel.app/", "This Todo List application was built to solve task management inefficiencies. It features a complete dashboard, secure authentication, and real-time state updates. Users can customize their profiles, view analytics of completed tasks, and easily manage their daily workflow using a modern responsive interface.", ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "Vercel"], "https://github.com/omworakarn-maker/todolist"],
-    ["02", "CAFE CAT", "[HTML5 · CSS3 · JavaScript]", "An interactive website for a cat cafe showcasing menus, cozy atmosphere, and responsive layout.", ["/cafe-pro-01-home.png", "/cafe-pro-02-cats.png", "/cafe-pro-03-menu.png", "/cafe-pro-04-events.png", "/cafe-pro-05-booking.png"], "https://cafecatdemowebsite.vercel.app/", "A fully responsive front-end website for a fictional cat cafe. Features include a dynamic menu, beautiful CSS animations, and a cozy aesthetic designed to attract customers.", ["HTML5", "CSS3", "JavaScript"], "https://github.com/omworakarn-maker/cafecatdemowebsite"],
-    ["03", "GO WITH US", "[SwiftUI · Node.js · PostgreSQL]", "A modern, AI-Powered travel matching iOS application built with SwiftUI and a Node.js backend.", ["/gowithus-1.png?v=1", "/gowithus-2.png?v=1", "/gowithus-3.png?v=1", "/gowithus-4.png?v=1"], "#", "An iOS mobile application that matches travelers based on their preferences. Built natively with SwiftUI for a smooth user experience, backed by a robust Node.js backend and PostgreSQL database.", ["SwiftUI", "Node.js", "PostgreSQL", "Render"], "#"],
-    ["04", "PORTFOLIO", "[Next.js 16 · React 19 · Vite]", "A modern interactive single-page portfolio with dynamic card deck, smooth animations, and clean styling.", ["/portfolio-1.png?v=1"], "#", "This portfolio itself! A highly interactive single-page application showcasing custom animations, interactive card decks, and advanced CSS techniques. Built with Next.js and React.", ["Next.js", "React", "TypeScript", "Vite"], "#"],
-    ["05", "FIGMA PROTOTYPE", "[Figma · UI Design · Prototype]", "A collection of interface explorations, flows, and clickable prototypes focused on clear, thoughtful user experiences.", ["/figma-cat-01-welcome.png", "/figma-cat-02-onboarding.png", "/figma-cat-03-home.png", "/figma-cat-04-menu.png", "/figma-cat-05-search.png", "/figma-cat-06-cat-detail.png", "/figma-cat-08-login.png", "/figma-cat-09-sign-up.png", "/figma-cat-10-reset-password.png", "/figma-cat-11-about-us.png", "/figma-cat-11-order.png?v=2"], "https://www.figma.com/proto/kpiZifTnW2jPAZ7XSQjUKD/M-cat-031?node-id=2-4&p=f&t=rsnWPM2MoV8mV0UG-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A4", "A work-in-progress collection of Figma explorations—from early wireframes to interactive prototypes. The case study and live Figma link will be added soon.", ["Figma", "UI Design", "Prototype", "Responsive UI"], "#"]
-] as const;
+export type ProjectCard = {
+    id: string; title: string; stack: string; summary: string; images: string[];
+    primaryUrl: string; description: string; tools: string[]; githubUrl: string; buttonLabel: string;
+    videoUrl?: string;
+};
 
-export function ProjectDetailsModal({ project, onClose }: { project: readonly any[], onClose: () => void }) {
+// PROJECT CONTENT — edit named fields below; no need to remember array numbers.
+export const aboutCards: ProjectCard[] = [
+    { id: "01", title: "TODO LIST", stack: "[Next.js · React · TypeScript]", summary: "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI.", images: ["/todo-pro-01-dashboard.png", "/todo-pro-02.png", "/todo-pro-03.png"], primaryUrl: "https://todolist-green-tau.vercel.app/", githubUrl: "https://github.com/omworakarn-maker/todolist", description: "This Todo List application was built to solve task management inefficiencies. It features a complete dashboard, secure authentication, and real-time state updates. Users can customize their profiles, view analytics of completed tasks, and easily manage their daily workflow using a modern responsive interface.", tools: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "Vercel"], buttonLabel: "VIEW PROJECT ↗" },
+    { id: "02", title: "CAFE CAT", stack: "[HTML5 · CSS3 · JavaScript]", summary: "An interactive website for a cat cafe showcasing menus, cozy atmosphere, and responsive layout.", images: ["/cafe-pro-01-home.png", "/cafe-pro-02-cats.png", "/cafe-pro-03-menu.png", "/cafe-pro-04-events.png", "/cafe-pro-05-booking.png"], primaryUrl: "https://cafecatdemowebsite.vercel.app/", githubUrl: "https://github.com/omworakarn-maker/cafecatdemowebsite", description: "A fully responsive front-end website for a fictional cat cafe. Features include a dynamic menu, beautiful CSS animations, and a cozy aesthetic designed to attract customers.", tools: ["HTML5", "CSS3", "JavaScript"], buttonLabel: "VIEW PROJECT ↗" },
+    { id: "03", title: "GO WITH US", stack: "[SwiftUI · Node.js · PostgreSQL]", summary: "A modern, AI-Powered travel matching iOS application built with SwiftUI and a Node.js backend.", images: ["/gowithus-1.png?v=1", "/gowithus-2.png?v=1", "/gowithus-3.png?v=1", "/gowithus-4.png?v=1"], primaryUrl: "#", githubUrl: "https://github.com/omworakarn-maker/go-with-us", description: "An iOS mobile application that matches travelers based on their preferences. Built natively with SwiftUI for a smooth user experience, backed by a robust Node.js backend and PostgreSQL database.", tools: ["SwiftUI", "Node.js", "PostgreSQL", "Render"], buttonLabel: "WATCH DEMO ↗", videoUrl: "/gowithus-demo.mp4" },
+    { id: "04", title: "PORTFOLIO", stack: "[Next.js 16 · React 19 · Vite]", summary: "A modern interactive single-page portfolio with dynamic card deck, smooth animations, and clean styling.", images: ["/portfolio-1.png?v=1"], primaryUrl: "#", githubUrl: "#", description: "This portfolio itself! A highly interactive single-page application showcasing custom animations, interactive card decks, and advanced CSS techniques. Built with Next.js and React.", tools: ["Next.js", "React", "TypeScript", "Vite"], buttonLabel: "(SECRET PROJECT)" },
+    { id: "05", title: "FIGMA PROTOTYPE", stack: "[Figma · UI Design · Prototype]", summary: "A collection of interface explorations, flows, and clickable prototypes focused on clear, thoughtful user experiences.", images: ["/figma-cat-01-welcome.png", "/figma-cat-02-onboarding.png", "/figma-cat-03-home.png", "/figma-cat-04-menu.png", "/figma-cat-05-search.png", "/figma-cat-06-cat-detail.png", "/figma-cat-08-login.png", "/figma-cat-09-sign-up.png", "/figma-cat-10-reset-password.png", "/figma-cat-11-about-us.png", "/figma-cat-11-order.png?v=2"], primaryUrl: "https://www.figma.com/proto/kpiZifTnW2jPAZ7XSQjUKD/M-cat-031?node-id=2-4&p=f&t=rsnWPM2MoV8mV0UG-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A4", githubUrl: "#", description: "A work-in-progress collection of Figma explorations—from early wireframes to interactive prototypes. The case study and live Figma link will be added soon.", tools: ["Figma", "UI Design", "Prototype", "Responsive UI"], buttonLabel: "VIEW PROJECT ↗" },
+];
+
+export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard, onClose: () => void }) {
     const [mounted, setMounted] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
 
@@ -190,13 +197,7 @@ export function ProjectDetailsModal({ project, onClose }: { project: readonly an
         setTimeout(() => onClose(), 320);
     };
 
-    const title = project[1];
-    const shortDesc = project[3];
-    const imageRaw = project[4];
-    const images = Array.isArray(imageRaw) ? imageRaw : (imageRaw ? [imageRaw] : []);
-    const link = project[5] || "#";
-    const fullDesc = project[6] || shortDesc;
-    const techStack = project[7] as string[] | undefined;
+    const { title, images, primaryUrl: link, description: fullDesc, tools: techStack, videoUrl } = project;
 
     return createPortal(
         <div className={`project-modal-backdrop${isClosing ? " is-closing" : ""}`} onClick={e => { e.stopPropagation(); handleClose(); }} onWheel={e => e.stopPropagation()} onPointerDown={e => e.stopPropagation()} onPointerMove={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
@@ -227,6 +228,16 @@ export function ProjectDetailsModal({ project, onClose }: { project: readonly an
                         </div>
                     )}
 
+                    {videoUrl && (
+                        <div style={{ marginBottom: '30px' }}>
+                            <div style={{ fontSize: '11px', fontWeight: '700', fontFamily: 'var(--sans)', letterSpacing: '0.05em', color: '#666', textTransform: 'uppercase', marginBottom: '12px' }}>App Walkthrough</div>
+                            <video controls playsInline preload="metadata" style={{ display: 'block', width: '100%', maxHeight: '440px', borderRadius: '16px', background: '#111', border: '1px solid #ddd' }}>
+                                <source src={videoUrl} type="video/mp4" />
+                                Your browser does not support this video.
+                            </video>
+                        </div>
+                    )}
+
                     {images.length > 0 && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                             <div style={{ height: '280px', borderRadius: '16px', overflow: 'hidden', border: '1px solid #ddd', position: 'relative', backgroundColor: 'var(--paper)' }}>
@@ -241,8 +252,8 @@ export function ProjectDetailsModal({ project, onClose }: { project: readonly an
 
                 {/* FOOTER ACTION */}
                 <div style={{ padding: '20px 30px', borderTop: '1px solid #ddd', display: 'flex', justifyContent: 'flex-end', gap: '10px', background: 'var(--paper)' }}>
-                    {project[8] && project[8] !== "#" && (
-                        <a href={project[8]} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '12px 24px', backgroundColor: '#111', color: '#fff', textDecoration: 'none', borderRadius: '999px', fontFamily: 'var(--sans)', fontWeight: '700', fontSize: '12px', transition: 'background 0.2s' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--red)'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.background = '#111'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
+                    {project.githubUrl && project.githubUrl !== "#" && (
+                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '12px 24px', backgroundColor: '#111', color: '#fff', textDecoration: 'none', borderRadius: '999px', fontFamily: 'var(--sans)', fontWeight: '700', fontSize: '12px', transition: 'background 0.2s' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--red)'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.background = '#111'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
                             <div style={{ position: 'relative', height: '17px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                                 <span className="roll-first" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>GITHUB ↗</span>
                                 <span className="roll-second" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>GITHUB ↗</span>
@@ -254,7 +265,7 @@ export function ProjectDetailsModal({ project, onClose }: { project: readonly an
                             <span className="roll-first" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
                             <span className="roll-second" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
                         </div>
-                    </a> : <span className="capsule" aria-disabled="true">VIEW PROJECT (NOT YET)</span>}
+                    </a> : <span className="project-modal-disabled-action" aria-disabled="true">{project.buttonLabel}</span>}
                 </div>
             </div>
         </div>,
@@ -265,7 +276,7 @@ export function ProjectDetailsModal({ project, onClose }: { project: readonly an
 export function PileCards() {
     const cardCount = aboutCards.length;
     const [index, setIndex] = useState<number>(cardCount), [moving, setMoving] = useState(true), [paused, setPaused] = useState(false), timer = useRef<number | undefined>(undefined);
-    const [selectedProject, setSelectedProject] = useState<readonly any[] | null>(null);
+    const [selectedProject, setSelectedProject] = useState<ProjectCard | null>(null);
     const dragStart = useRef<number | null>(null);
     const didDrag = useRef(false);
     useEffect(() => { const vis = () => setPaused(document.hidden); document.addEventListener("visibilitychange", vis); return () => document.removeEventListener("visibilitychange", vis) }, []);
@@ -307,15 +318,15 @@ export function PileCards() {
         </div>
         <div className="about-work-viewport" onMouseEnter={() => setPaused(true)} onMouseLeave={() => { if (dragStart.current === null) setPaused(false); }} onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={endDrag} onPointerCancel={endDrag} onWheel={e => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); step(e.deltaX > 0 ? 1 : -1); } }}>
             <div className={moving ? "work-track" : "work-track no-motion"} style={{ "--index": index } as React.CSSProperties} onTransitionEnd={settle}>
-                {[...aboutCards, ...aboutCards, ...aboutCards].map((v, i) => <article key={`${v[0]}-${i}`} tabIndex={0} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} onClick={e => { if (didDrag.current) { e.preventDefault(); e.stopPropagation(); return; } setSelectedProject(v); }} style={{ cursor: 'pointer' }}>
-                    <span className="tag">PROJECT {v[0]}</span>
+                {[...aboutCards, ...aboutCards, ...aboutCards].map((v, i) => <article key={`${v.id}-${i}`} tabIndex={0} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} onClick={e => { if (didDrag.current) { e.preventDefault(); e.stopPropagation(); return; } setSelectedProject(v); }} style={{ cursor: 'pointer' }}>
+                    <span className="tag">PROJECT {v.id}</span>
                     <div className={`work-art work-art-${i % 4}`}>
-                        {v[4] && v[4].length > 0 ? <AutoImageSlider images={v[4]} alt={v[1]} onImageClick={() => setSelectedProject(v)} cover /> : <><i /><b /></>}
+                        {v.images.length > 0 ? <AutoImageSlider images={v.images} alt={v.title} onImageClick={() => setSelectedProject(v)} cover /> : <><i /><b /></>}
                     </div>
-                    <h3 className="card-title-roll"><span>{v[1]}</span><span aria-hidden="true">{v[1]}</span></h3>
+                    <h3 className="card-title-roll"><span>{v.title}</span><span aria-hidden="true">{v.title}</span></h3>
                     <div className="work-detail">
-                        <small>{v[2]}</small>
-                        <p>{v[3]}</p>
+                        <small>{v.stack}</small>
+                        <p>{v.summary}</p>
                         <em>VIEW DETAILS ↗</em>
                     </div>
                 </article>)}
@@ -330,32 +341,39 @@ export function PileCards() {
 }
 
 export function SelectedWorkShowcase() {
+    const [selectedProject, setSelectedProject] = useState<ProjectCard | null>(null);
     return (
         <section className="work-showcase">
             <div className="work-stack-container">
                 {aboutCards.map((card, i) => (
-                    <article key={card[0]} className={`work-stack-card ${i % 2 ? "is-reversed" : ""}`}>
+                    <article key={card.id} className={`work-stack-card ${i % 2 ? "is-reversed" : ""}`}>
                         <div className="work-stack-copy">
-                            <span className="work-stack-index">PROJECT {card[0]} / 05</span>
-                            <h2>{card[1]}</h2>
-                            <p className="work-stack-summary">{card[3]}</p>
+                            <span className="work-stack-index">PROJECT {card.id} / 05</span>
+                            <h2>{card.title}</h2>
+                            <p className="work-stack-summary">{card.summary}</p>
                             <div className="work-stack-tags">
-                                {(card[7] as readonly string[] | undefined)?.map(tag => <span key={tag}>{TECH_ICONS[tag] ? <img src={TECH_ICONS[tag]} alt="" aria-hidden="true" width={15} height={15} /> : TECH_MARKS[tag] && <i aria-hidden="true">{TECH_MARKS[tag]}</i>}{tag}</span>)}
+                                {card.tools.map(tag => <span key={tag}>{TECH_ICONS[tag] ? <img src={TECH_ICONS[tag]} alt="" aria-hidden="true" width={15} height={15} /> : TECH_MARKS[tag] && <i aria-hidden="true">{TECH_MARKS[tag]}</i>}{tag}</span>)}
                             </div>
                             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                                <a href={card[5] === "#" ? undefined : card[5]} target={card[5] === "#" ? undefined : "_blank"} rel={card[5] === "#" ? undefined : "noopener noreferrer"} aria-disabled={card[5] === "#"} className={`work-stack-action${card[5] === "#" ? " is-disabled" : ""}`} onClick={e => { if (card[5] === "#") e.preventDefault(); }}>
-                                    <span className="work-action-roll"><i>{card[5] === "#" ? "(NOT YET)" : "VIEW PROJECT ↗"}</i><i>{card[5] === "#" ? "(NOT YET)" : "VIEW PROJECT ↗"}</i></span>
-                                </a>
-                                {card[8] && card[8] !== "#" && (
-                                    <a href={card[8] as string} target="_blank" rel="noopener noreferrer" className="work-stack-action">
+                                {card.videoUrl ? (
+                                    <button type="button" className="work-stack-action" onClick={() => setSelectedProject(card)}>
+                                        <span className="work-action-roll"><i>{card.buttonLabel}</i><i>{card.buttonLabel}</i></span>
+                                    </button>
+                                ) : (
+                                    <a href={card.primaryUrl === "#" ? undefined : card.primaryUrl} target={card.primaryUrl === "#" ? undefined : "_blank"} rel={card.primaryUrl === "#" ? undefined : "noopener noreferrer"} aria-disabled={card.primaryUrl === "#"} className={`work-stack-action${card.primaryUrl === "#" ? " is-disabled" : ""}`} onClick={e => { if (card.primaryUrl === "#") e.preventDefault(); }}>
+                                        <span className="work-action-roll"><i>{card.buttonLabel}</i><i>{card.buttonLabel}</i></span>
+                                    </a>
+                                )}
+                                {card.githubUrl !== "#" && (
+                                    <a href={card.githubUrl} target="_blank" rel="noopener noreferrer" className="work-stack-action">
                                         <span className="work-action-roll"><i>GITHUB ↗</i><i>GITHUB ↗</i></span>
                                     </a>
                                 )}
                             </div>
                         </div>
                         <div className="work-stack-media">
-                            {card[4] && card[4].length > 0 ? (
-                                <AutoImageSlider images={card[4]} alt={card[1]} cover={false} showControls />
+                            {card.images.length > 0 ? (
+                                <AutoImageSlider images={card.images} alt={card.title} cover={false} showControls />
                             ) : (
                                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.05)', font: '14px var(--mono)' }}>Media not available</div>
                             )}
@@ -363,6 +381,7 @@ export function SelectedWorkShowcase() {
                     </article>
                 ))}
             </div>
+            {selectedProject && <ProjectDetailsModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
         </section>
     );
 }

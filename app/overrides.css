@@ -418,3 +418,19 @@
 .contact-success h2{font-size:clamp(52px,8vw,112px)}
 /* Keep capability markers visually aligned with their tool logos. */
 .cap-card-tags span i{font:700 15px/1 var(--sans);font-style:normal}
+/* Match unavailable project actions in the detail card to Work's white action button. */
+.project-modal-disabled-action {
+  display: inline-grid;
+  place-items: center;
+  min-width: 180px;
+  height: 48px;
+  padding: 0 20px;
+  overflow: hidden;
+  border: 1px solid #111;
+  background: #fff;
+  color: #111;
+  font: 700 11px var(--mono);
+  text-align: center;
+  cursor: not-allowed;
+  pointer-events: none;
+}

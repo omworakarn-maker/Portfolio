@@ -403,6 +403,17 @@
   animation: none !important;
 }
 .project-media { background: #1a1a1a; }
+
+/* Fixed CTA frame: only the nested text changes position on hover. */
+.rolling-capsule,.rolling-capsule:hover,.rolling-capsule:focus-visible{display:inline-grid!important;place-items:center;min-width:212px;height:44px;padding:1px 22px;border:0;border-radius:0;background:#000;color:#fff!important;overflow:hidden;translate:none!important;transform:none!important;scale:1!important;box-shadow:none!important;text-decoration:none;font:700 12px/17px "DM Sans",sans-serif;text-shadow:none!important;transition:background-color .2s var(--smooth)!important}
+.rolling-capsule:hover,.rolling-capsule:focus-visible{background:#000;color:#fff!important;translate:none!important;transform:none!important;scale:1!important}
+.rolling-capsule.form-submit-btn:hover{background:var(--red)}
+.capsule-label-roll{position:relative;display:block;width:100%;height:17px;overflow:hidden;line-height:17px;text-align:center}
+.capsule-label-roll i{position:absolute;inset:0;display:block;color:#fff!important;font-style:normal;translate:none!important;transition:transform .34s var(--smooth)!important}
+.capsule-label-roll i+i{transform:translateY(110%)!important}
+.rolling-capsule:hover .capsule-label-roll i:first-child,.rolling-capsule:focus-visible .capsule-label-roll i:first-child{transform:translateY(-110%)!important}
+.rolling-capsule:hover .capsule-label-roll i+i,.rolling-capsule:focus-visible .capsule-label-roll i+i{transform:translateY(0)!important}
+.rolling-capsule:disabled{opacity:.6;cursor:wait}.rolling-capsule:disabled .capsule-label-roll i{transition:none!important}
 /* Contact confirmation: preserve breathing room while keeping the headline balanced. */
 .contact-success h2{font-size:clamp(52px,8vw,112px)}
 /* Keep capability markers visually aligned with their tool logos. */

@@ -434,3 +434,43 @@
   cursor: not-allowed;
   pointer-events: none;
 }
+
+.project-modal-demo-action {
+  display: inline-grid;
+  place-items: center;
+  min-width: 180px;
+  height: 48px;
+  padding: 0 20px;
+  border: 1px solid #111;
+  background: #111;
+  color: #fff;
+  font: 700 11px var(--mono);
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.project-modal-demo-action:hover,
+.project-modal-demo-action:focus-visible { background: var(--red); outline: none; }
+
+.project-demo-roll {
+  position: relative;
+  display: block;
+  width: 140px;
+  height: 17px;
+  overflow: hidden;
+  line-height: 17px;
+}
+
+.project-demo-roll i {
+  position: absolute;
+  inset: 0;
+  display: block;
+  font-style: normal;
+  transition: transform .34s var(--smooth);
+}
+
+.project-demo-roll i + i { transform: translateY(110%); }
+.project-modal-demo-action:hover .project-demo-roll i:first-child,
+.project-modal-demo-action:focus-visible .project-demo-roll i:first-child { transform: translateY(-110%); }
+.project-modal-demo-action:hover .project-demo-roll i + i,
+.project-modal-demo-action:focus-visible .project-demo-roll i + i { transform: translateY(0); }

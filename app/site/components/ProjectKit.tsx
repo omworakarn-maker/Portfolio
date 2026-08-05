@@ -49,7 +49,7 @@ export function Lightbox({ images, initialIdx, onClose }: { images: string[], in
     );
 }
 
-export function AutoImageSlider({ images, alt, onImageClick, cover = false, showControls = false, pauseWhenDetailOpen = true }: { images: readonly string[] | string[], alt: string, onImageClick?: () => void, cover?: boolean, showControls?: boolean, pauseWhenDetailOpen?: boolean }) {
+export function AutoImageSlider({ images, alt, onImageClick, cover = false, showControls = false, pauseWhenDetailOpen = true, paused = false }: { images: readonly string[] | string[], alt: string, onImageClick?: () => void, cover?: boolean, showControls?: boolean, pauseWhenDetailOpen?: boolean, paused?: boolean }) {
     const [idx, setIdx] = useState(0);
     const [hovered, setHovered] = useState(false);
     const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -81,10 +81,10 @@ export function AutoImageSlider({ images, alt, onImageClick, cover = false, show
     }, []);
 
     useEffect(() => {
-        if (!allLoaded || len <= 1 || hovered || (pauseWhenDetailOpen && detailOpen)) return;
+        if (!allLoaded || len <= 1 || hovered || paused || (pauseWhenDetailOpen && detailOpen)) return;
         const timer = setInterval(() => moveImage(1), 3500);
         return () => clearInterval(timer);
-    }, [allLoaded, len, hovered, detailOpen, pauseWhenDetailOpen]);
+    }, [allLoaded, len, hovered, paused, detailOpen, pauseWhenDetailOpen]);
 
     if (len === 0) return <><i /><b /></>;
 
@@ -215,7 +215,7 @@ export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard
                     <p style={{ lineHeight: '1.6', fontSize: '14px', fontFamily: 'var(--mono)', margin: '0 0 30px 0' }}>{fullDesc}</p>
 
                     {techStack && techStack.length > 0 && (
-                        <div style={{ marginBottom: '30px' }}>
+                        <div id="project-demo" style={{ marginBottom: '30px' }}>
                             <div style={{ fontSize: '11px', fontWeight: '700', fontFamily: 'var(--sans)', letterSpacing: '0.05em', color: '#666', textTransform: 'uppercase', marginBottom: '12px' }}>Technologies Used</div>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                                 {techStack.map((tech: string) => (
@@ -260,7 +260,9 @@ export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard
                             </div>
                         </a>
                     )}
-                    {link !== "#" ? <a href={link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '12px 24px', backgroundColor: '#111', color: '#fff', textDecoration: 'none', borderRadius: '999px', fontFamily: 'var(--sans)', fontWeight: '700', fontSize: '12px', transition: 'background 0.2s' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--red)'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.background = '#111'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
+                    {videoUrl ? <button type="button" className="project-modal-demo-action" onClick={() => { const demo = document.getElementById('project-demo'); demo?.scrollIntoView({ behavior: 'smooth', block: 'center' }); demo?.querySelector('video')?.play().catch(() => undefined); }}>
+                        <span className="project-demo-roll"><i>{project.buttonLabel}</i><i>{project.buttonLabel}</i></span>
+                    </button> : link !== "#" ? <a href={link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '12px 24px', backgroundColor: '#111', color: '#fff', textDecoration: 'none', borderRadius: '999px', fontFamily: 'var(--sans)', fontWeight: '700', fontSize: '12px', transition: 'background 0.2s' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--red)'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.background = '#111'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
                         <div style={{ position: 'relative', height: '17px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                             <span className="roll-first" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
                             <span className="roll-second" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
@@ -321,7 +323,7 @@ export function PileCards() {
                 {[...aboutCards, ...aboutCards, ...aboutCards].map((v, i) => <article key={`${v.id}-${i}`} tabIndex={0} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} onClick={e => { if (didDrag.current) { e.preventDefault(); e.stopPropagation(); return; } setSelectedProject(v); }} style={{ cursor: 'pointer' }}>
                     <span className="tag">PROJECT {v.id}</span>
                     <div className={`work-art work-art-${i % 4}`}>
-                        {v.images.length > 0 ? <AutoImageSlider images={v.images} alt={v.title} onImageClick={() => setSelectedProject(v)} cover /> : <><i /><b /></>}
+                        {v.images.length > 0 ? <AutoImageSlider images={v.images} alt={v.title} onImageClick={() => setSelectedProject(v)} cover paused={paused} /> : <><i /><b /></>}
                     </div>
                     <h3 className="card-title-roll"><span>{v.title}</span><span aria-hidden="true">{v.title}</span></h3>
                     <div className="work-detail">
@@ -342,11 +344,12 @@ export function PileCards() {
 
 export function SelectedWorkShowcase() {
     const [selectedProject, setSelectedProject] = useState<ProjectCard | null>(null);
+    const [hoveredProject, setHoveredProject] = useState<string | null>(null);
     return (
         <section className="work-showcase">
             <div className="work-stack-container">
                 {aboutCards.map((card, i) => (
-                    <article key={card.id} className={`work-stack-card ${i % 2 ? "is-reversed" : ""}`}>
+                    <article key={card.id} className={`work-stack-card ${i % 2 ? "is-reversed" : ""}`} onMouseEnter={() => setHoveredProject(card.id)} onMouseLeave={() => setHoveredProject(null)} onFocus={() => setHoveredProject(card.id)} onBlur={() => setHoveredProject(null)}>
                         <div className="work-stack-copy">
                             <span className="work-stack-index">PROJECT {card.id} / 05</span>
                             <h2>{card.title}</h2>
@@ -373,7 +376,7 @@ export function SelectedWorkShowcase() {
                         </div>
                         <div className="work-stack-media">
                             {card.images.length > 0 ? (
-                                <AutoImageSlider images={card.images} alt={card.title} cover={false} showControls />
+                                <AutoImageSlider images={card.images} alt={card.title} cover={false} showControls paused={hoveredProject === card.id} />
                             ) : (
                                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.05)', font: '14px var(--mono)' }}>Media not available</div>
                             )}

@@ -54,7 +54,7 @@ export function Home() {
                         aria-hidden={projectSet !== set}
                         tabIndex={projectSet === set ? 0 : -1}
                     >
-                        <div className={`project-media ${slot === 0 ? "media-one" : "media-two"}`}><AutoImageSlider images={project.images} alt={`${project.title} preview`} onImageClick={() => setSelectedProject(project)} /></div>
+                        <div className={`project-media ${slot === 0 ? "media-one" : "media-two"}`}><AutoImageSlider images={project.images} alt={`${project.title} preview`} onImageClick={() => setSelectedProject(project)} paused={projectPaused} /></div>
                         <span className="tag">PROJECT {project.id}</span>
                         <span className="project-swap-indicator" aria-hidden="true"><small>{projects[0].id}—{projects[1].id}</small><b /></span>
                         <h2>{project.title}</h2>

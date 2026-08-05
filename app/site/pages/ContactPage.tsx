@@ -100,8 +100,8 @@ export function ContactForm() {
 
                 {status === "error" && <p style={{ color: "red", fontSize: "14px" }}>Something went wrong. Please try again.</p>}
 
-                <button type="submit" className="capsule form-submit-btn" disabled={status === "loading"}>
-                    {status === "loading" ? "SENDING..." : "SEND MESSAGE ↗"}
+                <button type="submit" className="capsule rolling-capsule form-submit-btn" disabled={status === "loading"}>
+                    <span className="capsule-label-roll"><i>{status === "loading" ? "SENDING..." : "SEND MESSAGE ↗"}</i><i aria-hidden="true">{status === "loading" ? "SENDING..." : "SEND MESSAGE ↗"}</i></span>
                 </button>
                 {status === "loading" && <div className="contact-flight" aria-hidden="true"><div><span>MESSAGE</span><b>↗</b></div><i /><i /><i /></div>}
             </form>

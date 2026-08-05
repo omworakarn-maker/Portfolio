@@ -222,6 +222,15 @@ html.project-detail-open .site-shell,html.project-detail-open .site-shell *{anim
 .capsule,.capsule:hover,.capsule:focus-visible,.rail-action,.rail-action:hover,.rail-action:focus-visible,.plain-action,.plain-action:hover,.plain-action:focus-visible,.work-stack-action,.work-stack-action:hover,.work-stack-action:focus-visible,.media-slider-nav,.media-slider-nav:hover,.media-slider-nav:focus-visible,.pile-arrows button,.pile-arrows button:hover,.pile-arrows button:focus-visible{translate:none!important;transform:none!important;scale:1!important}
 /* CSS-drawn smile stays identical on macOS, Windows, and mobile browsers. */
 .utilities .saved-btn .spin-smile{position:relative;width:38px;height:38px;border:0;border-radius:50%;background:#111;font-size:0!important;flex:none}
+
+/* These primary CTAs deliberately keep their frame locked in place. */
+.rolling-capsule,.rolling-capsule:hover,.rolling-capsule:focus-visible{display:inline-grid!important;place-items:center;translate:none!important;transform:none!important;scale:1!important;color:#fff!important;text-shadow:none!important;overflow:hidden!important;transition:background-color .2s var(--smooth)!important}
+.capsule-label-roll{position:relative;display:block;width:100%;height:17px;overflow:hidden;line-height:17px;text-align:center}
+.capsule-label-roll i{position:absolute;inset:0;display:block;font-style:normal;color:#fff;transition:transform .34s var(--smooth)}
+.capsule-label-roll i+i{transform:translateY(110%)}
+.rolling-capsule:hover .capsule-label-roll i:first-child,.rolling-capsule:focus-visible .capsule-label-roll i:first-child{transform:translateY(-110%)}
+.rolling-capsule:hover .capsule-label-roll i+i,.rolling-capsule:focus-visible .capsule-label-roll i+i{transform:translateY(0)}
+.rolling-capsule:disabled .capsule-label-roll i{transition:none}
 .utilities .saved-btn .spin-smile::before{content:"";position:absolute;left:10px;top:11px;width:5px;height:5px;border-radius:50%;background:#fff;box-shadow:13px 0 #fff}
 .utilities .saved-btn .spin-smile::after{content:"";position:absolute;left:9px;right:9px;bottom:8px;height:9px;border-bottom:3px solid #fff;border-radius:0 0 999px 999px}
 

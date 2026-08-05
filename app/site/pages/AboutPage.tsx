@@ -263,7 +263,9 @@ export function AboutPage() {
         <section className="end-card about-end about-contact-cta" style={{ margin: '4vw', padding: '100px 6vw', background: 'var(--yellow)', borderRadius: '20px' }}>
             <span className="micro">GET IN TOUCH</span>
             <RevealWords>Let's build something great together.</RevealWords>
-            <a className="capsule" href="/contact#contact-form" style={{ marginTop: '40px' }}>START A CONVERSATION ↗</a>
+            <a className="capsule rolling-capsule" href="/contact#contact-form" style={{ marginTop: '40px' }}>
+                <span className="capsule-label-roll"><i>START A CONVERSATION ↗</i><i aria-hidden="true">START A CONVERSATION ↗</i></span>
+            </a>
             <div className="contact-smile" aria-hidden="true"><span>LET'S · MAKE · IT · REAL · </span><div className="contact-smile-face"><i /><i /><b /></div></div>
         </section>
     </>

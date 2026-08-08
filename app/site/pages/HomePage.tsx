@@ -64,7 +64,19 @@ export function Home() {
                     </button>;
                 }))}
                 <Link href="/playground" className="portfolio-card p-note" onPointerMove={moveCardEffect} onPointerLeave={resetCardEffect}><span className="tag">PLAYGROUND / PROTOTYPES</span><span className="note-index">03 / EXPERIMENTS</span><h2>My journey, technical prototypes, and things I'm learning.</h2><i className="playground-follower" aria-hidden="true">✳</i></Link>
-                <article className="portfolio-card p-contact"><span className="tag">CONTACT</span><span className="contact-availability"><i /> OPEN TO LEARN &amp; COLLABORATE</span><h2>Let’s make something useful.</h2><Link className="plain-action" href="/contact#contact-form">CONTACT ME ↗</Link><Link className="plain-action light" href="/work">VIEW WORK ↗</Link></article>
+                <article className="portfolio-card p-contact">
+                    <span className="tag">CONTACT</span>
+                    <span className="contact-availability"><i /> OPEN TO LEARN &amp; COLLABORATE</span>
+                    <h2>Let’s make something useful.</h2>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding: '0 20px 20px' }}>
+                        <Link className="work-stack-action" style={{ width: '100%', borderRadius: '999px' }} href="/contact#contact-form">
+                            <span className="work-action-roll" style={{ textAlign: 'center', width: '100%' }}><i>CONTACT ME ↗</i><i>CONTACT ME ↗</i></span>
+                        </Link>
+                        <Link className="work-stack-action" style={{ width: '100%', borderRadius: '999px' }} href="/work">
+                            <span className="work-action-roll" style={{ textAlign: 'center', width: '100%' }}><i>VIEW WORK ↗</i><i>VIEW WORK ↗</i></span>
+                        </Link>
+                    </div>
+                </article>
             </section>
             {selectedProject && <ProjectDetailsModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
         </main>

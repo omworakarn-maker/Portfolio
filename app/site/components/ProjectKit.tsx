@@ -260,8 +260,8 @@ export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard
                             </div>
                         </a>
                     )}
-                    {videoUrl ? <button type="button" className="project-modal-demo-action" onClick={() => { const demo = document.getElementById('project-demo'); demo?.scrollIntoView({ behavior: 'smooth', block: 'center' }); demo?.querySelector('video')?.play().catch(() => undefined); }}>
-                        <span className="project-demo-roll"><i>{project.buttonLabel}</i><i>{project.buttonLabel}</i></span>
+                    {videoUrl ? <button type="button" className="project-modal-demo-action" onClick={() => { const demo = document.getElementById('project-demo'); demo?.scrollIntoView({ behavior: 'smooth', block: 'center' }); demo?.querySelector('video')?.play().catch(() => undefined); }} style={{ borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 24px' }}>
+                        <span className="project-demo-roll" style={{ textAlign: 'left', width: '100%' }}><i>{project.buttonLabel}</i><i>{project.buttonLabel}</i></span>
                     </button> : link !== "#" ? <a href={link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '12px 24px', backgroundColor: '#111', color: '#fff', textDecoration: 'none', borderRadius: '999px', fontFamily: 'var(--sans)', fontWeight: '700', fontSize: '12px', transition: 'background 0.2s' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--red)'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.background = '#111'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
                         <div style={{ position: 'relative', height: '17px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                             <span className="roll-first" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
@@ -359,17 +359,17 @@ export function SelectedWorkShowcase() {
                             </div>
                             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                                 {card.videoUrl ? (
-                                    <button type="button" className="work-stack-action" onClick={() => setSelectedProject(card)}>
-                                        <span className="work-action-roll"><i>{card.buttonLabel}</i><i>{card.buttonLabel}</i></span>
+                                    <button type="button" className="work-stack-action" onClick={() => setSelectedProject(card)} style={{ borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 24px' }}>
+                                        <span className="work-action-roll" style={{ textAlign: 'left', width: '100%' }}><i>{card.buttonLabel}</i><i>{card.buttonLabel}</i></span>
                                     </button>
                                 ) : (
-                                    <a href={card.primaryUrl === "#" ? undefined : card.primaryUrl} target={card.primaryUrl === "#" ? undefined : "_blank"} rel={card.primaryUrl === "#" ? undefined : "noopener noreferrer"} aria-disabled={card.primaryUrl === "#"} className={`work-stack-action${card.primaryUrl === "#" ? " is-disabled" : ""}`} onClick={e => { if (card.primaryUrl === "#") e.preventDefault(); }}>
-                                        <span className="work-action-roll"><i>{card.buttonLabel}</i><i>{card.buttonLabel}</i></span>
+                                    <a href={card.primaryUrl === "#" ? undefined : card.primaryUrl} target={card.primaryUrl === "#" ? undefined : "_blank"} rel={card.primaryUrl === "#" ? undefined : "noopener noreferrer"} aria-disabled={card.primaryUrl === "#"} className={`work-stack-action${card.primaryUrl === "#" ? " is-disabled" : ""}`} onClick={e => { if (card.primaryUrl === "#") e.preventDefault(); }} style={{ borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 24px' }}>
+                                        <span className="work-action-roll" style={{ textAlign: 'left', width: '100%' }}><i>{card.buttonLabel}</i><i>{card.buttonLabel}</i></span>
                                     </a>
                                 )}
                                 {card.githubUrl !== "#" && (
-                                    <a href={card.githubUrl} target="_blank" rel="noopener noreferrer" className="work-stack-action">
-                                        <span className="work-action-roll"><i>GITHUB ↗</i><i>GITHUB ↗</i></span>
+                                    <a href={card.githubUrl} target="_blank" rel="noopener noreferrer" className="work-stack-action" style={{ borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 24px' }}>
+                                        <span className="work-action-roll" style={{ textAlign: 'left', width: '100%' }}><i>GITHUB ↗</i><i>GITHUB ↗</i></span>
                                     </a>
                                 )}
                             </div>

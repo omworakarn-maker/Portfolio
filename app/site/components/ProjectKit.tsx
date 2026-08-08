@@ -358,14 +358,14 @@ export function SelectedWorkShowcase() {
                                 {card.tools.map(tag => <span key={tag}>{TECH_ICONS[tag] ? <img src={TECH_ICONS[tag]} alt="" aria-hidden="true" width={15} height={15} /> : TECH_MARKS[tag] && <i aria-hidden="true">{TECH_MARKS[tag]}</i>}{tag}</span>)}
                             </div>
                             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                                {card.videoUrl ? (
-                                    <button type="button" className="work-stack-action" onClick={() => setSelectedProject(card)} style={{ borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 24px' }}>
-                                        <span className="work-action-roll" style={{ textAlign: 'left', width: '100%' }}><i>{card.buttonLabel}</i><i>{card.buttonLabel}</i></span>
-                                    </button>
-                                ) : (
-                                    <a href={card.primaryUrl === "#" ? undefined : card.primaryUrl} target={card.primaryUrl === "#" ? undefined : "_blank"} rel={card.primaryUrl === "#" ? undefined : "noopener noreferrer"} aria-disabled={card.primaryUrl === "#"} className={`work-stack-action${card.primaryUrl === "#" ? " is-disabled" : ""}`} onClick={e => { if (card.primaryUrl === "#") e.preventDefault(); }} style={{ borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 24px' }}>
+                                {card.primaryUrl !== "#" ? (
+                                    <a href={card.primaryUrl} target="_blank" rel="noopener noreferrer" className="work-stack-action" style={{ borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 24px' }}>
                                         <span className="work-action-roll" style={{ textAlign: 'left', width: '100%' }}><i>{card.buttonLabel}</i><i>{card.buttonLabel}</i></span>
                                     </a>
+                                ) : card.buttonLabel !== "WATCH DEMO ↗" && (
+                                    <span className="work-stack-action is-disabled" style={{ borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 24px' }}>
+                                        <span className="work-action-roll" style={{ textAlign: 'left', width: '100%' }}><i>{card.buttonLabel}</i><i>{card.buttonLabel}</i></span>
+                                    </span>
                                 )}
                                 {card.githubUrl !== "#" && (
                                     <a href={card.githubUrl} target="_blank" rel="noopener noreferrer" className="work-stack-action" style={{ borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 24px' }}>
@@ -376,7 +376,7 @@ export function SelectedWorkShowcase() {
                         </div>
                         <div className="work-stack-media">
                             {card.images.length > 0 ? (
-                                <AutoImageSlider images={card.images} alt={card.title} cover={false} showControls paused={hoveredProject === card.id} />
+                                <AutoImageSlider images={card.images} alt={card.title} onImageClick={() => setSelectedProject(card)} cover={false} showControls paused={hoveredProject === card.id} />
                             ) : (
                                 <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.05)', font: '14px var(--mono)' }}>Media not available</div>
                             )}

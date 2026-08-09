@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { aboutCards, AutoImageSlider, ProjectDetailsModal, type ProjectCard } from "../components/ProjectKit";
+import { aboutCards, AutoImageSlider, ProjectDetailsModal, ProjectPlaceholder, type ProjectCard } from "../components/ProjectKit";
 
 export function Home() {
-    const homeProjectSets = [[aboutCards[0], aboutCards[1]], [aboutCards[2], aboutCards[3]], [aboutCards[4], aboutCards[1]]] as const;
+    const homeProjectSets = [[aboutCards[0], aboutCards[1]], [aboutCards[2], aboutCards[3]], [aboutCards[4], aboutCards[5]]] as const;
     const stage = useRef<HTMLDivElement>(null), drag = useRef({ active: false, x: 0, left: 0 }), isDragging = useRef(false);
     const [selectedProject, setSelectedProject] = useState<ProjectCard | null>(null);
     const [projectSet, setProjectSet] = useState(0);
@@ -54,7 +54,7 @@ export function Home() {
                         aria-hidden={projectSet !== set}
                         tabIndex={projectSet === set ? 0 : -1}
                     >
-                        <div className={`project-media ${slot === 0 ? "media-one" : "media-two"}`}><AutoImageSlider images={project.images} alt={`${project.title} preview`} onImageClick={() => setSelectedProject(project)} paused={projectPaused} /></div>
+                        <div className={`project-media ${slot === 0 ? "media-one" : "media-two"}`}>{project.images.length > 0 ? <AutoImageSlider images={project.images} alt={`${project.title} preview`} onImageClick={() => setSelectedProject(project)} paused={projectPaused} /> : <ProjectPlaceholder title={project.title} />}</div>
                         <span className="tag">PROJECT {project.id}</span>
                         <span className="project-swap-indicator" aria-hidden="true"><small>{projects[0].id}—{projects[1].id}</small><b /></span>
                         <h2>{project.title}</h2>

@@ -141,6 +141,7 @@ const TECH_ICONS: Record<string, string> = {
     "HTML5": "https://skillicons.dev/icons?i=html",
     "CSS3": "https://skillicons.dev/icons?i=css",
     "JavaScript": "https://skillicons.dev/icons?i=js",
+    "React Native": "https://skillicons.dev/icons?i=react",
     "SwiftUI": "https://skillicons.dev/icons?i=swift",
     "Node.js": "https://skillicons.dev/icons?i=nodejs",
     "PostgreSQL": "https://skillicons.dev/icons?i=postgres",
@@ -148,6 +149,8 @@ const TECH_ICONS: Record<string, string> = {
     "Vite": "https://skillicons.dev/icons?i=vite"
 };
 const TECH_MARKS: Record<string, string> = {
+    "Expo": "◉",
+    "AsyncStorage": "▣",
     "UI Design": "✦",
     "Prototype": "◌",
     "Responsive UI": "↔"
@@ -161,12 +164,38 @@ export type ProjectCard = {
 
 // PROJECT CONTENT — edit named fields below; no need to remember array numbers.
 export const aboutCards: ProjectCard[] = [
-    { id: "01", title: "TODO LIST", stack: "[Next.js · React · TypeScript]", summary: "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI.", images: ["/todo-pro-01-dashboard.png", "/todo-pro-02.png", "/todo-pro-03.png"], primaryUrl: "https://todolist-green-tau.vercel.app/", githubUrl: "https://github.com/omworakarn-maker/todolist", description: "This Todo List application was built to solve task management inefficiencies. It features a complete dashboard, secure authentication, and real-time state updates. Users can customize their profiles, view analytics of completed tasks, and easily manage their daily workflow using a modern responsive interface.", tools: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "Vercel"], buttonLabel: "VIEW PROJECT ↗" },
-    { id: "02", title: "CAFE CAT", stack: "[HTML5 · CSS3 · JavaScript]", summary: "An interactive website for a cat cafe showcasing menus, cozy atmosphere, and responsive layout.", images: ["/cafe-pro-01-home.png", "/cafe-pro-02-cats.png", "/cafe-pro-03-menu.png", "/cafe-pro-04-events.png", "/cafe-pro-05-booking.png"], primaryUrl: "https://cafecatdemowebsite.vercel.app/", githubUrl: "https://github.com/omworakarn-maker/cafecatdemowebsite", description: "A fully responsive front-end website for a fictional cat cafe. Features include a dynamic menu, beautiful CSS animations, and a cozy aesthetic designed to attract customers.", tools: ["HTML5", "CSS3", "JavaScript"], buttonLabel: "VIEW PROJECT ↗" },
-    { id: "03", title: "GO WITH US", stack: "[SwiftUI · Node.js · PostgreSQL]", summary: "A modern, AI-Powered travel matching iOS application built with SwiftUI and a Node.js backend.", images: ["/gowithus-1.png?v=1", "/gowithus-2.png?v=1", "/gowithus-3.png?v=1", "/gowithus-4.png?v=1"], primaryUrl: "#", githubUrl: "https://github.com/omworakarn-maker/go-with-us", description: "An iOS mobile application that matches travelers based on their preferences. Built natively with SwiftUI for a smooth user experience, backed by a robust Node.js backend and PostgreSQL database.", tools: ["SwiftUI", "Node.js", "PostgreSQL", "Render"], buttonLabel: "WATCH DEMO ↗", videoUrl: "/gowithus-demo.mp4" },
-    { id: "04", title: "PORTFOLIO", stack: "[Next.js 16 · React 19 · Vite]", summary: "A modern interactive single-page portfolio with dynamic card deck, smooth animations, and clean styling.", images: ["/portfolio-1.png?v=1"], primaryUrl: "#", githubUrl: "#", description: "This portfolio itself! A highly interactive single-page application showcasing custom animations, interactive card decks, and advanced CSS techniques. Built with Next.js and React.", tools: ["Next.js", "React", "TypeScript", "Vite"], buttonLabel: "(SECRET PROJECT)" },
-    { id: "05", title: "FIGMA PROTOTYPE", stack: "[Figma · UI Design · Prototype]", summary: "A collection of interface explorations, flows, and clickable prototypes focused on clear, thoughtful user experiences.", images: ["/figma-cat-01-welcome.png", "/figma-cat-02-onboarding.png", "/figma-cat-03-home.png", "/figma-cat-04-menu.png", "/figma-cat-05-search.png", "/figma-cat-06-cat-detail.png", "/figma-cat-08-login.png", "/figma-cat-09-sign-up.png", "/figma-cat-10-reset-password.png", "/figma-cat-11-about-us.png", "/figma-cat-11-order.png?v=2"], primaryUrl: "https://www.figma.com/proto/kpiZifTnW2jPAZ7XSQjUKD/M-cat-031?node-id=2-4&p=f&t=rsnWPM2MoV8mV0UG-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A4", githubUrl: "#", description: "A work-in-progress collection of Figma explorations—from early wireframes to interactive prototypes. The case study and live Figma link will be added soon.", tools: ["Figma", "UI Design", "Prototype", "Responsive UI"], buttonLabel: "VIEW PROJECT ↗" },
+    { id: "01", title: "TODO LIST", stack: "[Next.js · React · TypeScript]", summary: "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI.", images: ["/todo-pro-01-dashboard.png", "/todo-pro-02.png", "/todo-pro-03.png"], primaryUrl: "https://todolist-green-tau.vercel.app/", githubUrl: "https://github.com/omworakarn-maker/todolist", description: "Todo List is a full-stack task management application designed to make everyday planning feel clear and manageable. Users can create, organize, update, and track tasks through a responsive dashboard, while authentication keeps each workspace personal and secure. The interface includes profile customization and task analytics that make progress easier to understand at a glance. Building the project strengthened my understanding of typed React components, application state, database-backed workflows, authentication, and designing consistent experiences across desktop and mobile screens.", tools: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "Vercel"], buttonLabel: "VIEW PROJECT ↗" },
+    { id: "02", title: "CAFE CAT", stack: "[HTML5 · CSS3 · JavaScript]", summary: "An interactive website for a cat cafe showcasing menus, cozy atmosphere, and responsive layout.", images: ["/cafe-pro-01-home.png", "/cafe-pro-02-cats.png", "/cafe-pro-03-menu.png", "/cafe-pro-04-events.png", "/cafe-pro-05-booking.png"], primaryUrl: "https://cafecatdemowebsite.vercel.app/", githubUrl: "https://github.com/omworakarn-maker/cafecatdemowebsite", description: "Cafe Cat is a responsive promotional website created for a fictional cat cafe. The experience introduces the cafe, its resident cats, food and drink menus, upcoming events, and booking information through a warm and playful visual direction. Subtle JavaScript interactions and CSS animation help the pages feel lively without distracting from the content. This project gave me practical experience structuring a multi-section website with semantic HTML, building responsive layouts from scratch, and using visual hierarchy to guide visitors toward important actions such as exploring the menu and making a reservation.", tools: ["HTML5", "CSS3", "JavaScript"], buttonLabel: "VIEW PROJECT ↗" },
+    { id: "03", title: "GO WITH US", stack: "[SwiftUI · Node.js · PostgreSQL]", summary: "A modern, AI-Powered travel matching iOS application built with SwiftUI and a Node.js backend.", images: ["/gowithus-1.png?v=1", "/gowithus-2.png?v=1", "/gowithus-3.png?v=1", "/gowithus-4.png?v=1"], primaryUrl: "#", githubUrl: "https://github.com/omworakarn-maker/go-with-us", description: "Go With Us is an iOS travel-matching application that helps people discover compatible travel companions based on shared destinations, interests, and preferences. The mobile experience is built natively with SwiftUI to keep navigation and interactions smooth, while a Node.js API and PostgreSQL database manage profiles, trip information, and matching data. The project explores how a social travel product can reduce the friction of finding the right person to travel with. It also gave me experience connecting a native client to a deployed backend, designing structured data flows, and developing a larger product across mobile, server, and database layers.", tools: ["SwiftUI", "Node.js", "PostgreSQL", "Render"], buttonLabel: "WATCH DEMO ↗", videoUrl: "/gowithus-demo.mp4" },
+    { id: "04", title: "PORTFOLIO", stack: "[Next.js 16 · React 19 · Vite]", summary: "A modern interactive single-page portfolio with dynamic card deck, smooth animations, and clean styling.", images: ["/portfolio-1.png?v=1"], primaryUrl: "#", githubUrl: "#", description: "This portfolio is a multi-page interactive website designed to present my projects, background, skills, experiments, process, and contact information as one connected experience. Its visual system combines oversized editorial typography, layered cards, horizontal navigation, rolling button labels, animated project carousels, responsive overlays, and small playful details. I built the reusable interactions with React and TypeScript while keeping keyboard navigation, reduced-motion preferences, mobile layouts, and performance in mind. The project has been an ongoing exercise in refining motion design, component structure, responsive behavior, and the balance between personality and usability.", tools: ["Next.js", "React", "TypeScript", "Vite"], buttonLabel: "(SECRET PROJECT)" },
+    { id: "05", title: "FIGMA PROTOTYPE", stack: "[Figma · UI Design · Prototype]", summary: "A collection of interface explorations, flows, and clickable prototypes focused on clear, thoughtful user experiences.", images: ["/figma-cat-01-welcome.png", "/figma-cat-02-onboarding.png", "/figma-cat-03-home.png", "/figma-cat-04-menu.png", "/figma-cat-05-search.png", "/figma-cat-06-cat-detail.png", "/figma-cat-08-login.png", "/figma-cat-09-sign-up.png", "/figma-cat-10-reset-password.png", "/figma-cat-11-about-us.png", "/figma-cat-11-order.png?v=2"], primaryUrl: "https://www.figma.com/proto/kpiZifTnW2jPAZ7XSQjUKD/M-cat-031?node-id=2-4&p=f&t=rsnWPM2MoV8mV0UG-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A4", githubUrl: "#", description: "This Figma project explores a complete mobile experience for discovering cats, browsing information, managing accounts, and moving through an ordering flow. The screens cover onboarding, navigation, search, detailed content, authentication, password recovery, and supporting information pages. I used reusable components and consistent spacing, typography, and interaction patterns to keep the experience coherent across the full flow. Creating the clickable prototype helped me practice thinking beyond individual screens—considering user journeys, transition points, responsive behavior, edge cases, and how interface decisions affect clarity before development begins.", tools: ["Figma", "UI Design", "Prototype", "Responsive UI"], buttonLabel: "VIEW PROJECT ↗" },
+    {
+        id: "06",
+        title: "KEEP GOING",
+        stack: "[React Native · Expo · TypeScript]",
+        summary: "A gentle mobile space for emotional check-ins, private journaling, and tracking each step of a personal healing journey.",
+        images: [],
+        primaryUrl: "#",
+        githubUrl: "#",
+        description: "Keep Going is a work-in-progress Thai-language mobile wellness application designed to give users a calm, private space to process difficult feelings without pressure. The app supports daily mood check-ins, personal journal entries, healing goals, time-based milestones, follow-up questions, and a history of past reflections. Information is stored locally on the device with AsyncStorage so the experience can remain personal and available without a separate account. I am building it with React Native, Expo, and TypeScript while learning how to structure multi-screen mobile navigation, manage persistent application state, and design sensitive emotional experiences with clear and supportive language.",
+        tools: ["React Native", "Expo", "TypeScript", "AsyncStorage"],
+        buttonLabel: "(IN DEVELOPMENT)"
+    },
 ];
+
+export function ProjectPlaceholder({ title }: { title: string }) {
+    if (title !== "KEEP GOING") return <div className="project-placeholder"><span>PROJECT PREVIEW</span></div>;
+    return <div className="keep-going-preview" aria-label="Keep Going application preview">
+        <div className="keep-going-phone">
+            <div className="keep-going-notch" />
+            <b>Keep Going</b>
+            <small>พื้นที่เล็ก ๆ สำหรับใจของคุณ</small>
+            <div className="keep-going-timer"><em>เวลาที่ฉันเลือกจะก้าวต่อไป</em><strong>07 : 12 : 48</strong></div>
+            <div className="keep-going-days"><span>เราไม่ได้คุยกันมา</span><strong>7</strong><span>วัน</span></div>
+            <i>เช็กอินความรู้สึกวันนี้</i>
+        </div>
+    </div>;
+}
 
 export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard, onClose: () => void }) {
     const [mounted, setMounted] = useState(false);
@@ -248,6 +277,7 @@ export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard
                             </div>
                         </div>
                     )}
+                    {images.length === 0 && <div style={{ height: '320px', marginTop: '4px' }}><ProjectPlaceholder title={title} /></div>}
                 </div>
 
                 {/* FOOTER ACTION */}
@@ -260,14 +290,12 @@ export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard
                             </div>
                         </a>
                     )}
-                    {videoUrl ? <button type="button" className="project-modal-demo-action" onClick={() => { const demo = document.getElementById('project-demo'); demo?.scrollIntoView({ behavior: 'smooth', block: 'center' }); demo?.querySelector('video')?.play().catch(() => undefined); }} style={{ borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 24px' }}>
-                        <span className="project-demo-roll" style={{ textAlign: 'left', width: '100%' }}><i>{project.buttonLabel}</i><i>{project.buttonLabel}</i></span>
-                    </button> : link !== "#" ? <a href={link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '12px 24px', backgroundColor: '#111', color: '#fff', textDecoration: 'none', borderRadius: '999px', fontFamily: 'var(--sans)', fontWeight: '700', fontSize: '12px', transition: 'background 0.2s' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--red)'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.background = '#111'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
+                    {!videoUrl && (link !== "#" ? <a href={link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '12px 24px', backgroundColor: '#111', color: '#fff', textDecoration: 'none', borderRadius: '999px', fontFamily: 'var(--sans)', fontWeight: '700', fontSize: '12px', transition: 'background 0.2s' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--red)'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.background = '#111'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
                         <div style={{ position: 'relative', height: '17px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                             <span className="roll-first" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
                             <span className="roll-second" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
                         </div>
-                    </a> : <span className="project-modal-disabled-action" aria-disabled="true">{project.buttonLabel}</span>}
+                    </a> : <span className="project-modal-disabled-action" aria-disabled="true">{project.buttonLabel}</span>)}
                 </div>
             </div>
         </div>,
@@ -323,7 +351,7 @@ export function PileCards() {
                 {[...aboutCards, ...aboutCards, ...aboutCards].map((v, i) => <article key={`${v.id}-${i}`} tabIndex={0} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} onClick={e => { if (didDrag.current) { e.preventDefault(); e.stopPropagation(); return; } setSelectedProject(v); }} style={{ cursor: 'pointer' }}>
                     <span className="tag">PROJECT {v.id}</span>
                     <div className={`work-art work-art-${i % 4}`}>
-                        {v.images.length > 0 ? <AutoImageSlider images={v.images} alt={v.title} onImageClick={() => setSelectedProject(v)} cover paused={paused} /> : <><i /><b /></>}
+                        {v.images.length > 0 ? <AutoImageSlider images={v.images} alt={v.title} onImageClick={() => setSelectedProject(v)} cover paused={paused} /> : <ProjectPlaceholder title={v.title} />}
                     </div>
                     <h3 className="card-title-roll"><span>{v.title}</span><span aria-hidden="true">{v.title}</span></h3>
                     <div className="work-detail">
@@ -351,7 +379,7 @@ export function SelectedWorkShowcase() {
                 {aboutCards.map((card, i) => (
                     <article key={card.id} className={`work-stack-card ${i % 2 ? "is-reversed" : ""}`} onMouseEnter={() => setHoveredProject(card.id)} onMouseLeave={() => setHoveredProject(null)} onFocus={() => setHoveredProject(card.id)} onBlur={() => setHoveredProject(null)}>
                         <div className="work-stack-copy">
-                            <span className="work-stack-index">PROJECT {card.id} / 05</span>
+                            <span className="work-stack-index">PROJECT {card.id} / {String(aboutCards.length).padStart(2, "0")}</span>
                             <h2>{card.title}</h2>
                             <p className="work-stack-summary">{card.summary}</p>
                             <div className="work-stack-tags">
@@ -378,7 +406,7 @@ export function SelectedWorkShowcase() {
                             {card.images.length > 0 ? (
                                 <AutoImageSlider images={card.images} alt={card.title} onImageClick={() => setSelectedProject(card)} cover={false} showControls paused={hoveredProject === card.id} />
                             ) : (
-                                <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.05)', font: '14px var(--mono)' }}>Media not available</div>
+                                <ProjectPlaceholder title={card.title} />
                             )}
                         </div>
                     </article>

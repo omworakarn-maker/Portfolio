@@ -145,6 +145,7 @@ const TECH_ICONS: Record<string, string> = {
     "SwiftUI": "https://skillicons.dev/icons?i=swift",
     "Node.js": "https://skillicons.dev/icons?i=nodejs",
     "PostgreSQL": "https://skillicons.dev/icons?i=postgres",
+    "Supabase": "https://skillicons.dev/icons?i=supabase",
     "Render": "https://skillicons.dev/icons?i=git",
     "Vite": "https://skillicons.dev/icons?i=vite"
 };
@@ -158,17 +159,17 @@ const TECH_MARKS: Record<string, string> = {
 
 export type ProjectCard = {
     id: string; title: string; stack: string; summary: string; images: string[];
-    primaryUrl: string; description: string; tools: string[]; githubUrl: string; buttonLabel: string;
+    primaryUrl: string; description: string; buildNote: string; tools: string[]; githubUrl: string; buttonLabel: string;
     videoUrl?: string;
 };
 
 // PROJECT CONTENT — edit named fields below; no need to remember array numbers.
 export const aboutCards: ProjectCard[] = [
-    { id: "01", title: "TODO LIST", stack: "[Next.js · React · TypeScript]", summary: "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI.", images: ["/todo-pro-01-dashboard.png", "/todo-pro-02.png", "/todo-pro-03.png"], primaryUrl: "https://todolist-green-tau.vercel.app/", githubUrl: "https://github.com/omworakarn-maker/todolist", description: "Todo List is a full-stack task management application designed to make everyday planning feel clear and manageable. Users can create, organize, update, and track tasks through a responsive dashboard, while authentication keeps each workspace personal and secure. The interface includes profile customization and task analytics that make progress easier to understand at a glance. Building the project strengthened my understanding of typed React components, application state, database-backed workflows, authentication, and designing consistent experiences across desktop and mobile screens.", tools: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Prisma", "Vercel"], buttonLabel: "VIEW PROJECT ↗" },
-    { id: "02", title: "CAFE CAT", stack: "[HTML5 · CSS3 · JavaScript]", summary: "An interactive website for a cat cafe showcasing menus, cozy atmosphere, and responsive layout.", images: ["/cafe-pro-01-home.png", "/cafe-pro-02-cats.png", "/cafe-pro-03-menu.png", "/cafe-pro-04-events.png", "/cafe-pro-05-booking.png"], primaryUrl: "https://cafecatdemowebsite.vercel.app/", githubUrl: "https://github.com/omworakarn-maker/cafecatdemowebsite", description: "Cafe Cat is a responsive promotional website created for a fictional cat cafe. The experience introduces the cafe, its resident cats, food and drink menus, upcoming events, and booking information through a warm and playful visual direction. Subtle JavaScript interactions and CSS animation help the pages feel lively without distracting from the content. This project gave me practical experience structuring a multi-section website with semantic HTML, building responsive layouts from scratch, and using visual hierarchy to guide visitors toward important actions such as exploring the menu and making a reservation.", tools: ["HTML5", "CSS3", "JavaScript"], buttonLabel: "VIEW PROJECT ↗" },
-    { id: "03", title: "GO WITH US", stack: "[SwiftUI · Node.js · PostgreSQL]", summary: "A modern, AI-Powered travel matching iOS application built with SwiftUI and a Node.js backend.", images: ["/gowithus-1.png?v=1", "/gowithus-2.png?v=1", "/gowithus-3.png?v=1", "/gowithus-4.png?v=1"], primaryUrl: "#", githubUrl: "https://github.com/omworakarn-maker/go-with-us", description: "Go With Us is an iOS travel-matching application that helps people discover compatible travel companions based on shared destinations, interests, and preferences. The mobile experience is built natively with SwiftUI to keep navigation and interactions smooth, while a Node.js API and PostgreSQL database manage profiles, trip information, and matching data. The project explores how a social travel product can reduce the friction of finding the right person to travel with. It also gave me experience connecting a native client to a deployed backend, designing structured data flows, and developing a larger product across mobile, server, and database layers.", tools: ["SwiftUI", "Node.js", "PostgreSQL", "Render"], buttonLabel: "WATCH DEMO ↗", videoUrl: "/gowithus-demo.mp4" },
-    { id: "04", title: "PORTFOLIO", stack: "[Next.js 16 · React 19 · Vite]", summary: "A modern interactive single-page portfolio with dynamic card deck, smooth animations, and clean styling.", images: ["/portfolio-1.png?v=1"], primaryUrl: "#", githubUrl: "#", description: "This portfolio is a multi-page interactive website designed to present my projects, background, skills, experiments, process, and contact information as one connected experience. Its visual system combines oversized editorial typography, layered cards, horizontal navigation, rolling button labels, animated project carousels, responsive overlays, and small playful details. I built the reusable interactions with React and TypeScript while keeping keyboard navigation, reduced-motion preferences, mobile layouts, and performance in mind. The project has been an ongoing exercise in refining motion design, component structure, responsive behavior, and the balance between personality and usability.", tools: ["Next.js", "React", "TypeScript", "Vite"], buttonLabel: "(SECRET PROJECT)" },
-    { id: "05", title: "FIGMA PROTOTYPE", stack: "[Figma · UI Design · Prototype]", summary: "A collection of interface explorations, flows, and clickable prototypes focused on clear, thoughtful user experiences.", images: ["/figma-cat-01-welcome.png", "/figma-cat-02-onboarding.png", "/figma-cat-03-home.png", "/figma-cat-04-menu.png", "/figma-cat-05-search.png", "/figma-cat-06-cat-detail.png", "/figma-cat-08-login.png", "/figma-cat-09-sign-up.png", "/figma-cat-10-reset-password.png", "/figma-cat-11-about-us.png", "/figma-cat-11-order.png?v=2"], primaryUrl: "https://www.figma.com/proto/kpiZifTnW2jPAZ7XSQjUKD/M-cat-031?node-id=2-4&p=f&t=rsnWPM2MoV8mV0UG-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A4", githubUrl: "#", description: "This Figma project explores a complete mobile experience for discovering cats, browsing information, managing accounts, and moving through an ordering flow. The screens cover onboarding, navigation, search, detailed content, authentication, password recovery, and supporting information pages. I used reusable components and consistent spacing, typography, and interaction patterns to keep the experience coherent across the full flow. Creating the clickable prototype helped me practice thinking beyond individual screens—considering user journeys, transition points, responsive behavior, edge cases, and how interface decisions affect clarity before development begins.", tools: ["Figma", "UI Design", "Prototype", "Responsive UI"], buttonLabel: "VIEW PROJECT ↗" },
+    { id: "01", title: "TODO LIST", stack: "[Next.js · React · Supabase]", summary: "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI.", images: ["/todo-pro-01-dashboard.png", "/todo-pro-02.png", "/todo-pro-03.png"], primaryUrl: "https://todolist-green-tau.vercel.app/", githubUrl: "https://github.com/omworakarn-maker/todolist", description: "Todo List is a full-stack task management application designed to make everyday planning feel clear and manageable. Users can create, organize, update, and track tasks through a responsive dashboard. Supabase supports the hosted backend and data services, while authentication keeps each workspace personal and secure. The interface includes profile customization and task analytics that make progress easier to understand at a glance. Building the project strengthened my understanding of typed React components, application state, database-backed workflows, authentication, and designing consistent experiences across desktop and mobile screens.", buildNote: "Next.js and React power the dashboard and task interactions. TypeScript keeps component and data contracts predictable, Tailwind CSS handles the responsive interface, Supabase provides hosted backend and data services, Prisma handles structured database access, and Vercel hosts the production build.", tools: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Supabase", "Prisma", "Vercel"], buttonLabel: "VIEW PROJECT ↗" },
+    { id: "02", title: "CAFE CAT", stack: "[HTML5 · CSS3 · JavaScript]", summary: "An interactive website for a cat cafe showcasing menus, cozy atmosphere, and responsive layout.", images: ["/cafe-pro-01-home.png", "/cafe-pro-02-cats.png", "/cafe-pro-03-menu.png", "/cafe-pro-04-events.png", "/cafe-pro-05-booking.png"], primaryUrl: "https://cafecatdemowebsite.vercel.app/", githubUrl: "https://github.com/omworakarn-maker/cafecatdemowebsite", description: "Cafe Cat is a responsive promotional website created for a fictional cat cafe. The experience introduces the cafe, its resident cats, food and drink menus, upcoming events, and booking information through a warm and playful visual direction. Subtle JavaScript interactions and CSS animation help the pages feel lively without distracting from the content. This project gave me practical experience structuring a multi-section website with semantic HTML, building responsive layouts from scratch, and using visual hierarchy to guide visitors toward important actions such as exploring the menu and making a reservation.", buildNote: "Semantic HTML structures the cafe information, cats, menus, events, and booking sections. CSS creates the responsive layout, visual identity, and animations, while JavaScript controls interactive elements and dynamic page behavior.", tools: ["HTML5", "CSS3", "JavaScript"], buttonLabel: "VIEW PROJECT ↗" },
+    { id: "03", title: "GO WITH US", stack: "[SwiftUI · Node.js · Supabase · PostgreSQL]", summary: "A modern, AI-Powered travel matching iOS application built with SwiftUI and a Node.js backend.", images: ["/gowithus-1.png?v=1", "/gowithus-2.png?v=1", "/gowithus-3.png?v=1", "/gowithus-4.png?v=1"], primaryUrl: "#", githubUrl: "https://github.com/omworakarn-maker/go-with-us", description: "Go With Us is an iOS travel-matching application that helps people discover compatible travel companions based on shared destinations, interests, and preferences. The mobile experience is built natively with SwiftUI to keep navigation and interactions smooth, while a Node.js API, Supabase services, and PostgreSQL manage application data, profiles, trip information, and matching data. The project explores how a social travel product can reduce the friction of finding the right person to travel with. It also gave me experience connecting a native client to deployed backend services, designing structured data flows, and developing a larger product across mobile, server, and database layers.", buildNote: "SwiftUI builds the native iOS screens, navigation, and user interactions. Node.js provides the API and matching logic, Supabase supports the application's backend data services, PostgreSQL stores structured user and trip data, and Render runs the Node.js backend remotely.", tools: ["SwiftUI", "Node.js", "Supabase", "PostgreSQL", "Render"], buttonLabel: "WATCH DEMO ↗", videoUrl: "/gowithus-demo.mp4" },
+    { id: "04", title: "PORTFOLIO", stack: "[Next.js 16 · React 19 · Vite]", summary: "A modern interactive single-page portfolio with dynamic card deck, smooth animations, and clean styling.", images: ["/portfolio-1.png?v=1"], primaryUrl: "#", githubUrl: "#", description: "This portfolio is a multi-page interactive website designed to present my projects, background, skills, experiments, and contact information as one connected experience. Its visual system combines oversized editorial typography, layered cards, horizontal navigation, rolling button labels, animated project carousels, responsive overlays, and small playful details. I built the reusable interactions with React and TypeScript while keeping keyboard navigation, reduced-motion preferences, mobile layouts, and performance in mind. The project has been an ongoing exercise in refining motion design, component structure, responsive behavior, and the balance between personality and usability.", buildNote: "Next.js organizes the pages and routes, React manages carousels, menus, modals, and interactive states, TypeScript keeps shared project data and components reliable, and Vite handles the fast development and production build workflow.", tools: ["Next.js", "React", "TypeScript", "Vite"], buttonLabel: "(SECRET PROJECT)" },
+    { id: "05", title: "FIGMA PROTOTYPE", stack: "[Figma · UI Design · Prototype]", summary: "A collection of interface explorations, flows, and clickable prototypes focused on clear, thoughtful user experiences.", images: ["/figma-cat-01-welcome.png", "/figma-cat-02-onboarding.png", "/figma-cat-03-home.png", "/figma-cat-04-menu.png", "/figma-cat-05-search.png", "/figma-cat-06-cat-detail.png", "/figma-cat-08-login.png", "/figma-cat-09-sign-up.png", "/figma-cat-10-reset-password.png", "/figma-cat-11-about-us.png", "/figma-cat-11-order.png?v=2"], primaryUrl: "https://www.figma.com/proto/kpiZifTnW2jPAZ7XSQjUKD/M-cat-031?node-id=2-4&p=f&t=rsnWPM2MoV8mV0UG-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A4", githubUrl: "#", description: "This Figma project explores a complete mobile experience for discovering cats, browsing information, managing accounts, and moving through an ordering flow. The screens cover onboarding, navigation, search, detailed content, authentication, password recovery, and supporting information pages. I used reusable components and consistent spacing, typography, and interaction patterns to keep the experience coherent across the full flow. Creating the clickable prototype helped me practice thinking beyond individual screens—considering user journeys, transition points, responsive behavior, edge cases, and how interface decisions affect clarity before development begins.", buildNote: "Figma is used for layout, reusable components, variants, and clickable screen transitions. UI Design defines the visual hierarchy and design system, prototyping tests the complete user flow, and responsive principles guide how the interface adapts across screen sizes.", tools: ["Figma", "UI Design", "Prototype", "Responsive UI"], buttonLabel: "VIEW PROJECT ↗" },
     {
         id: "06",
         title: "KEEP GOING",
@@ -178,10 +179,42 @@ export const aboutCards: ProjectCard[] = [
         primaryUrl: "#",
         githubUrl: "#",
         description: "Keep Going is a work-in-progress Thai-language mobile wellness application designed to give users a calm, private space to process difficult feelings without pressure. The app supports daily mood check-ins, personal journal entries, healing goals, time-based milestones, follow-up questions, and a history of past reflections. Information is stored locally on the device with AsyncStorage so the experience can remain personal and available without a separate account. I am building it with React Native, Expo, and TypeScript while learning how to structure multi-screen mobile navigation, manage persistent application state, and design sensitive emotional experiences with clear and supportive language.",
+        buildNote: "React Native builds the shared mobile interface and screens, Expo provides the development and device-testing environment, TypeScript defines navigation and application data safely, and AsyncStorage keeps journals, goals, and progress on the user's device.",
         tools: ["React Native", "Expo", "TypeScript", "AsyncStorage"],
         buttonLabel: "(IN DEVELOPMENT)"
     },
 ];
+
+const PROJECT_TECH_GROUPS: Record<string, { label: string; tools: string[] }[]> = {
+    "01": [
+        { label: "FRONTEND", tools: ["Next.js", "React", "TypeScript", "Tailwind CSS"] },
+        { label: "BACKEND SERVICE", tools: ["Supabase"] },
+        { label: "DATA LAYER", tools: ["Prisma"] },
+        { label: "DEPLOYMENT", tools: ["Vercel"] }
+    ],
+    "02": [
+        { label: "FRONTEND", tools: ["HTML5", "CSS3", "JavaScript"] }
+    ],
+    "03": [
+        { label: "IOS FRONTEND", tools: ["SwiftUI"] },
+        { label: "BACKEND", tools: ["Node.js"] },
+        { label: "BACKEND SERVICE", tools: ["Supabase"] },
+        { label: "DATABASE", tools: ["PostgreSQL"] },
+        { label: "DEPLOYMENT", tools: ["Render"] }
+    ],
+    "04": [
+        { label: "FRONTEND", tools: ["Next.js", "React", "TypeScript"] },
+        { label: "BUILD TOOL", tools: ["Vite"] }
+    ],
+    "05": [
+        { label: "DESIGN", tools: ["Figma", "UI Design", "Responsive UI"] },
+        { label: "INTERACTION", tools: ["Prototype"] }
+    ],
+    "06": [
+        { label: "MOBILE FRONTEND", tools: ["React Native", "Expo", "TypeScript"] },
+        { label: "LOCAL STORAGE", tools: ["AsyncStorage"] }
+    ]
+};
 
 export function ProjectPlaceholder({ title }: { title: string }) {
     if (title !== "KEEP GOING") return <div className="project-placeholder"><span>PROJECT PREVIEW</span></div>;
@@ -226,7 +259,7 @@ export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard
         setTimeout(() => onClose(), 320);
     };
 
-    const { title, images, primaryUrl: link, description: fullDesc, tools: techStack, videoUrl } = project;
+    const { title, images, summary: shortDesc, tools: techStack } = project;
 
     return createPortal(
         <div className={`project-modal-backdrop${isClosing ? " is-closing" : ""}`} onClick={e => { e.stopPropagation(); handleClose(); }} onWheel={e => e.stopPropagation()} onPointerDown={e => e.stopPropagation()} onPointerMove={e => e.stopPropagation()} onPointerUp={e => e.stopPropagation()}>
@@ -241,10 +274,10 @@ export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard
 
                 {/* CONTENT BODY */}
                 <div style={{ padding: '0 30px 30px', overflowY: 'auto', flex: 1, color: '#111' }}>
-                    <p style={{ lineHeight: '1.6', fontSize: '14px', fontFamily: 'var(--mono)', margin: '0 0 30px 0' }}>{fullDesc}</p>
+                    <p style={{ lineHeight: '1.6', fontSize: '14px', fontFamily: 'var(--mono)', margin: '0 0 24px 0', maxWidth: '680px' }}>{shortDesc}</p>
 
                     {techStack && techStack.length > 0 && (
-                        <div id="project-demo" style={{ marginBottom: '30px' }}>
+                        <div style={{ marginBottom: '24px' }}>
                             <div style={{ fontSize: '11px', fontWeight: '700', fontFamily: 'var(--sans)', letterSpacing: '0.05em', color: '#666', textTransform: 'uppercase', marginBottom: '12px' }}>Technologies Used</div>
                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                                 {techStack.map((tech: string) => (
@@ -254,16 +287,6 @@ export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard
                                     </div>
                                 ))}
                             </div>
-                        </div>
-                    )}
-
-                    {videoUrl && (
-                        <div style={{ marginBottom: '30px' }}>
-                            <div style={{ fontSize: '11px', fontWeight: '700', fontFamily: 'var(--sans)', letterSpacing: '0.05em', color: '#666', textTransform: 'uppercase', marginBottom: '12px' }}>App Walkthrough</div>
-                            <video controls playsInline preload="metadata" style={{ display: 'block', width: '100%', maxHeight: '440px', borderRadius: '16px', background: '#111', border: '1px solid #ddd' }}>
-                                <source src={videoUrl} type="video/mp4" />
-                                Your browser does not support this video.
-                            </video>
                         </div>
                     )}
 
@@ -282,20 +305,9 @@ export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard
 
                 {/* FOOTER ACTION */}
                 <div style={{ padding: '20px 30px', borderTop: '1px solid #ddd', display: 'flex', justifyContent: 'flex-end', gap: '10px', background: 'var(--paper)' }}>
-                    {project.githubUrl && project.githubUrl !== "#" && (
-                        <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '12px 24px', backgroundColor: '#111', color: '#fff', textDecoration: 'none', borderRadius: '999px', fontFamily: 'var(--sans)', fontWeight: '700', fontSize: '12px', transition: 'background 0.2s' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--red)'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.background = '#111'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
-                            <div style={{ position: 'relative', height: '17px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-                                <span className="roll-first" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>GITHUB ↗</span>
-                                <span className="roll-second" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>GITHUB ↗</span>
-                            </div>
-                        </a>
-                    )}
-                    {!videoUrl && (link !== "#" ? <a href={link} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', padding: '12px 24px', backgroundColor: '#111', color: '#fff', textDecoration: 'none', borderRadius: '999px', fontFamily: 'var(--sans)', fontWeight: '700', fontSize: '12px', transition: 'background 0.2s' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--red)'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(-100%)'; s.style.transform = 'translateY(-100%)'; } }} onMouseLeave={e => { e.currentTarget.style.background = '#111'; const f = e.currentTarget.querySelector('.roll-first') as HTMLElement; const s = e.currentTarget.querySelector('.roll-second') as HTMLElement; if (f && s) { f.style.transform = 'translateY(0)'; s.style.transform = 'translateY(0)'; } }}>
-                        <div style={{ position: 'relative', height: '17px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-                            <span className="roll-first" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
-                            <span className="roll-second" style={{ display: 'block', height: '17px', lineHeight: '17px', transition: 'transform 0.3s cubic-bezier(.83,0,.17,1)' }}>VIEW PROJECT ↗</span>
-                        </div>
-                    </a> : <span className="project-modal-disabled-action" aria-disabled="true">{project.buttonLabel}</span>)}
+                    <a href={`/work#project-${project.id}`} className="work-stack-action project-modal-full-action">
+                        <span className="work-action-roll"><i>READ FULL DETAILS ↗</i><i>READ FULL DETAILS ↗</i></span>
+                    </a>
                 </div>
             </div>
         </div>,
@@ -348,7 +360,7 @@ export function PileCards() {
         </div>
         <div className="about-work-viewport" onMouseEnter={() => setPaused(true)} onMouseLeave={() => { if (dragStart.current === null) setPaused(false); }} onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={endDrag} onPointerCancel={endDrag} onWheel={e => { if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) { e.preventDefault(); step(e.deltaX > 0 ? 1 : -1); } }}>
             <div className={moving ? "work-track" : "work-track no-motion"} style={{ "--index": index } as React.CSSProperties} onTransitionEnd={settle}>
-                {[...aboutCards, ...aboutCards, ...aboutCards].map((v, i) => <article key={`${v.id}-${i}`} tabIndex={0} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} onClick={e => { if (didDrag.current) { e.preventDefault(); e.stopPropagation(); return; } setSelectedProject(v); }} style={{ cursor: 'pointer' }}>
+                {[...aboutCards, ...aboutCards, ...aboutCards].map((v, i) => <article key={`${v.id}-${i}`} tabIndex={0} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelectedProject(v); } }} onClick={e => { if (didDrag.current) { e.preventDefault(); e.stopPropagation(); return; } setSelectedProject(v); }} style={{ cursor: 'pointer' }}>
                     <span className="tag">PROJECT {v.id}</span>
                     <div className={`work-art work-art-${i % 4}`}>
                         {v.images.length > 0 ? <AutoImageSlider images={v.images} alt={v.title} onImageClick={() => setSelectedProject(v)} cover paused={paused} /> : <ProjectPlaceholder title={v.title} />}
@@ -371,22 +383,32 @@ export function PileCards() {
 }
 
 export function SelectedWorkShowcase() {
-    const [selectedProject, setSelectedProject] = useState<ProjectCard | null>(null);
     const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+    const [playingProject, setPlayingProject] = useState<string | null>(null);
     return (
         <section className="work-showcase">
             <div className="work-stack-container">
                 {aboutCards.map((card, i) => (
-                    <article key={card.id} className={`work-stack-card ${i % 2 ? "is-reversed" : ""}`} onMouseEnter={() => setHoveredProject(card.id)} onMouseLeave={() => setHoveredProject(null)} onFocus={() => setHoveredProject(card.id)} onBlur={() => setHoveredProject(null)}>
+                    <article id={`project-${card.id}`} key={card.id} className={`work-stack-card ${i % 2 ? "is-reversed" : ""}`} onMouseEnter={() => setHoveredProject(card.id)} onMouseLeave={() => setHoveredProject(null)} onFocus={() => setHoveredProject(card.id)} onBlur={() => setHoveredProject(null)}>
                         <div className="work-stack-copy">
                             <span className="work-stack-index">PROJECT {card.id} / {String(aboutCards.length).padStart(2, "0")}</span>
                             <h2>{card.title}</h2>
                             <p className="work-stack-summary">{card.summary}</p>
-                            <div className="work-stack-tags">
-                                {card.tools.map(tag => <span key={tag}>{TECH_ICONS[tag] ? <img src={TECH_ICONS[tag]} alt="" aria-hidden="true" width={15} height={15} /> : TECH_MARKS[tag] && <i aria-hidden="true">{TECH_MARKS[tag]}</i>}{tag}</span>)}
+                            <p className="work-stack-build-note"><strong>HOW IT WAS BUILT</strong>{card.buildNote}</p>
+                            <div className="work-tech-groups">
+                                {PROJECT_TECH_GROUPS[card.id].map(group => <div className="work-tech-group" key={group.label}>
+                                    <strong>{group.label}</strong>
+                                    <div className="work-stack-tags">
+                                        {group.tools.map(tag => <span key={tag}>{TECH_ICONS[tag] ? <img src={TECH_ICONS[tag]} alt="" aria-hidden="true" width={15} height={15} /> : TECH_MARKS[tag] && <i aria-hidden="true">{TECH_MARKS[tag]}</i>}{tag}</span>)}
+                                    </div>
+                                </div>)}
                             </div>
                             <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-                                {card.primaryUrl !== "#" ? (
+                                {card.videoUrl ? (
+                                    <button type="button" className="work-stack-action" onClick={() => setPlayingProject(card.id)} style={{ borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 24px' }}>
+                                        <span className="work-action-roll" style={{ textAlign: 'left', width: '100%' }}><i>WATCH DEMO ↗</i><i>WATCH DEMO ↗</i></span>
+                                    </button>
+                                ) : card.primaryUrl !== "#" ? (
                                     <a href={card.primaryUrl} target="_blank" rel="noopener noreferrer" className="work-stack-action" style={{ borderRadius: '999px', display: 'flex', alignItems: 'center', justifyContent: 'flex-start', padding: '0 24px' }}>
                                         <span className="work-action-roll" style={{ textAlign: 'left', width: '100%' }}><i>{card.buttonLabel}</i><i>{card.buttonLabel}</i></span>
                                     </a>
@@ -403,8 +425,13 @@ export function SelectedWorkShowcase() {
                             </div>
                         </div>
                         <div className="work-stack-media">
-                            {card.images.length > 0 ? (
-                                <AutoImageSlider images={card.images} alt={card.title} onImageClick={() => setSelectedProject(card)} cover={false} showControls paused={hoveredProject === card.id} />
+                            {card.videoUrl && playingProject === card.id ? (
+                                <div className="work-video-view">
+                                    <video src={card.videoUrl} controls autoPlay playsInline preload="metadata" />
+                                    <button type="button" onClick={() => setPlayingProject(null)}>VIEW IMAGES ×</button>
+                                </div>
+                            ) : card.images.length > 0 ? (
+                                <AutoImageSlider images={card.images} alt={card.title} cover={false} showControls paused={hoveredProject === card.id} />
                             ) : (
                                 <ProjectPlaceholder title={card.title} />
                             )}
@@ -412,7 +439,6 @@ export function SelectedWorkShowcase() {
                     </article>
                 ))}
             </div>
-            {selectedProject && <ProjectDetailsModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
         </section>
     );
 }

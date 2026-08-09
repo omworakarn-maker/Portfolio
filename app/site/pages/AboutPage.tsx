@@ -37,6 +37,7 @@ export function AboutPage() {
                     { name: "React", icon: "https://skillicons.dev/icons?i=react" },
                     { name: "TypeScript", icon: "https://skillicons.dev/icons?i=ts" },
                     { name: "Node.js", icon: "https://skillicons.dev/icons?i=nodejs" },
+                    { name: "Supabase", icon: "https://skillicons.dev/icons?i=supabase" },
                 ].map(t => (
                     <span key={t.name} className="hero-badge-pill">
                         <img src={t.icon} alt={t.name} width={14} height={14} />
@@ -94,6 +95,7 @@ export function AboutPage() {
                             {[
                                 { name: "Java", icon: "https://skillicons.dev/icons?i=java" },
                                 { name: "Node.js", icon: "https://skillicons.dev/icons?i=nodejs" },
+                                { name: "Supabase", icon: "https://skillicons.dev/icons?i=supabase" },
                                 { name: "PostgreSQL", icon: "https://skillicons.dev/icons?i=postgres" },
                                 { name: "Prisma", icon: "https://skillicons.dev/icons?i=prisma" },
                                 { name: "REST APIs" }
@@ -211,6 +213,7 @@ export function AboutPage() {
                     { name: "Tailwind CSS", category: "Styling", icon: "https://skillicons.dev/icons?i=tailwind" },
                     { name: "Figma", category: "UI Design & Prototyping", icon: "https://skillicons.dev/icons?i=figma" },
                     { name: "Prisma", category: "ORM", icon: "https://skillicons.dev/icons?i=prisma" },
+                    { name: "Supabase", category: "Backend Service", icon: "https://skillicons.dev/icons?i=supabase" },
                     { name: "Vercel", category: "Deployment", icon: "https://skillicons.dev/icons?i=vercel" },
                     { name: "PostgreSQL", category: "Database", icon: "https://skillicons.dev/icons?i=postgres" },
                 ].map(s => (

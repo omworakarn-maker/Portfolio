@@ -58,7 +58,14 @@ export function AboutPage() {
         <section className="about-statement">
             <div className="about-statement-left">
                 <span className="micro">INTRODUCTION</span>
-                <p>Hello, my name is Worakan Pongseelawat. I'm a Computer Science student looking for a software engineering internship to gain real-world experience. I enjoy building web applications using React and Next.js, and I'm currently learning the basics of backend development with Java. I'm eager to join a professional team where I can learn, improve my coding skills, and grow as a developer.</p>
+                <p>Hello, my name is Worakan Pongseelawat. I’m a fourth-year Computer Science student at Rajamangala University of Technology Suvarnabhumi (Huntra Campus), currently looking for a software developer internship. I enjoy building thoughtful web and mobile applications with React, Next.js, SwiftUI, and React Native, while continuing to strengthen my backend skills with Java, Node.js, and Supabase. I’m eager to contribute to a professional team, learn from real-world projects, and grow into a stronger developer.</p>
+                <div className="intro-availability" aria-label="Internship availability from 30 November 2026">
+                    <span><i aria-hidden="true" /> OPEN FOR INTERNSHIP</span>
+                    <small>AVAILABLE FROM</small>
+                    <strong>30 NOV 2026</strong>
+                    <b>Software Developer Internship</b>
+                    <em>RMUTSB · Huntra Campus</em>
+                </div>
             </div>
             <div className="about-statement-right">
                 <RevealWords>Driven by curiosity to build software that solves real problems.</RevealWords>

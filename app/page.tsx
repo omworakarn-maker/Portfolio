@@ -1,6 +1,6 @@
 import { Shell } from "./site/components/SiteShell";
-import { Home as HomePage } from "./site/pages/HomePage";
+import { AboutPage } from "./site/pages/AboutPage";
 
 export default function Home() {
-  return <Shell home><HomePage /></Shell>;
+  return <Shell><AboutPage /></Shell>;
 }

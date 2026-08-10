@@ -58,7 +58,9 @@ export function ContactForm() {
                 <span className="micro">MESSAGE DELIVERED</span>
                 <h2>Message Sent!</h2>
                 <p>Thank you for reaching out. I'll get back to you as soon as possible.</p>
-                <button onClick={() => setStatus("idle")} className="capsule">SEND ANOTHER MESSAGE</button>
+                <button onClick={() => setStatus("idle")} className="rolling-capsule form-submit-btn">
+                    <span className="capsule-label-roll"><i>SEND ANOTHER MESSAGE</i><i aria-hidden="true">SEND ANOTHER MESSAGE</i></span>
+                </button>
             </section>
         );
     }

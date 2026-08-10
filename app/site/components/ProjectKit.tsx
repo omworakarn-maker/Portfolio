@@ -163,26 +163,126 @@ export type ProjectCard = {
     videoUrl?: string;
 };
 
-// PROJECT CONTENT — edit named fields below; no need to remember array numbers.
+// PROJECT CONTENT — each project is a separate block for easy editing.
+const project01: ProjectCard = {
+    id: "01",
+    title: "TODO LIST",
+    stack: "[Next.js · React · Supabase]",
+    summary: "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI.",
+    images: [
+        "/todo-pro-01-dashboard.png",
+        "/todo-pro-02.png",
+        "/todo-pro-03.png"
+    ],
+    primaryUrl: "https://todolist-green-tau.vercel.app/",
+    githubUrl: "https://github.com/omworakarn-maker/todolist",
+    description: "Todo List is a full-stack task management application designed to make everyday planning feel clear and manageable. Users can create, organize, update, and track tasks through a responsive dashboard. Supabase supports the hosted backend and data services, while authentication keeps each workspace personal and secure. The interface includes profile customization and task analytics that make progress easier to understand at a glance. Building the project strengthened my understanding of typed React components, application state, database-backed workflows, authentication, and designing consistent experiences across desktop and mobile screens.",
+    buildNote: "Next.js and React power the dashboard and task interactions. TypeScript keeps component and data contracts predictable, Tailwind CSS handles the responsive interface, Supabase provides hosted backend and data services, Prisma handles structured database access, and Vercel hosts the production build.",
+    tools: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Supabase", "Prisma", "Vercel"],
+    buttonLabel: "VIEW PROJECT ↗"
+};
+
+const project02: ProjectCard = {
+    id: "02",
+    title: "CAFE CAT",
+    stack: "[HTML5 · CSS3 · JavaScript]",
+    summary: "An interactive website for a cat cafe showcasing menus, cozy atmosphere, and responsive layout.",
+    images: [
+        "/cafe-pro-01-home.png",
+        "/cafe-pro-02-cats.png",
+        "/cafe-pro-03-menu.png",
+        "/cafe-pro-04-events.png",
+        "/cafe-pro-05-booking.png"
+    ],
+    primaryUrl: "https://cafecatdemowebsite.vercel.app/",
+    githubUrl: "https://github.com/omworakarn-maker/cafecatdemowebsite",
+    description: "Cafe Cat is a responsive promotional website created for a fictional cat cafe. The experience introduces the cafe, its resident cats, food and drink menus, upcoming events, and booking information through a warm and playful visual direction. Subtle JavaScript interactions and CSS animation help the pages feel lively without distracting from the content. This project gave me practical experience structuring a multi-section website with semantic HTML, building responsive layouts from scratch, and using visual hierarchy to guide visitors toward important actions such as exploring the menu and making a reservation.",
+    buildNote: "Semantic HTML structures the cafe information, cats, menus, events, and booking sections. CSS creates the responsive layout, visual identity, and animations, while JavaScript controls interactive elements and dynamic page behavior.",
+    tools: ["HTML5", "CSS3", "JavaScript"],
+    buttonLabel: "VIEW PROJECT ↗"
+};
+
+const project03: ProjectCard = {
+    id: "03",
+    title: "GO WITH US",
+    stack: "[SwiftUI · Node.js · Supabase · PostgreSQL]",
+    summary: "A modern, AI-Powered travel matching iOS application built with SwiftUI and a Node.js backend.",
+    images: [
+        "/gowithus-1.png?v=1",
+        "/gowithus-2.png?v=1",
+        "/gowithus-3.png?v=1",
+        "/gowithus-4.png?v=1"
+    ],
+    primaryUrl: "#",
+    githubUrl: "https://github.com/omworakarn-maker/go-with-us",
+    description: "Go With Us is an iOS travel-matching application that helps people discover compatible travel companions based on shared destinations, interests, and preferences. The mobile experience is built natively with SwiftUI to keep navigation and interactions smooth, while a Node.js API, Supabase services, and PostgreSQL manage application data, profiles, trip information, and matching data. The project explores how a social travel product can reduce the friction of finding the right person to travel with. It also gave me experience connecting a native client to deployed backend services, designing structured data flows, and developing a larger product across mobile, server, and database layers.",
+    buildNote: "SwiftUI builds the native iOS screens, navigation, and user interactions. Node.js provides the API and matching logic, Supabase supports the application's backend data services, PostgreSQL stores structured user and trip data, and Render runs the Node.js backend remotely.",
+    tools: ["SwiftUI", "Node.js", "Supabase", "PostgreSQL", "Render"],
+    buttonLabel: "WATCH DEMO ↗",
+    videoUrl: "/gowithus-demo.mp4"
+};
+
+const project04: ProjectCard = {
+    id: "04",
+    title: "PORTFOLIO",
+    stack: "[Next.js 16 · React 19 · Vite]",
+    summary: "A modern interactive single-page portfolio with dynamic card deck, smooth animations, and clean styling.",
+    images: ["/portfolio-1.png?v=1"],
+    primaryUrl: "#",
+    githubUrl: "https://github.com/omworakarn-maker/portfolio",
+    description: "This portfolio is a multi-page interactive website designed to present my projects, background, skills, experiments, and contact information as one connected experience. Its visual system combines oversized editorial typography, layered cards, horizontal navigation, rolling button labels, animated project carousels, responsive overlays, and small playful details. I built the reusable interactions with React and TypeScript while keeping keyboard navigation, reduced-motion preferences, mobile layouts, and performance in mind. The project has been an ongoing exercise in refining motion design, component structure, responsive behavior, and the balance between personality and usability.",
+    buildNote: "Next.js organizes the pages and routes, React manages carousels, menus, modals, and interactive states, TypeScript keeps shared project data and components reliable, and Vite handles the fast development and production build workflow.",
+    tools: ["Next.js", "React", "TypeScript", "Vite"],
+    buttonLabel: "(IN PORTFOLIO)"
+};
+
+const project05: ProjectCard = {
+    id: "05",
+    title: "FIGMA PROTOTYPE",
+    stack: "[Figma · UI Design · Prototype]",
+    summary: "A collection of interface explorations, flows, and clickable prototypes focused on clear, thoughtful user experiences.",
+    images: [
+        "/figma-cat-01-welcome.png",
+        "/figma-cat-02-onboarding.png",
+        "/figma-cat-03-home.png",
+        "/figma-cat-04-menu.png",
+        "/figma-cat-05-search.png",
+        "/figma-cat-06-cat-detail.png",
+        "/figma-cat-08-login.png",
+        "/figma-cat-09-sign-up.png",
+        "/figma-cat-10-reset-password.png",
+        "/figma-cat-11-about-us.png",
+        "/figma-cat-11-order.png?v=2"
+    ],
+    primaryUrl: "https://www.figma.com/proto/kpiZifTnW2jPAZ7XSQjUKD/M-cat-031?node-id=2-4&p=f&t=rsnWPM2MoV8mV0UG-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A4",
+    githubUrl: "#",
+    description: "This Figma project explores a complete mobile experience for discovering cats, browsing information, managing accounts, and moving through an ordering flow. The screens cover onboarding, navigation, search, detailed content, authentication, password recovery, and supporting information pages. I used reusable components and consistent spacing, typography, and interaction patterns to keep the experience coherent across the full flow. Creating the clickable prototype helped me practice thinking beyond individual screens—considering user journeys, transition points, responsive behavior, edge cases, and how interface decisions affect clarity before development begins.",
+    buildNote: "Figma is used for layout, reusable components, variants, and clickable screen transitions. UI Design defines the visual hierarchy and design system, prototyping tests the complete user flow, and responsive principles guide how the interface adapts across screen sizes.",
+    tools: ["Figma", "UI Design", "Prototype", "Responsive UI"],
+    buttonLabel: "VIEW PROJECT ↗"
+};
+
+const project06: ProjectCard = {
+    id: "06",
+    title: "KEEP GOING",
+    stack: "[React Native · Expo · TypeScript]",
+    summary: "A gentle mobile space for emotional check-ins, private journaling, and tracking each step of a personal healing journey.",
+    images: [],
+    primaryUrl: "#",
+    githubUrl: "#",
+    description: "Keep Going is a work-in-progress Thai-language mobile wellness application designed to give users a calm, private space to process difficult feelings without pressure. The app supports daily mood check-ins, personal journal entries, healing goals, time-based milestones, follow-up questions, and a history of past reflections. Information is stored locally on the device with AsyncStorage so the experience can remain personal and available without a separate account. I am building it with React Native, Expo, and TypeScript while learning how to structure multi-screen mobile navigation, manage persistent application state, and design sensitive emotional experiences with clear and supportive language.",
+    buildNote: "React Native builds the shared mobile interface and screens, Expo provides the development and device-testing environment, TypeScript defines navigation and application data safely, and AsyncStorage keeps journals, goals, and progress on the user's device.",
+    tools: ["React Native", "Expo", "TypeScript", "AsyncStorage"],
+    buttonLabel: "(IN DEVELOPMENT)"
+};
+
 export const aboutCards: ProjectCard[] = [
-    { id: "01", title: "TODO LIST", stack: "[Next.js · React · Supabase]", summary: "A task management application featuring clean state handling, task tracking, and an intuitive responsive UI.", images: ["/todo-pro-01-dashboard.png", "/todo-pro-02.png", "/todo-pro-03.png"], primaryUrl: "https://todolist-green-tau.vercel.app/", githubUrl: "https://github.com/omworakarn-maker/todolist", description: "Todo List is a full-stack task management application designed to make everyday planning feel clear and manageable. Users can create, organize, update, and track tasks through a responsive dashboard. Supabase supports the hosted backend and data services, while authentication keeps each workspace personal and secure. The interface includes profile customization and task analytics that make progress easier to understand at a glance. Building the project strengthened my understanding of typed React components, application state, database-backed workflows, authentication, and designing consistent experiences across desktop and mobile screens.", buildNote: "Next.js and React power the dashboard and task interactions. TypeScript keeps component and data contracts predictable, Tailwind CSS handles the responsive interface, Supabase provides hosted backend and data services, Prisma handles structured database access, and Vercel hosts the production build.", tools: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Supabase", "Prisma", "Vercel"], buttonLabel: "VIEW PROJECT ↗" },
-    { id: "02", title: "CAFE CAT", stack: "[HTML5 · CSS3 · JavaScript]", summary: "An interactive website for a cat cafe showcasing menus, cozy atmosphere, and responsive layout.", images: ["/cafe-pro-01-home.png", "/cafe-pro-02-cats.png", "/cafe-pro-03-menu.png", "/cafe-pro-04-events.png", "/cafe-pro-05-booking.png"], primaryUrl: "https://cafecatdemowebsite.vercel.app/", githubUrl: "https://github.com/omworakarn-maker/cafecatdemowebsite", description: "Cafe Cat is a responsive promotional website created for a fictional cat cafe. The experience introduces the cafe, its resident cats, food and drink menus, upcoming events, and booking information through a warm and playful visual direction. Subtle JavaScript interactions and CSS animation help the pages feel lively without distracting from the content. This project gave me practical experience structuring a multi-section website with semantic HTML, building responsive layouts from scratch, and using visual hierarchy to guide visitors toward important actions such as exploring the menu and making a reservation.", buildNote: "Semantic HTML structures the cafe information, cats, menus, events, and booking sections. CSS creates the responsive layout, visual identity, and animations, while JavaScript controls interactive elements and dynamic page behavior.", tools: ["HTML5", "CSS3", "JavaScript"], buttonLabel: "VIEW PROJECT ↗" },
-    { id: "03", title: "GO WITH US", stack: "[SwiftUI · Node.js · Supabase · PostgreSQL]", summary: "A modern, AI-Powered travel matching iOS application built with SwiftUI and a Node.js backend.", images: ["/gowithus-1.png?v=1", "/gowithus-2.png?v=1", "/gowithus-3.png?v=1", "/gowithus-4.png?v=1"], primaryUrl: "#", githubUrl: "https://github.com/omworakarn-maker/go-with-us", description: "Go With Us is an iOS travel-matching application that helps people discover compatible travel companions based on shared destinations, interests, and preferences. The mobile experience is built natively with SwiftUI to keep navigation and interactions smooth, while a Node.js API, Supabase services, and PostgreSQL manage application data, profiles, trip information, and matching data. The project explores how a social travel product can reduce the friction of finding the right person to travel with. It also gave me experience connecting a native client to deployed backend services, designing structured data flows, and developing a larger product across mobile, server, and database layers.", buildNote: "SwiftUI builds the native iOS screens, navigation, and user interactions. Node.js provides the API and matching logic, Supabase supports the application's backend data services, PostgreSQL stores structured user and trip data, and Render runs the Node.js backend remotely.", tools: ["SwiftUI", "Node.js", "Supabase", "PostgreSQL", "Render"], buttonLabel: "WATCH DEMO ↗", videoUrl: "/gowithus-demo.mp4" },
-    { id: "04", title: "PORTFOLIO", stack: "[Next.js 16 · React 19 · Vite]", summary: "A modern interactive single-page portfolio with dynamic card deck, smooth animations, and clean styling.", images: ["/portfolio-1.png?v=1"], primaryUrl: "#", githubUrl: "#", description: "This portfolio is a multi-page interactive website designed to present my projects, background, skills, experiments, and contact information as one connected experience. Its visual system combines oversized editorial typography, layered cards, horizontal navigation, rolling button labels, animated project carousels, responsive overlays, and small playful details. I built the reusable interactions with React and TypeScript while keeping keyboard navigation, reduced-motion preferences, mobile layouts, and performance in mind. The project has been an ongoing exercise in refining motion design, component structure, responsive behavior, and the balance between personality and usability.", buildNote: "Next.js organizes the pages and routes, React manages carousels, menus, modals, and interactive states, TypeScript keeps shared project data and components reliable, and Vite handles the fast development and production build workflow.", tools: ["Next.js", "React", "TypeScript", "Vite"], buttonLabel: "(SECRET PROJECT)" },
-    { id: "05", title: "FIGMA PROTOTYPE", stack: "[Figma · UI Design · Prototype]", summary: "A collection of interface explorations, flows, and clickable prototypes focused on clear, thoughtful user experiences.", images: ["/figma-cat-01-welcome.png", "/figma-cat-02-onboarding.png", "/figma-cat-03-home.png", "/figma-cat-04-menu.png", "/figma-cat-05-search.png", "/figma-cat-06-cat-detail.png", "/figma-cat-08-login.png", "/figma-cat-09-sign-up.png", "/figma-cat-10-reset-password.png", "/figma-cat-11-about-us.png", "/figma-cat-11-order.png?v=2"], primaryUrl: "https://www.figma.com/proto/kpiZifTnW2jPAZ7XSQjUKD/M-cat-031?node-id=2-4&p=f&t=rsnWPM2MoV8mV0UG-1&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=2%3A4", githubUrl: "#", description: "This Figma project explores a complete mobile experience for discovering cats, browsing information, managing accounts, and moving through an ordering flow. The screens cover onboarding, navigation, search, detailed content, authentication, password recovery, and supporting information pages. I used reusable components and consistent spacing, typography, and interaction patterns to keep the experience coherent across the full flow. Creating the clickable prototype helped me practice thinking beyond individual screens—considering user journeys, transition points, responsive behavior, edge cases, and how interface decisions affect clarity before development begins.", buildNote: "Figma is used for layout, reusable components, variants, and clickable screen transitions. UI Design defines the visual hierarchy and design system, prototyping tests the complete user flow, and responsive principles guide how the interface adapts across screen sizes.", tools: ["Figma", "UI Design", "Prototype", "Responsive UI"], buttonLabel: "VIEW PROJECT ↗" },
-    {
-        id: "06",
-        title: "KEEP GOING",
-        stack: "[React Native · Expo · TypeScript]",
-        summary: "A gentle mobile space for emotional check-ins, private journaling, and tracking each step of a personal healing journey.",
-        images: [],
-        primaryUrl: "#",
-        githubUrl: "#",
-        description: "Keep Going is a work-in-progress Thai-language mobile wellness application designed to give users a calm, private space to process difficult feelings without pressure. The app supports daily mood check-ins, personal journal entries, healing goals, time-based milestones, follow-up questions, and a history of past reflections. Information is stored locally on the device with AsyncStorage so the experience can remain personal and available without a separate account. I am building it with React Native, Expo, and TypeScript while learning how to structure multi-screen mobile navigation, manage persistent application state, and design sensitive emotional experiences with clear and supportive language.",
-        buildNote: "React Native builds the shared mobile interface and screens, Expo provides the development and device-testing environment, TypeScript defines navigation and application data safely, and AsyncStorage keeps journals, goals, and progress on the user's device.",
-        tools: ["React Native", "Expo", "TypeScript", "AsyncStorage"],
-        buttonLabel: "(IN DEVELOPMENT)"
-    },
+    project01,
+    project02,
+    project03,
+    project04,
+    project05,
+    project06
 ];
 
 const PROJECT_TECH_GROUPS: Record<string, { label: string; tools: string[] }[]> = {

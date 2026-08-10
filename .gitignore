@@ -47,3 +47,6 @@ next-env.d.ts
 /.wrangler/
 /outputs/
 /work/
+
+# OpenAI hosting config (local only)
+/.openai/

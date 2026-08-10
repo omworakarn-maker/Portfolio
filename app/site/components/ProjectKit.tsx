@@ -266,14 +266,14 @@ export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard
             <div className="project-modal-card" onClick={e => e.stopPropagation()}>
 
                 {/* HEADER */}
-                <div style={{ padding: '30px 30px 20px', position: 'relative' }}>
-                    <button style={{ position: 'absolute', top: 20, right: 20, background: 'transparent', border: '1px solid #111', color: '#111', fontSize: '20px', cursor: 'pointer', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }} onClick={handleClose} onMouseEnter={e => { e.currentTarget.style.background = '#111'; e.currentTarget.style.color = '#fff'; }} onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#111'; }}>✕</button>
+                <div className="project-modal-header" style={{ padding: '30px 30px 20px', position: 'relative' }}>
+                    <button className="project-modal-close" style={{ position: 'absolute', top: 20, right: 20, background: 'transparent', border: '1px solid #111', color: '#111', fontSize: '20px', cursor: 'pointer', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }} onClick={handleClose} onMouseEnter={e => { e.currentTarget.style.background = '#111'; e.currentTarget.style.color = '#fff'; }} onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#111'; }}>✕</button>
 
                     <h2 style={{ margin: 0, fontSize: 'clamp(40px, 6vw, 54px)', color: '#111', fontFamily: 'var(--sans)', fontWeight: '700', letterSpacing: '-0.04em', lineHeight: '1' }}>{title}</h2>
                 </div>
 
                 {/* CONTENT BODY */}
-                <div style={{ padding: '0 30px 30px', overflowY: 'auto', flex: 1, color: '#111' }}>
+                <div className="project-modal-body" style={{ padding: '0 30px 30px', overflowY: 'auto', flex: 1, color: '#111' }}>
                     <p style={{ lineHeight: '1.6', fontSize: '14px', fontFamily: 'var(--mono)', margin: '0 0 24px 0', maxWidth: '680px' }}>{shortDesc}</p>
 
                     {techStack && techStack.length > 0 && (
@@ -292,7 +292,7 @@ export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard
 
                     {images.length > 0 && (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                            <div style={{ height: '280px', borderRadius: '16px', overflow: 'hidden', border: '1px solid #ddd', position: 'relative', backgroundColor: 'var(--paper)' }}>
+                            <div className="project-modal-gallery" style={{ height: '280px', borderRadius: '16px', overflow: 'hidden', border: '1px solid #ddd', position: 'relative', backgroundColor: 'var(--paper)' }}>
                                 <AutoImageSlider images={images} alt={title} showControls pauseWhenDetailOpen={false} />
                             </div>
                             <div style={{ textAlign: 'center', fontSize: '11px', color: '#666', fontFamily: 'var(--mono)', letterSpacing: '0.05em' }}>
@@ -304,7 +304,7 @@ export function ProjectDetailsModal({ project, onClose }: { project: ProjectCard
                 </div>
 
                 {/* FOOTER ACTION */}
-                <div style={{ padding: '20px 30px', borderTop: '1px solid #ddd', display: 'flex', justifyContent: 'flex-end', gap: '10px', background: 'var(--paper)' }}>
+                <div className="project-modal-footer" style={{ padding: '20px 30px', borderTop: '1px solid #ddd', display: 'flex', justifyContent: 'flex-end', gap: '10px', background: 'var(--paper)' }}>
                     <a href={`/work#project-${project.id}`} className="work-stack-action project-modal-full-action">
                         <span className="work-action-roll"><i>READ FULL DETAILS ↗</i><i>READ FULL DETAILS ↗</i></span>
                     </a>
@@ -384,12 +384,29 @@ export function PileCards() {
 
 export function SelectedWorkShowcase() {
     const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+    const [activeProject, setActiveProject] = useState<string | null>(null);
     const [playingProject, setPlayingProject] = useState<string | null>(null);
+    useEffect(() => {
+        const projectId = window.location.hash.match(/^#project-(.+)$/)?.[1];
+        if (projectId && aboutCards.some(card => card.id === projectId)) setActiveProject(projectId);
+    }, []);
     return (
         <section className="work-showcase">
-            <div className="work-stack-container">
+            <div className="work-stack-container" onMouseMove={event => {
+                const target = event.target as HTMLElement;
+                if (!target.closest?.(".work-stack-card")) setActiveProject(null);
+            }}>
                 {aboutCards.map((card, i) => (
-                    <article id={`project-${card.id}`} key={card.id} className={`work-stack-card ${i % 2 ? "is-reversed" : ""}`} onMouseEnter={() => setHoveredProject(card.id)} onMouseLeave={() => setHoveredProject(null)} onFocus={() => setHoveredProject(card.id)} onBlur={() => setHoveredProject(null)}>
+                    <article
+                        id={`project-${card.id}`}
+                        key={card.id}
+                        className={`work-stack-card ${i % 2 ? "is-reversed" : ""}${activeProject === card.id ? " is-active" : ""}`}
+                        onMouseEnter={() => { setHoveredProject(card.id); setActiveProject(card.id); }}
+                        onMouseLeave={() => { setHoveredProject(null); setActiveProject(null); }}
+                        onFocus={() => { setHoveredProject(card.id); setActiveProject(card.id); }}
+                        onBlur={() => { setHoveredProject(null); setActiveProject(null); }}
+                        onPointerDown={() => setActiveProject(card.id)}
+                    >
                         <div className="work-stack-copy">
                             <span className="work-stack-index">PROJECT {card.id} / {String(aboutCards.length).padStart(2, "0")}</span>
                             <h2>{card.title}</h2>

@@ -483,6 +483,128 @@
 .work-stack-card{scroll-margin-top:130px}.work-stack-action{border:0}.work-video-view{position:relative;width:100%;height:100%;min-height:460px;background:#111;display:grid;place-items:center}.work-video-view video{width:100%;height:100%;max-height:680px;object-fit:contain;background:#111}.work-video-view>button{position:absolute;z-index:3;top:16px;right:16px;padding:10px 14px;border:1px solid #fff;border-radius:999px;background:#111c;color:#fff;font:700 9px var(--mono);cursor:pointer}.work-video-view>button:hover,.work-video-view>button:focus-visible{background:var(--red);outline:none}@media(max-width:600px){.work-video-view{min-height:330px}}
 .project-modal-full-action{flex:0 0 auto!important;min-width:0!important;width:max-content!important;max-width:none!important;height:42px!important;padding:0 14px!important}.project-modal-full-action .work-action-roll{flex:0 0 132px;width:132px}@media(max-width:600px){.project-modal-full-action{flex-basis:auto!important;width:max-content!important;max-width:100%!important}}
 
+/* Mobile comfort pass: preserve the desktop art direction, but make every route
+   readable, tappable and naturally scrollable on a narrow screen. */
+@media (max-width: 700px) {
+  html, body { width: 100%; overflow-x: hidden; }
+  body { -webkit-text-size-adjust: 100%; }
+  .site-shell, .home-shell { min-height: 100svh; height: auto; padding-top: 76px; overflow: visible; }
+  .topbar, .home-shell .topbar { height: 76px; padding: 6px 14px; gap: 10px; }
+  .round-logo { width: 66px; height: 64px; flex: 0 0 66px; margin-top: -5px!important; }
+  .round-logo svg { width: 66px!important; height: 66px!important; left: 0!important; top: 0!important; }
+  .round-logo div { width: 38px!important; height: 38px!important; transform: translateY(5px)!important; }
+  .round-logo img { width: 35px!important; height: 35px!important; }
+  .utilities { margin-left: auto; }
+  .utilities .saved-btn { display: grid!important; width: 54px; min-width: 54px; height: 54px; padding: 4px; border-radius: 18px; }
+  .utilities .saved-btn .spin-smile { scale: .72; }
+  .utilities .saved-btn i { font-size: 8px; }
+  .utilities .menu-trigger { display: grid!important; width: 54px; min-width: 54px; height: 54px; border-radius: 50%; font-size: 10px; }
+  .mega-menu { padding: 88px 20px 28px; }
+  .mega-menu nav a { font-size: clamp(39px, 12vw, 52px); line-height: .95; }
+
+  /* Home becomes a calm vertical stack instead of a 340vw drag surface. */
+  .home-stage { width: 100%; height: auto; min-height: calc(100svh - 76px); padding: 10px 12px 18px; overflow: visible; overscroll-behavior: auto; touch-action: pan-y; cursor: auto; }
+  .portfolio-canvas { width: 100%; min-width: 0; height: auto; padding: 0; display: grid; grid-template-columns: minmax(0,1fr); grid-template-rows: minmax(500px,70svh) 340px 430px minmax(480px,68svh) 390px 390px; gap: 12px; }
+  .portfolio-card { width: 100%; min-width: 0; border-radius: 18px; padding: 20px; scale: 1!important; }
+  .portfolio-card:hover, .portfolio-card:focus-visible { box-shadow: 0 12px 28px #00000016; }
+  .p-intro { grid-column: 1; grid-row: 1; padding: 25px; }
+  .p-intro h1 { max-width: 100%; font-size: clamp(62px,20vw,86px); line-height: .72; overflow-wrap: anywhere; }
+  .p-intro p { max-width: 78%; font-size: 9px; }
+  .p-about { grid-column: 1; grid-row: 2; }
+  .p-about h2 { max-width: 88%; margin: auto 0; font-size: clamp(40px,12vw,50px); }
+  .p-project-one { grid-column: 1; grid-row: 3; }
+  .p-project-two { grid-column: 1; grid-row: 4; }
+  .p-project-one h2, .p-project-two h2 { font-size: clamp(42px,13vw,58px); overflow-wrap: anywhere; }
+  .p-project-two h2 { margin-top: auto!important; margin-bottom: 18px; }
+  .p-project-two p { margin-top: 0; }
+  .project-swap-indicator { right: 18px!important; width: 76px; }
+  .project-view-reveal { transform: none; opacity: 1; height: 44px; }
+  .p-project>p { bottom: 70px!important; }
+  .p-note { grid-column: 1; grid-row: 5; }
+  .p-note h2 { max-width: 88%; font-size: clamp(35px,10vw,44px); }
+  .p-contact { grid-column: 1; grid-row: 6; }
+  .p-contact h2 { max-width: 90%; font-size: clamp(43px,13vw,56px); }
+  .p-contact .work-stack-action { min-height: 50px; }
+
+  /* Shared route hero. */
+  .page-hero { min-height: calc(100svh - 90px); margin: 10px 12px 12px; padding: 84px 22px 28px!important; border-radius: 20px; }
+  .page-hero>.tag { top: 24px!important; max-width: calc(100% - 40px); }
+  .page-hero h1 { top: 46%!important; width: calc(100% - 38px)!important; font-size: clamp(44px,14.5vw,66px)!important; line-height: .84!important; letter-spacing: -.075em!important; overflow-wrap: anywhere; }
+  .page-hero p { bottom: 28px!important; width: calc(100% - 42px)!important; font-size: 11px!important; line-height: 1.55!important; }
+  .page-hero .hero-orbit { right: 16px; top: 74px; font-size: 44px; opacity: .45; }
+
+  /* About and reusable editorial sections. */
+  .about-opening { min-height: calc(100svh - 90px); margin: 10px 12px 12px; padding: 76px 22px 28px!important; border-radius: 20px; }
+  .about-opening h1 { width: 100%; font-size: clamp(60px,17vw,70px)!important; line-height: .72!important; letter-spacing: -.075em!important; }
+  .about-opening p { max-width: 100%; font-size: 10px!important; line-height: 1.5!important; }
+  .about-statement, .editorial, .end-card, .checkin { padding: 76px 22px!important; }
+  .about-statement h2, .editorial h2, .end-card h2, .checkin h2 { font-size: clamp(42px,12vw,56px)!important; line-height: .88!important; }
+  .about-statement p, .editorial p { font-size: 12px!important; line-height: 1.6!important; }
+  .intro-availability { width: 100%; max-width: none; padding: 18px; }
+  .about-contact-cta { margin: 12px!important; padding: 62px 22px 250px!important; min-height: 570px!important; }
+
+  /* Full work page: one clear column and comfortable media frames. */
+  .work-showcase { padding: 64px 14px 90px; }
+  .work-stack-container { gap: 76px; }
+  .work-stack-card, .work-stack-card.is-reversed { grid-template-columns: minmax(0,1fr); gap: 18px; }
+  .work-stack-card.is-reversed .work-stack-copy, .work-stack-card.is-reversed .work-stack-media { order: initial; }
+  .work-stack-copy { padding: 4px 4px 0; }
+  .work-stack-copy h2 { margin: 22px 0 18px; font-size: clamp(45px,14vw,62px); line-height: .86; overflow-wrap: anywhere; }
+  .work-stack-summary { font-size: 11px; line-height: 1.65; }
+  .work-stack-media, .work-stack-media>div { min-height: 285px!important; border-radius: 18px; }
+  .work-stack-card:hover .work-stack-media, .work-stack-card.is-reversed:hover .work-stack-media { transform: none; }
+  .work-stack-action { min-height: 50px; }
+  .work-technology-groups { grid-template-columns: 1fr!important; }
+
+  /* Playground: scale dramatic type without clipping it. */
+  .lab-hero { min-height: 660px; margin: 10px 12px 12px; padding: 25px 20px; border-radius: 20px; }
+  .lab-hero-copy { display: block; }
+  .lab-hero-copy p { max-width: 270px; margin-top: 18px; font-size: 10px; }
+  .lab-hero h1 { font-size: clamp(68px,23vw,92px); line-height: .72; letter-spacing: -.08em; }
+  .lab-orbit { top: 49%; right: 18px; width: 140px; }
+  .lab-intro { padding: 80px 22px; }
+  .lab-intro h2 { font-size: clamp(44px,13vw,58px); line-height: .88; }
+  .lab-grid { padding: 0 12px 70px; gap: 12px; }
+  .lab-card { min-height: 380px; padding: 20px; border-radius: 20px; }
+  .type-window button { height: 88px; font-size: clamp(50px,18vw,70px); }
+  .palette-swatch { height: 235px; }
+  .lab-manifesto { margin: 0 12px 12px; padding: 62px 22px; border-radius: 20px; }
+  .lab-manifesto h2 { font-size: clamp(48px,15vw,64px); }
+
+  /* Contact form and success state. */
+  .contact-form-section { padding: 70px 14px; }
+  .contact-form-header h2 { font-size: clamp(45px,13vw,58px); line-height: .88; }
+  .contact-form { padding: 22px 16px; border-radius: 20px; }
+  .form-group input, .form-group textarea { font-size: 16px; }
+  .topic-selector button { min-height: 44px; }
+  .contact-success { min-height: calc(100svh - 76px); padding: 48px 18px!important; }
+  .contact-success-mark { width: 88px; height: 88px; margin-bottom: 24px; }
+  .contact-success h2 { margin-bottom: 22px; font-size: clamp(48px,15vw,66px); }
+  .contact-success p { margin-bottom: 32px!important; font-size: 12px!important; }
+
+  /* Preview modal uses the whole available phone viewport without touching edges. */
+  .project-modal-backdrop { padding: 10px; align-items: center; }
+  .project-modal-card { max-height: calc(100svh - 20px); border-radius: 20px; }
+  .project-modal-header { padding: 24px 20px 16px!important; padding-right: 64px!important; }
+  .project-modal-header h2 { font-size: clamp(34px,11vw,46px)!important; overflow-wrap: anywhere; }
+  .project-modal-close { top: 16px!important; right: 16px!important; width: 42px!important; height: 42px!important; }
+  .project-modal-body { padding: 0 20px 20px!important; }
+  .project-modal-gallery { height: min(235px,30svh)!important; }
+  .project-modal-footer { padding: 14px 20px!important; justify-content: flex-start!important; }
+
+  .panel-wrap { padding: 10px; align-items: flex-end; }
+  .panel-wrap aside { width: 100%; max-height: calc(100svh - 20px); padding: 28px 20px; border-radius: 22px 22px 14px 14px; }
+  footer { padding: 58px 20px 28px; gap: 28px; }
+  footer b { font-size: clamp(34px,10vw,46px); overflow-wrap: anywhere; }
+}
+
+@media (max-width: 380px) {
+  .portfolio-canvas { grid-template-rows: 470px 330px 410px 450px 370px 370px; }
+  .p-intro h1 { font-size: 59px; }
+  .page-hero h1 { font-size: 43px!important; }
+  .lab-hero h1 { font-size: 67px; }
+}
+
 /* Work hover: keep imagery still and highlight the active project as a whole. */
 .work-stack-card{position:relative;border-radius:28px;transition:background-color .28s var(--smooth),box-shadow .35s var(--smooth)}
 .work-stack-card:hover{background:rgba(255,194,223,.16);box-shadow:0 0 0 18px rgba(242,13,13,.08)}
@@ -492,6 +614,24 @@
 .work-stack-card:hover .work-stack-media img{transform:translate(-50%,-50%)!important}
 .work-stack-card:hover .work-stack-media img[src*="gowithus"]{transform:translate(-50%,-53%)!important}
 @media(max-width:600px){.work-stack-card:hover{box-shadow:0 0 0 10px rgba(242,13,13,.08)}}
+
+/* READ FULL DETAILS selects the initial card; the latest hovered/focused card
+   then stays selected so visual focus never jumps back unexpectedly. */
+.work-stack-card.is-active{
+  background:rgba(255,194,223,.16);
+  box-shadow:0 0 0 18px rgba(242,13,13,.08);
+}
+.work-stack-card.is-active .work-stack-copy h2{color:var(--red)}
+.work-stack-card.is-active .work-stack-media{
+  border-color:rgba(242,13,13,.38);
+  box-shadow:0 16px 38px rgba(0,0,0,.1);
+}
+.work-stack-card:focus-within{
+  background:rgba(255,194,223,.16);
+  box-shadow:0 0 0 18px rgba(242,13,13,.08);
+}
+.work-stack-card:focus-within .work-stack-copy h2{color:var(--red)}
+@media(max-width:600px){.work-stack-card.is-active,.work-stack-card:focus-within{box-shadow:0 0 0 10px rgba(242,13,13,.08)}}
 
 .panel-wrap .resume-download{margin-top:14px}
 

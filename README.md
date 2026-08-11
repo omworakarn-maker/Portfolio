@@ -1,7 +1,7 @@
 # 🌐 Worakan Pongseelawat — Portfolio
 
 > Personal portfolio website showcasing projects, skills, and experience.  
-> Built with **Next.js**, **React**, and deployed on **Cloudflare Workers**.
+> Built with **Next.js**, **React**, and deployed on **Vercel**.
 
 ---
 
@@ -23,10 +23,10 @@ This is my personal portfolio website featuring:
 | Layer | Technology |
 |---|---|
 | Framework | [Next.js 16](https://nextjs.org/) |
-| Runtime | [Cloudflare Workers (via vinext)](https://github.com/cloudflare/vinext) |
+| Hosting | [Vercel](https://vercel.com/) |
 | Language | TypeScript / React 19 |
 | Styling | Vanilla CSS |
-| Build | Vite + Cloudflare Vite Plugin |
+| Build | Next.js |
 
 ---
 
@@ -62,10 +62,7 @@ npm run build
 │   ├── playground/        # /playground route
 │   ├── work/              # /work route
 │   └── globals.css        # Global styles
-├── public/                # Static assets (images, resume, etc.)
-├── worker/                # Cloudflare Worker entry point
-├── build/                 # Vite build plugins
-└── tests/                 # Rendered HTML tests
+└── public/                # Images, video, icons, and resume
 ```
 
 ---

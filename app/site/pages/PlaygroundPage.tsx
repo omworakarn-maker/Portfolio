@@ -50,7 +50,7 @@ export function PlaygroundLab() {
             </article>
         </section>
 
-        <section className="lab-manifesto"><span className="micro">THE RULE</span><h2>Make it clear.<br />Then make it <em>fun.</em></h2><Link className="capsule" href="/contact#contact-form">START A PROJECT ↗</Link></section>
+        <section className="lab-manifesto"><span className="micro">THE RULE</span><h2>Make it clear.<br />Then make it <em>fun.</em></h2><Link className="rolling-capsule" href="/contact#contact-form"><span className="capsule-label-roll"><i>START A PROJECT ↗</i><i aria-hidden="true">START A PROJECT ↗</i></span></Link></section>
     </main>
 }
 

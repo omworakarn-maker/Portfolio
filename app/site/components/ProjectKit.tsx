@@ -30,12 +30,12 @@ export function Lightbox({ images, initialIdx, onClose }: { images: string[], in
     if (!mounted) return null;
 
     return createPortal(
-        <div key={isClosing ? 'closing' : 'open'} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 2147483600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: isClosing ? 'fadeOut 0.25s ease-out forwards' : 'fadeIn 0.2s ease-out forwards' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleClose(); }}>
-            <button style={{ position: 'absolute', top: 20, right: 20, background: 'none', border: 'none', color: 'white', fontSize: 32, cursor: 'pointer', zIndex: 10, transition: 'transform 0.2s' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleClose(); }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.2)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>×</button>
-            <div style={{ position: 'relative', width: '90vw', height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: isClosing ? 'scaleDown 0.25s ease-out forwards' : 'scaleUp 0.25s ease-out forwards' }} onClick={e => { e.preventDefault(); e.stopPropagation(); }}>
-                {images.length > 1 && <button style={{ position: 'absolute', left: 0, background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', fontSize: 32, padding: '10px 20px', cursor: 'pointer', borderRadius: '50%', zIndex: 10, transition: 'background 0.2s' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIdx(i => (i - 1 + images.length) % images.length) }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.4)'} onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}>‹</button>}
-                <img src={images[idx]} alt="Enlarged view" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', clipPath: images[idx].includes('gowithus') ? 'inset(5.5% 0 0 0)' : 'none', transform: images[idx].includes('gowithus') ? 'translateY(-2.75%)' : 'none' }} />
-                {images.length > 1 && <button style={{ position: 'absolute', right: 0, background: 'rgba(255,255,255,0.2)', border: 'none', color: 'white', fontSize: 32, padding: '10px 20px', cursor: 'pointer', borderRadius: '50%', zIndex: 10, transition: 'background 0.2s' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIdx(i => (i + 1) % images.length) }} onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.4)'} onMouseLeave={e => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}>›</button>}
+        <div className="project-lightbox" key={isClosing ? 'closing' : 'open'} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 2147483600, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', animation: isClosing ? 'fadeOut 0.25s ease-out forwards' : 'fadeIn 0.2s ease-out forwards' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleClose(); }}>
+            <button className="project-lightbox-close" aria-label="Close enlarged image" style={{ position: 'absolute', top: 20, right: 20, background: 'none', border: 'none', color: 'white', fontSize: 32, cursor: 'pointer', zIndex: 10, transition: 'transform 0.2s' }} onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleClose(); }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.2)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>×</button>
+            <div className="project-lightbox-stage" style={{ position: 'relative', width: '90vw', height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', animation: isClosing ? 'scaleDown 0.25s ease-out forwards' : 'scaleUp 0.25s ease-out forwards' }} onClick={e => { e.preventDefault(); e.stopPropagation(); }}>
+                {images.length > 1 && <button className="project-lightbox-nav project-lightbox-nav--prev" aria-label="Previous enlarged image" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIdx(i => (i - 1 + images.length) % images.length) }}>‹</button>}
+                <img className="project-lightbox-image" src={images[idx]} alt="Enlarged view" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain', clipPath: images[idx].includes('gowithus') ? 'inset(5.5% 0 0 0)' : 'none', transform: images[idx].includes('gowithus') ? 'translateY(-2.75%)' : 'none' }} />
+                {images.length > 1 && <button className="project-lightbox-nav project-lightbox-nav--next" aria-label="Next enlarged image" onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIdx(i => (i + 1) % images.length) }}>›</button>}
             </div>
             {images.length > 1 && <div style={{ color: 'white', marginTop: 16, zIndex: 10, font: '12px var(--mono)', letterSpacing: '0.1em' }}>{idx + 1} / {images.length}</div>}
             <style dangerouslySetInnerHTML={{
@@ -483,15 +483,82 @@ export function PileCards() {
 }
 
 export function SelectedWorkShowcase() {
+    const showcaseRef = useRef<HTMLElement>(null);
+    const scrollNavHideTimer = useRef<number | null>(null);
+    const scrollNavHovered = useRef(false);
     const [hoveredProject, setHoveredProject] = useState<string | null>(null);
     const [activeProject, setActiveProject] = useState<string | null>(null);
+    const [currentProject, setCurrentProject] = useState(aboutCards[0].id);
+    const [showScrollNav, setShowScrollNav] = useState(false);
     const [playingProject, setPlayingProject] = useState<string | null>(null);
     useEffect(() => {
         const projectId = window.location.hash.match(/^#project-(.+)$/)?.[1];
         if (projectId && aboutCards.some(card => card.id === projectId)) setActiveProject(projectId);
     }, []);
+    useEffect(() => {
+        let frame = 0;
+        const updateCurrentProject = () => {
+            frame = 0;
+            const section = showcaseRef.current;
+            if (!section) return;
+            const viewportFocus = window.innerHeight * .48;
+            let closestId = aboutCards[0].id;
+            let closestDistance = Number.POSITIVE_INFINITY;
+            section.querySelectorAll<HTMLElement>(".work-stack-card").forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const distance = Math.abs(rect.top + rect.height / 2 - viewportFocus);
+                if (distance < closestDistance) {
+                    closestDistance = distance;
+                    closestId = card.dataset.projectId ?? closestId;
+                }
+            });
+            setCurrentProject(closestId);
+        };
+        const onScroll = () => {
+            const sectionRect = showcaseRef.current?.getBoundingClientRect();
+            const isInsideShowcase = Boolean(sectionRect && sectionRect.top < window.innerHeight * .82 && sectionRect.bottom > window.innerHeight * .2);
+            setShowScrollNav(isInsideShowcase);
+            if (scrollNavHideTimer.current) window.clearTimeout(scrollNavHideTimer.current);
+            if (isInsideShowcase) {
+                scrollNavHideTimer.current = window.setTimeout(() => {
+                    if (!scrollNavHovered.current) setShowScrollNav(false);
+                }, 850);
+            }
+            if (!frame) frame = window.requestAnimationFrame(updateCurrentProject);
+        };
+        updateCurrentProject();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        window.addEventListener("resize", onScroll);
+        return () => {
+            window.removeEventListener("scroll", onScroll);
+            window.removeEventListener("resize", onScroll);
+            if (frame) window.cancelAnimationFrame(frame);
+            if (scrollNavHideTimer.current) window.clearTimeout(scrollNavHideTimer.current);
+        };
+    }, []);
+    const scrollToProject = (id: string) => {
+        document.getElementById(`project-${id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+    };
     return (
-        <section className="work-showcase">
+        <section ref={showcaseRef} className="work-showcase">
+            <nav
+                className={`work-scroll-nav${showScrollNav ? " is-visible" : ""}`}
+                aria-label="Project scroll progress"
+                onMouseEnter={() => {
+                    scrollNavHovered.current = true;
+                    if (scrollNavHideTimer.current) window.clearTimeout(scrollNavHideTimer.current);
+                }}
+                onMouseLeave={() => {
+                    scrollNavHovered.current = false;
+                    scrollNavHideTimer.current = window.setTimeout(() => setShowScrollNav(false), 400);
+                }}
+            >
+                <div className="work-scroll-nav-label"><span>PROJECT</span><b>{currentProject}</b><small>/ {String(aboutCards.length).padStart(2, "0")}</small></div>
+                <div className="work-scroll-nav-track" aria-hidden="true"><i style={{ "--work-progress": `${((aboutCards.findIndex(card => card.id === currentProject) + 1) / aboutCards.length) * 100}%` } as React.CSSProperties} /></div>
+                <div className="work-scroll-nav-dots">
+                    {aboutCards.map(card => <button key={card.id} type="button" className={currentProject === card.id ? "is-current" : ""} onClick={() => scrollToProject(card.id)} aria-label={`Go to project ${card.id}`} aria-current={currentProject === card.id ? "true" : undefined}><span>{card.id}</span></button>)}
+                </div>
+            </nav>
             <div className="work-stack-container" onMouseMove={event => {
                 const target = event.target as HTMLElement;
                 if (!target.closest?.(".work-stack-card")) setActiveProject(null);
@@ -499,6 +566,7 @@ export function SelectedWorkShowcase() {
                 {aboutCards.map((card, i) => (
                     <article
                         id={`project-${card.id}`}
+                        data-project-id={card.id}
                         key={card.id}
                         className={`work-stack-card ${i % 2 ? "is-reversed" : ""}${activeProject === card.id ? " is-active" : ""}`}
                         onMouseEnter={() => { setHoveredProject(card.id); setActiveProject(card.id); }}

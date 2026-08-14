@@ -37,7 +37,7 @@ export function Shell({ children, home = false }: { children: React.ReactNode, h
                     <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 12.2a5.1 5.1 0 1 0 0-10.2 5.1 5.1 0 0 0 0 10.2Zm0 2.3c-5.4 0-9.3 2.8-9.3 6.1 0 .8.6 1.4 1.4 1.4h15.8c.8 0 1.4-.6 1.4-1.4 0-3.3-3.9-6.1-9.3-6.1Z" /></svg>
                     <span className="footer-link-roll"><i>Contact ↗</i><i aria-hidden="true">Contact ↗</i></span>
                 </Link>
-                <a className="footer-icon-link footer-email-link" href="mailto:omworakarn@gmail.com">
+                <a className="footer-icon-link footer-email-link" href="mailto:omworakarn@gmail.com" aria-label="Email Worakan">
                     <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3.5 4.5h17A2.5 2.5 0 0 1 23 7v10a2.5 2.5 0 0 1-2.5 2.5h-17A2.5 2.5 0 0 1 1 17V7a2.5 2.5 0 0 1 2.5-2.5Zm8.5 8.1L20.2 7H3.8l8.2 5.6Zm0 2.4L3 8.9V17c0 .3.2.5.5.5h17c.3 0 .5-.2.5-.5V8.9L12 15Z" /></svg>
                     <span className="footer-link-roll"><i>Email ↗</i><i aria-hidden="true">Email ↗</i></span>
                 </a>

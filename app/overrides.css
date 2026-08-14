@@ -635,6 +635,16 @@
 
 .panel-wrap .resume-download{margin-top:14px}
 
+footer nav .footer-icon-link,footer nav .footer-icon-link:hover,footer nav .footer-icon-link:focus-visible{position:relative!important;top:0!important;margin:0!important;display:inline-flex!important;align-items:center;align-self:flex-start;height:16px;gap:6px;overflow:visible!important;color:#fff!important;text-shadow:none!important;translate:0 0!important;transform:none!important;scale:1!important;transition:none!important}
+footer nav .footer-icon-link:hover,footer nav .footer-icon-link:focus-visible{top:2px!important}
+footer nav .footer-icon-link svg{width:16px;height:16px;flex:0 0 16px;fill:#fff;transform:none!important;translate:0 0!important;transition:fill .2s var(--smooth)}
+footer nav .footer-icon-link:hover svg,footer nav .footer-icon-link:focus-visible svg{fill:var(--pink)}
+footer nav .footer-link-roll{display:inline-grid;height:16px;overflow:hidden;color:#fff;line-height:16px;transform:none!important;translate:0 0!important}
+footer nav .footer-link-roll i{position:relative;grid-area:1/1;display:block;white-space:nowrap;font-style:normal;transition:transform .36s var(--smooth),color .2s var(--smooth)}
+footer nav .footer-link-roll i+i{color:var(--pink)!important;transform:translateY(110%)}
+footer nav .footer-icon-link:hover .footer-link-roll i:first-child,footer nav .footer-icon-link:focus-visible .footer-link-roll i:first-child{transform:translateY(-110%)}
+footer nav .footer-icon-link:hover .footer-link-roll i+i,footer nav .footer-icon-link:focus-visible .footer-link-roll i+i{transform:translateY(0)}
+
 /* Selected Work scroll navigator. */
 .work-scroll-nav{position:fixed;z-index:35;right:18px;top:50%;width:58px;padding:13px 9px;border:1px solid #111;border-radius:22px;background:rgba(255,255,255,.9);box-shadow:5px 5px 0 #111;backdrop-filter:blur(12px);opacity:0;pointer-events:none;transform:translate(18px,-50%);transition:opacity .25s var(--smooth),transform .35s var(--spring)}
 .work-scroll-nav.is-visible{opacity:1;pointer-events:auto;transform:translate(0,-50%)}

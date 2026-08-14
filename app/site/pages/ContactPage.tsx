@@ -21,24 +21,23 @@ export function ContactForm() {
         const animationStarted = Date.now();
 
         try {
-            const response = await fetch("https://api.web3forms.com/submit", {
+            const response = await fetch("/api/contact", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     Accept: "application/json",
                 },
                 body: JSON.stringify({
-                    access_key: "94ab03a2-66d1-475a-ba56-4d7a27273858",
-                    name: name,
-                    email: email,
-                    subject: `New Project Enquiry: ${topic}`,
-                    message: message,
+                    name,
+                    email,
+                    topic,
+                    message,
                 }),
             });
             const result = await response.json();
             const remainingAnimation = Math.max(0, 900 - (Date.now() - animationStarted));
             await new Promise(resolve => window.setTimeout(resolve, remainingAnimation));
-            if (result.success) {
+            if (response.ok && result.success) {
                 setStatus("success");
                 setName("");
                 setEmail("");

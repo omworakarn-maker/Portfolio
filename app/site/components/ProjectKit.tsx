@@ -98,27 +98,27 @@ export function AutoImageSlider({ images, alt, onImageClick, cover = false, show
             >
                 {images.map((src, i) => {
                     return (
-                    <img
-                        key={src}
-                        src={src}
-                        alt={`${alt} slide ${i + 1}`}
-                        loading="eager"
-                        style={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: src.includes('gowithus') ? 'translate(-50%, -53%)' : 'translate(-50%, -50%)',
-                            width: cover ? '100%' : 'auto',
-                            height: cover ? '100%' : 'auto',
-                            maxWidth: '100%',
-                            maxHeight: '100%',
-                            objectFit: cover ? 'cover' : 'contain',
-                            opacity: i === idx ? 1 : 0,
-                            transition: 'opacity 0.5s ease-in-out',
-                            display: 'block',
-                            clipPath: src.includes('gowithus') ? 'inset(6% 0 0 0)' : 'none',
-                        }}
-                    />
+                        <img
+                            key={src}
+                            src={src}
+                            alt={`${alt} slide ${i + 1}`}
+                            loading="eager"
+                            style={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: src.includes('gowithus') ? 'translate(-50%, -53%)' : 'translate(-50%, -50%)',
+                                width: cover ? '100%' : 'auto',
+                                height: cover ? '100%' : 'auto',
+                                maxWidth: '100%',
+                                maxHeight: '100%',
+                                objectFit: cover ? 'cover' : 'contain',
+                                opacity: i === idx ? 1 : 0,
+                                transition: 'opacity 0.5s ease-in-out',
+                                display: 'block',
+                                clipPath: src.includes('gowithus') ? 'inset(6% 0 0 0)' : 'none',
+                            }}
+                        />
                     );
                 })}
                 {showControls && len > 1 && <>

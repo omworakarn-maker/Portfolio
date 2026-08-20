@@ -4,21 +4,16 @@ import { PileCards } from "../components/ProjectKit";
 import { Ticker } from "../components/Ticker";
 
 const CAPABILITY_MARKS: Record<string, string> = {
-    "REST APIs": "↗",
-    "iOS Development": "◫",
-    "Mobile UI": "◌",
-    "Responsive UI": "↔",
-    "CSS Animation": "✦"
+    "REST APIs": "↗", "iOS Development": "◫", "Mobile UI": "◌", "Responsive UI": "↔", "CSS Animation": "✦"
 };
-
 function CapabilityTag({ tag }: { tag: { name: string, icon?: string } }) {
     return <span>{tag.icon ? <img src={tag.icon} alt={tag.name} width={14} height={14} /> : CAPABILITY_MARKS[tag.name] && <i aria-hidden="true">{CAPABILITY_MARKS[tag.name]}</i>} {tag.name}</span>;
 }
 
-export function RevealWords({ children, className = "" }: { children: string, className?: string }) {
+export function RevealWords({ children, className = "", early = false }: { children: string, className?: string, early?: boolean }) {
     const ref = useRef<HTMLHeadingElement>(null);
-    useEffect(() => { const el = ref.current; if (!el) return; const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { el.classList.add("is-visible"); observer.disconnect() } }, { threshold: .22 }); observer.observe(el); return () => observer.disconnect() }, []);
-    return <h2 ref={ref} className={`reveal-words ${className}`}>{children.split(" ").map((word, i) => <span className="reveal-word" style={{ "--word": i } as React.CSSProperties} key={`${word}-${i}`}><i>{word}</i>&nbsp;</span>)}</h2>
+    useEffect(() => { const el = ref.current; if (!el) return; const observer = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { el.classList.add("is-visible"); observer.disconnect() } }, early ? { threshold: .01, rootMargin: "0px 0px 25% 0px" } : { threshold: .22 }); observer.observe(el); return () => observer.disconnect() }, [early]);
+    return <h2 ref={ref} className={`reveal-words${early ? " reveal-words--early" : ""} ${className}`}>{children.split(" ").map((word, i) => <span className="reveal-word" style={{ "--word": i } as React.CSSProperties} key={`${word}-${i}`}><i>{word}</i>&nbsp;</span>)}</h2>
 }
 
 
@@ -57,18 +52,18 @@ export function AboutPage() {
         {/* ── Approach Statement ── */}
         <section className="about-statement">
             <div className="about-statement-left">
-                <span className="micro">INTRODUCTION</span>
-                <p>Hello, my name is Worakan Pongseelawat. I’m a fourth-year Computer Science student at Rajamangala University of Technology Suvarnabhumi (Huntra Campus), currently looking for a software developer internship. I enjoy building thoughtful web and mobile applications with React, Next.js, SwiftUI, and React Native, while continuing to strengthen my backend skills with Java, Node.js, and Supabase. I’m eager to contribute to a professional team, learn from real-world projects, and grow into a stronger developer.</p>
                 <div className="intro-availability" aria-label="Internship availability from 30 November 2026">
                     <span><i aria-hidden="true" /> OPEN FOR INTERNSHIP</span>
                     <small>AVAILABLE FROM</small>
                     <strong>30 NOV 2026</strong>
                     <b>Software Developer Internship</b>
+                    <p>Interested in web and mobile development, with experience across frontend interfaces, backend services, and database-driven applications.</p>
                     <em>RMUTSB · Huntra Campus</em>
                 </div>
             </div>
             <div className="about-statement-right">
-                <RevealWords>Driven by curiosity to build software that solves real problems.</RevealWords>
+                <span className="micro"><strong>INTRODUCTION</strong></span>
+                <p className="about-introduction-copy"><strong>Hello, my name is Worakan Pongseelawat.</strong> I’m a fourth-year Computer Science student at Rajamangala University of Technology Suvarnabhumi (Huntra Campus), currently looking for a software developer internship. I enjoy building thoughtful web and mobile applications with React, Next.js, SwiftUI, and React Native, while continuing to strengthen my backend skills with Java, Node.js, and Supabase. I’m eager to contribute to a professional team, learn from real-world projects, and grow into a stronger developer.</p>
             </div>
         </section>
 
@@ -79,17 +74,13 @@ export function AboutPage() {
                 <h2>Core Capabilities.</h2>
             </div>
             <div className="what-i-do-grid">
-
-                {/* Card 01 — Backend */}
-                <div className="cap-card cap-card--red">
+                <article className="cap-card cap-card--red">
                     <div className="cap-card-inner">
                         <div className="cap-card-icon" aria-hidden="true">
-                            {/* Server / Database icon */}
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect x="4" y="6" width="40" height="12" rx="4" stroke="currentColor" strokeWidth="2.5" fill="none" />
                                 <rect x="4" y="22" width="40" height="12" rx="4" stroke="currentColor" strokeWidth="2.5" fill="none" />
-                                <circle cx="38" cy="12" r="2.5" fill="currentColor" />
-                                <circle cx="38" cy="28" r="2.5" fill="currentColor" />
+                                <circle cx="38" cy="12" r="2.5" fill="currentColor" /><circle cx="38" cy="28" r="2.5" fill="currentColor" />
                                 <line x1="12" y1="12" x2="26" y2="12" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
                                 <line x1="12" y1="28" x2="26" y2="28" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
                                 <path d="M14 40 C14 37 20 35 24 38 C28 41 34 39 34 36" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none" />
@@ -98,24 +89,17 @@ export function AboutPage() {
                         <span className="cap-card-num">01</span>
                         <h3>Backend Architecture</h3>
                         <p>Learning to build well-structured backend logic, applying OOP principles, and creating REST APIs with Java.</p>
-                        <div className="cap-card-tags">
-                            {[
-                                { name: "Java", icon: "https://skillicons.dev/icons?i=java" },
-                                { name: "Node.js", icon: "https://skillicons.dev/icons?i=nodejs" },
-                                { name: "Supabase", icon: "https://skillicons.dev/icons?i=supabase" },
-                                { name: "PostgreSQL", icon: "https://skillicons.dev/icons?i=postgres" },
-                                { name: "Prisma", icon: "https://skillicons.dev/icons?i=prisma" },
-                                { name: "REST APIs" }
-                            ].map(t => <CapabilityTag key={t.name} tag={t} />)}
-                        </div>
+                        <div className="cap-card-tags">{[
+                            { name: "Java", icon: "https://skillicons.dev/icons?i=java" }, { name: "Node.js", icon: "https://skillicons.dev/icons?i=nodejs" },
+                            { name: "Supabase", icon: "https://skillicons.dev/icons?i=supabase" }, { name: "PostgreSQL", icon: "https://skillicons.dev/icons?i=postgres" },
+                            { name: "Prisma", icon: "https://skillicons.dev/icons?i=prisma" }, { name: "REST APIs" }
+                        ].map(t => <CapabilityTag key={t.name} tag={t} />)}</div>
                     </div>
-                </div>
+                </article>
 
-                {/* Card 02 — Frontend */}
-                <div className="cap-card cap-card--dark">
+                <article className="cap-card cap-card--dark">
                     <div className="cap-card-inner">
                         <div className="cap-card-icon" aria-hidden="true">
-                            {/* Code brackets icon */}
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <polyline points="16,14 6,24 16,34" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
                                 <polyline points="32,14 42,24 32,34" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
@@ -125,24 +109,17 @@ export function AboutPage() {
                         <span className="cap-card-num">02</span>
                         <h3>Frontend Engineering</h3>
                         <p>Practicing modern web development with React and Next.js, focusing on component-based UI and type safety.</p>
-                        <div className="cap-card-tags">
-                            {[
-                                { name: "Next.js", icon: "https://skillicons.dev/icons?i=nextjs" },
-                                { name: "React", icon: "https://skillicons.dev/icons?i=react" },
-                                { name: "TypeScript", icon: "https://skillicons.dev/icons?i=ts" },
-                                { name: "JavaScript", icon: "https://skillicons.dev/icons?i=js" },
-                                { name: "Tailwind CSS", icon: "https://skillicons.dev/icons?i=tailwind" },
-                                { name: "Vite", icon: "https://skillicons.dev/icons?i=vite" }
-                            ].map(t => <CapabilityTag key={t.name} tag={t} />)}
-                        </div>
+                        <div className="cap-card-tags">{[
+                            { name: "Next.js", icon: "https://skillicons.dev/icons?i=nextjs" }, { name: "React", icon: "https://skillicons.dev/icons?i=react" },
+                            { name: "TypeScript", icon: "https://skillicons.dev/icons?i=ts" }, { name: "JavaScript", icon: "https://skillicons.dev/icons?i=js" },
+                            { name: "Tailwind CSS", icon: "https://skillicons.dev/icons?i=tailwind" }, { name: "Vite", icon: "https://skillicons.dev/icons?i=vite" }
+                        ].map(t => <CapabilityTag key={t.name} tag={t} />)}</div>
                     </div>
-                </div>
+                </article>
 
-                {/* Card 03 — Mobile / iOS */}
-                <div className="cap-card cap-card--blue" style={{ background: "#007AFF" }}>
+                <article className="cap-card cap-card--blue" style={{ background: "#007AFF" }}>
                     <div className="cap-card-inner">
                         <div className="cap-card-icon" aria-hidden="true">
-                            {/* Mobile icon */}
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <rect x="12" y="4" width="24" height="40" rx="4" stroke="currentColor" strokeWidth="2.5" fill="none" />
                                 <line x1="20" y1="8" x2="28" y2="8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
@@ -152,22 +129,16 @@ export function AboutPage() {
                         <span className="cap-card-num">03</span>
                         <h3>Mobile Engineering</h3>
                         <p>Building native iOS applications with smooth user experiences, animations, and modern architecture.</p>
-                        <div className="cap-card-tags">
-                            {[
-                                { name: "Swift", icon: "https://skillicons.dev/icons?i=swift" },
-                                { name: "SwiftUI", icon: "https://skillicons.dev/icons?i=swift" },
-                                { name: "iOS Development" },
-                                { name: "Mobile UI" }
-                            ].map(t => <CapabilityTag key={t.name} tag={t} />)}
-                        </div>
+                        <div className="cap-card-tags">{[
+                            { name: "Swift", icon: "https://skillicons.dev/icons?i=swift" }, { name: "SwiftUI", icon: "https://skillicons.dev/icons?i=swift" },
+                            { name: "iOS Development" }, { name: "Mobile UI" }
+                        ].map(t => <CapabilityTag key={t.name} tag={t} />)}</div>
                     </div>
-                </div>
+                </article>
 
-                {/* Card 04 — UI & Design */}
-                <div className="cap-card cap-card--yellow">
+                <article className="cap-card cap-card--yellow">
                     <div className="cap-card-inner">
                         <div className="cap-card-icon" aria-hidden="true">
-                            {/* Pen tool / design icon */}
                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M8 36 L20 24 L28 32 L38 10" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" fill="none" />
                                 <circle cx="28" cy="32" r="3" stroke="currentColor" strokeWidth="2.5" fill="none" />
@@ -179,20 +150,13 @@ export function AboutPage() {
                         <span className="cap-card-num">04</span>
                         <h3>Interactive UI &amp; Design</h3>
                         <p>Exploring web design principles to create clean, responsive interfaces with HTML, CSS, and animations.</p>
-                        <div className="cap-card-tags">
-                            {[
-                                { name: "HTML5", icon: "https://skillicons.dev/icons?i=html" },
-                                { name: "CSS3", icon: "https://skillicons.dev/icons?i=css" },
-                                { name: "Figma", icon: "https://skillicons.dev/icons?i=figma" },
-                                { name: "Responsive UI" },
-                                { name: "CSS Animation" },
-                                { name: "Git", icon: "https://skillicons.dev/icons?i=git" },
-                                { name: "GitHub", icon: "https://skillicons.dev/icons?i=github" }
-                            ].map(t => <CapabilityTag key={t.name} tag={t} />)}
-                        </div>
+                        <div className="cap-card-tags">{[
+                            { name: "HTML5", icon: "https://skillicons.dev/icons?i=html" }, { name: "CSS3", icon: "https://skillicons.dev/icons?i=css" },
+                            { name: "Figma", icon: "https://skillicons.dev/icons?i=figma" }, { name: "Responsive UI" }, { name: "CSS Animation" },
+                            { name: "Git", icon: "https://skillicons.dev/icons?i=git" }, { name: "GitHub", icon: "https://skillicons.dev/icons?i=github" }
+                        ].map(t => <CapabilityTag key={t.name} tag={t} />)}</div>
                     </div>
-                </div>
-
+                </article>
             </div>
         </section>
 

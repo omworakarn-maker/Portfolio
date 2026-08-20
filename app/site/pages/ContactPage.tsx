@@ -2,6 +2,10 @@
 import { useEffect, useRef, useState } from "react";
 import { PageEnd, PageHero } from "../components/PageFrame";
 
+function RollingFieldLabel({ htmlFor, children }: { htmlFor: string; children: string }) {
+    return <label htmlFor={htmlFor} className="rolling-field-label"><span><i>{children}</i><i aria-hidden="true">{children}</i></span></label>;
+}
+
 export function ContactForm() {
     const sectionRef = useRef<HTMLElement>(null);
     const [name, setName] = useState("");
@@ -74,17 +78,17 @@ export function ContactForm() {
             <form onSubmit={handleSubmit} className="contact-form">
                 <div className="form-row">
                     <div className="form-group">
-                        <label htmlFor="name">Your Name</label>
+                        <RollingFieldLabel htmlFor="name">Your Name</RollingFieldLabel>
                         <input id="name" type="text" placeholder="Your full name" value={name} onChange={e => setName(e.target.value)} required />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="email">Email Address</label>
+                        <RollingFieldLabel htmlFor="email">Email Address</RollingFieldLabel>
                         <input id="email" type="email" placeholder="Your-email@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
                     </div>
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="topic">I'm interested in...</label>
+                    <RollingFieldLabel htmlFor="topic">I'm interested in...</RollingFieldLabel>
                     <div className="topic-selector">
                         {["A website", "A digital product", "An interactive experiment", "Something else"].map(x => (
                             <button type="button" className={topic === x ? "selected" : ""} onClick={() => setTopic(x)} key={x}>
@@ -95,7 +99,7 @@ export function ContactForm() {
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="message">Message Details</label>
+                    <RollingFieldLabel htmlFor="message">Message Details</RollingFieldLabel>
                     <textarea id="message" rows={5} placeholder="Tell me about your project, timeline, and goals..." value={message} onChange={e => setMessage(e.target.value)} required></textarea>
                 </div>
 
